@@ -1,7 +1,22 @@
-export function Badge({ children }: { children: React.ReactNode }) {
+import type { ReactNode } from "react";
+
+export function Badge({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return (
-    <span className="inline-flex items-center rounded-full border bg-white px-2 py-0.5 text-xs text-zinc-700">
+    <span
+      className={[
+        "inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium",
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
       {children}
     </span>
-  )
+  );
 }
