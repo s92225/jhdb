@@ -180,7 +180,7 @@ export default async function QuestsPage({
           <div className="mt-3 text-sm text-gray-700">
             建議你在專案根目錄跑：
             <pre className="mt-2 rounded-lg bg-gray-50 p-3 text-xs text-gray-800">
-              node -e "const fs=require('fs'); const t=fs.readFileSync('data/quests_integrated.json','utf8'); console.log('len=',t.length); JSON.parse(t); console.log('JSON OK');"
+              {node -e "const fs=require('fs'); const t=fs.readFileSync('data/quests_integrated.json','utf8'); console.log('len=',t.length); JSON.parse(t); console.log('JSON OK');"}
             </pre>
           </div>
         </div>
