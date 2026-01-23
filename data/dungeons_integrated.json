@@ -1,0 +1,485 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-01-22T00:00:00Z",
+  "notes": [
+    "根據原始 txt 與更新日誌整理的攻略版 JSON",
+    "所有文字均為繁體中文，且不包含虛構資料"
+  ],
+  "dungeons": [
+    {
+      "id": "dungeon-血刀門",
+      "name": "血刀門",
+      "positioning": {
+        "type": "戰鬥與解謎型副本",
+        "stage": "200級",
+        "features": "包含多個BOSS與特定裝備碎片掉落"
+      },
+      "entry": {
+        "location": "長安",
+        "npc": "說書人",
+        "method": "解謎進入",
+        "needsItem": true,
+        "kickOutOnFailure": false
+      },
+      "recommendedStrength": {
+        "stage": "200級",
+        "config": "無資料"
+      },
+      "workflow": [
+        "流程一：入口側有死切地圖2張，直入會見到3位小BOSS",
+        "流程二：繼續進入會見到狄雲和水笙，向狄雲詢問有關血刀老祖進行解謎",
+        "流程三：解謎成功後傳送至血刀老祖地圖進行決戰"
+      ],
+      "bosses": [
+        "血刀老祖",
+        "勝諦",
+        "寶象",
+        "善勇",
+        "狄雲",
+        "水笙"
+      ],
+      "mechanics": [
+        "特定地圖採取進出即時復活制"
+      ],
+      "loot": [
+        "金剛瑜迦母拳殘頁",
+        "烏蠶衣碎片",
+        "鳥羽大氅",
+        "血刀碎片",
+        "血刀刀法殘頁"
+      ],
+      "resetPolicy": "無資料",
+      "notes": "此副本大部分 NPC 殺之均有黃金獎勵"
+    },
+    {
+      "id": "dungeon-俠客島",
+      "name": "俠客島",
+      "positioning": {
+        "type": "解謎與挑戰型副本",
+        "stage": "300級",
+        "features": "以《俠客行》為背景，可獲得太玄神功"
+      },
+      "entry": {
+        "location": "長安",
+        "npc": "說書人",
+        "method": "解謎進入",
+        "needsItem": true,
+        "kickOutOnFailure": false
+      },
+      "recommendedStrength": {
+        "stage": "300級",
+        "config": "無資料"
+      },
+      "workflow": [
+        "流程一：入口地圖西邊領取「玄鐵令」，再向北行",
+        "流程二：擊斃石破天或從石破天處解謎進入洞穴挑戰兩位島主",
+        "流程三：回到入口地圖換取獎勵（玄冰碧火酒、臘八粥等）"
+      ],
+      "bosses": [
+        "石破天",
+        "龍亦凡（島主）",
+        "木丹鳳（島主）"
+      ],
+      "mechanics": [
+        "島主地圖採取進出即時復活制",
+        "地圖均可脫逃離開"
+      ],
+      "loot": [
+        "太玄神功殘頁",
+        "玄冰碧火酒",
+        "臘八粥",
+        "賞善罰惡令"
+      ],
+      "resetPolicy": "無資料",
+      "notes": "副本大部分 NPC 殺之均有黃金獎勵"
+    },
+    {
+      "id": "dungeon-古墓",
+      "name": "古墓",
+      "positioning": {
+        "type": "高密度戰鬥副本",
+        "stage": "400級",
+        "features": "簡單直接，以戰鬥為主"
+      },
+      "entry": {
+        "location": "長安",
+        "npc": "說書人",
+        "method": "解謎進入",
+        "needsItem": true,
+        "kickOutOnFailure": false
+      },
+      "recommendedStrength": {
+        "stage": "400級",
+        "config": "無資料"
+      },
+      "workflow": [
+        "只有一個要點：殺殺殺！"
+      ],
+      "bosses": [
+        "楊過",
+        "小龍女",
+        "李莫愁"
+      ],
+      "mechanics": [
+        "「神雕大俠」楊過地圖採取進出即時復活制"
+      ],
+      "loot": [
+        "赤煉神掌",
+        "玄鐵劍法",
+        "純陽拳",
+        "銀索金鈴",
+        "玉蜂漿",
+        "玉蜂蜜",
+        "金絲手套",
+        "金鈴索",
+        "君子劍",
+        "淑女劍"
+      ],
+      "resetPolicy": "無資料",
+      "notes": ""
+    },
+    {
+      "id": "dungeon-天龍八部",
+      "name": "天龍八部",
+      "positioning": {
+        "type": "陣營選擇型副本",
+        "stage": "500級（需轉生）",
+        "features": "分為好人與壞人兩條路線，獎勵不同"
+      },
+      "entry": {
+        "location": "長安",
+        "npc": "說書人",
+        "method": "解謎進入",
+        "needsItem": true,
+        "kickOutOnFailure": false
+      },
+      "recommendedStrength": {
+        "stage": "500級（需轉生）",
+        "config": "無資料"
+      },
+      "workflow": [
+        "好人路線：接取蕭峰、段譽或虛竹的任務並擊敗對應惡人",
+        "壞人路線：接取游坦之、慕容復或鳩摩智的任務並擊敗對應好人"
+      ],
+      "bosses": [
+        "蕭峰",
+        "段譽",
+        "虛竹",
+        "慕容復",
+        "游坦之",
+        "鳩摩智"
+      ],
+      "mechanics": [
+        "無資料"
+      ],
+      "loot": [
+        "降龍凝氣丹",
+        "六脈神劍殘頁",
+        "駐顏丹",
+        "冰蠶毒掌殘頁",
+        "大燕國玉璽",
+        "火焰刀殘頁",
+        "進階資格碎片"
+      ],
+      "resetPolicy": "無資料",
+      "notes": "每個任務均會掉落進階資格碎片"
+    },
+    {
+      "id": "dungeon-攔江之戰",
+      "name": "攔江之戰",
+      "positioning": {
+        "type": "巔峰對決型副本",
+        "stage": "700級（需轉生）",
+        "features": "黃易《覆雨翻雲》背景，兩大高手對決"
+      },
+      "entry": {
+        "location": "長安",
+        "npc": "說書人",
+        "method": "解謎進入",
+        "needsItem": true,
+        "kickOutOnFailure": false
+      },
+      "recommendedStrength": {
+        "stage": "700級（需轉生）",
+        "config": "無資料"
+      },
+      "workflow": [
+        "路線一：向浪翻雲領取任務擊敗龐班",
+        "路線二：向龐班領取任務擊敗浪翻雲"
+      ],
+      "bosses": [
+        "龐班",
+        "浪翻雲"
+      ],
+      "mechanics": [
+        "整副本所有地圖採取進出即時復活制"
+      ],
+      "loot": [
+        "覆雨劍法殘頁",
+        "覆雨劍碎片",
+        "天魔策殘頁",
+        "魔師袍服碎片",
+        "進階資格碎片",
+        "武道書殘頁"
+      ],
+      "resetPolicy": "無資料",
+      "notes": ""
+    },
+    {
+      "id": "dungeon-宗師天威試煉",
+      "name": "宗師天威試煉",
+      "positioning": {
+        "type": "高密度戰鬥副本",
+        "stage": "900級（需轉生）",
+        "features": "挑戰金庸四大宗師"
+      },
+      "entry": {
+        "location": "洛陽",
+        "npc": "小寒",
+        "method": "解謎進入",
+        "needsItem": true,
+        "kickOutOnFailure": false
+      },
+      "recommendedStrength": {
+        "stage": "900級（需轉生）",
+        "config": "無資料"
+      },
+      "workflow": [
+        "入場後可分別挑戰四大宗師"
+      ],
+      "bosses": [
+        "段思平",
+        "黃裳",
+        "鬥酒神僧",
+        "慕容龍城"
+      ],
+      "mechanics": [
+        "整副本所有地圖採取進出即時復活制"
+      ],
+      "loot": [
+        "進階資格碎片",
+        "武道書殘頁"
+      ],
+      "resetPolicy": "無次數限制，可無限重刷",
+      "notes": ""
+    },
+    {
+      "id": "dungeon-虛空武道爭鋒",
+      "name": "虛空武道爭鋒",
+      "positioning": {
+        "type": "高密度戰鬥副本",
+        "stage": "1100級（需轉生）",
+        "features": "挑戰黃易四大宗師"
+      },
+      "entry": {
+        "location": "洛陽",
+        "npc": "小寒",
+        "method": "解謎進入",
+        "needsItem": true,
+        "kickOutOnFailure": false
+      },
+      "recommendedStrength": {
+        "stage": "1100級（需轉生）",
+        "config": "無資料"
+      },
+      "workflow": [
+        "入場後可分別挑戰四大宗師"
+      ],
+      "bosses": [
+        "孫恩",
+        "石之軒",
+        "燕飛",
+        "向雨田"
+      ],
+      "mechanics": [
+        "整副本所有地圖採取進出即時復活制"
+      ],
+      "loot": [
+        "進階資格碎片",
+        "武道書殘頁"
+      ],
+      "resetPolicy": "無次數限制，可無限重刷",
+      "notes": ""
+    },
+    {
+      "id": "dungeon-紫霄問心劫",
+      "name": "紫霄問心劫",
+      "positioning": {
+        "type": "傳說挑戰副本",
+        "stage": "1300級（需轉生）",
+        "features": "挑戰金庸四大傳說級人物"
+      },
+      "entry": {
+        "location": "洛陽",
+        "npc": "小寒",
+        "method": "解謎進入",
+        "needsItem": true,
+        "kickOutOnFailure": false
+      },
+      "recommendedStrength": {
+        "stage": "1300級（需轉生）",
+        "config": "無資料"
+      },
+      "workflow": [
+        "入場後可分別挑戰四大傳說"
+      ],
+      "bosses": [
+        "達摩祖師",
+        "逍遙子",
+        "獨孤求敗",
+        "前朝太監"
+      ],
+      "mechanics": [
+        "整副本所有地圖採取進出即時復活制"
+      ],
+      "loot": [
+        "進階資格碎片",
+        "武道書殘頁",
+        "上古傳承"
+      ],
+      "resetPolicy": "無次數限制，可無限重刷",
+      "notes": ""
+    },
+    {
+      "id": "dungeon-萬象逆劫淵",
+      "name": "萬象逆劫淵",
+      "positioning": {
+        "type": "戰鬥型副本（高密度戰鬥）",
+        "stage": "1400級（需轉生）",
+        "features": "無複雜機制，核心就是連續戰鬥"
+      },
+      "entry": {
+        "location": "洛陽",
+        "npc": "小寒",
+        "method": "解謎進入",
+        "needsItem": true,
+        "kickOutOnFailure": false
+      },
+      "recommendedStrength": {
+        "stage": "宗師",
+        "config": "四項基本武學約 1400 級，內力約 14000"
+      },
+      "workflow": [
+        "無資料"
+      ],
+      "bosses": [
+        "廣成子",
+        "傳鷹",
+        "令東來",
+        "蒙赤行"
+      ],
+      "mechanics": [
+        "進出即時復活制：角色可自由進出副本，進出後會立即復活，不影響持續攻略"
+      ],
+      "loot": [
+        "進階資格碎片",
+        "武道書殘頁"
+      ],
+      "resetPolicy": "無次數限制，可無限重刷，無額外進場成本",
+      "notes": ""
+    },
+    {
+      "id": "dungeon-無量山劍湖宮",
+      "name": "無量山劍湖宮",
+      "positioning": {
+        "type": "新手入門副本",
+        "stage": "150萬經驗內",
+        "features": "適合初期練級，解讀書寫字相關"
+      },
+      "entry": {
+        "location": "長安",
+        "npc": "說書人",
+        "method": "解謎進入",
+        "needsItem": true,
+        "kickOutOnFailure": false
+      },
+      "recommendedStrength": {
+        "stage": "新手",
+        "config": "戰鬥經驗 100-150 萬之內"
+      },
+      "workflow": [
+        "無資料"
+      ],
+      "bosses": [
+        "無資料"
+      ],
+      "mechanics": [
+        "無資料"
+      ],
+      "loot": [
+        "無資料"
+      ],
+      "resetPolicy": "無資料",
+      "notes": ""
+    },
+    {
+      "id": "dungeon-淨念禪宗",
+      "name": "淨念禪宗",
+      "positioning": {
+        "type": "高等挑戰副本",
+        "stage": "1000萬經驗且參透生門死關",
+        "features": "難度較高，需特定前置條件"
+      },
+      "entry": {
+        "location": "長安",
+        "npc": "說書人",
+        "method": "解謎進入",
+        "needsItem": true,
+        "kickOutOnFailure": false
+      },
+      "recommendedStrength": {
+        "stage": "高手",
+        "config": "1000 萬戰鬥經驗"
+      },
+      "workflow": [
+        "無資料"
+      ],
+      "bosses": [
+        "無資料"
+      ],
+      "mechanics": [
+        "無資料"
+      ],
+      "loot": [
+        "無資料"
+      ],
+      "resetPolicy": "無資料",
+      "notes": ""
+    },
+    {
+      "id": "dungeon-慈航靜齋",
+      "name": "慈航靜齋",
+      "positioning": {
+        "type": "轉生挑戰副本",
+        "stage": "已轉生玩家",
+        "features": "可挑戰傳奇前輩"
+      },
+      "entry": {
+        "location": "長安",
+        "npc": "說書人",
+        "method": "解謎進入",
+        "needsItem": true,
+        "kickOutOnFailure": false
+      },
+      "recommendedStrength": {
+        "stage": "轉生",
+        "config": "無資料"
+      },
+      "workflow": [
+        "無資料"
+      ],
+      "bosses": [
+        "問天尼",
+        "天僧"
+      ],
+      "mechanics": [
+        "無資料"
+      ],
+      "loot": [
+        "天書（無極大成、真武秘典、天樞經卷等）"
+      ],
+      "resetPolicy": "無資料",
+      "notes": "挑戰成功可提昇屬性（臂力、悟性、根骨、身法）"
+    }
+  ]
+}

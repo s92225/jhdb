@@ -1,0 +1,848 @@
+[
+  {
+    "id": "quest-update-1-txt-欲參與者請先行前往-破碎虛空護衛者-處接取前置任務-1",
+    "name": "- 欲參與者請先行前往「破碎虛空護衛者」處接取前置任務。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 1.txt",
+    "rawExcerpt": "- 欲參與者請先行前往「破碎虛空護衛者」處接取前置任務。\n- 戰鬥經驗達一億一千二百五十萬，且正神／邪神值符合標準之玩家，可分別進入專屬挑戰區域。\n- 擊敗鎮守者們後獲得「九霄玄極塔」入場資格。\n*** 詳細爬塔規則與獎勵內容，將於後續公告逐一釋出，敬請期待！ ***"
+  },
+  {
+    "id": "quest-update-1-txt-值此非常之時-銀錢流轉當以家國為重-即日起-下列懸紅任務賞金皆調為貳兩黃金-望天-2",
+    "name": "值此非常之時，銀錢流轉當以家國為重。即日起，下列懸紅任務賞金皆調為貳兩黃金，望天",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 1.txt",
+    "rawExcerpt": "值此非常之時，銀錢流轉當以家國為重。即日起，下列懸紅任務賞金皆調為貳兩黃金，望天下俠士體諒。\n- 蒙古人\n- 蒙古萬夫長\n- 清理叛徒\n- 江湖仇殺"
+  },
+  {
+    "id": "quest-update-1-txt-1-為響應-門派獨家任務-現推出專屬限定防具-每件需消耗-300-點門派功勳-3",
+    "name": "1. 為響應「門派獨家任務」，現推出專屬限定防具，每件需消耗 300 點門派功勳",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 1.txt",
+    "rawExcerpt": "1. 為響應「門派獨家任務」，現推出專屬限定防具，每件需消耗 300 點門派功勳，請直接向 GM 申請領取。\n- 峨眉派\n頭：霜月寒星冠 (防御值: 80，抗內力值: 30)\n頸：玉魄鎮魂鏈 (防御值: 30，抗內力值: 50)\n- 丐幫\n頭：龍嘯破風巾 (防御值: 80，抗內力值: 30)\n頸：醉仙奪命鎖 (防御值: 30，抗內力值: 50)"
+  },
+  {
+    "id": "quest-update-2-txt-1-基於遊戲平衡性與可玩性之考量-以下任務及副本之獎勵內容將進行調整-1",
+    "name": "1. 「基於遊戲平衡性與可玩性之考量，以下任務及副本之獎勵內容將進行調整。」",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 2.txt",
+    "rawExcerpt": "1. 「基於遊戲平衡性與可玩性之考量，以下任務及副本之獎勵內容將進行調整。」\n- 切磋風波惡任務: 戰鬥經驗少於 1000 萬。\n- 蕭峰任務獎勵: 1000 潛能。\n- 慕容復任務獎勵: 1000 潛能。"
+  },
+  {
+    "id": "quest-update-2-txt-切磋風波惡任務-戰鬥經驗少於-1000-萬-2",
+    "name": "- 切磋風波惡任務: 戰鬥經驗少於 1000 萬。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 2.txt",
+    "rawExcerpt": "- 切磋風波惡任務: 戰鬥經驗少於 1000 萬。\n- 蕭峰任務獎勵: 1000 潛能。\n- 慕容復任務獎勵: 1000 潛能。"
+  },
+  {
+    "id": "quest-update-2-txt-蕭峰任務獎勵-1000-潛能-3",
+    "name": "- 蕭峰任務獎勵: 1000 潛能。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 2.txt",
+    "rawExcerpt": "- 蕭峰任務獎勵: 1000 潛能。\n- 慕容復任務獎勵: 1000 潛能。"
+  },
+  {
+    "id": "quest-update-2-txt-慕容復任務獎勵-1000-潛能-4",
+    "name": "- 慕容復任務獎勵: 1000 潛能。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 2.txt",
+    "rawExcerpt": "- 慕容復任務獎勵: 1000 潛能。"
+  },
+  {
+    "id": "quest-update-2-txt-1-為鼓勵諸位俠士參與其他任務或活動-即日起調整下列任務及活動之酬金數額-特-5",
+    "name": "1. 「為鼓勵諸位俠士參與其他任務或活動，即日起調整下列任務及活動之酬金數額，特",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 2.txt",
+    "rawExcerpt": "1. 「為鼓勵諸位俠士參與其他任務或活動，即日起調整下列任務及活動之酬金數額，特此公告。」\n- 50白銀 (擊斃: 寶象 / 善勇 / 勝諦)\n- 1黃金 (切磋風波惡任務)\n- 1黃金 (擊斃: 金山找)\n- 2黃金 (擊斃: 葉問 / 長尾妖狐)\n- 5黃金 (擊斃: 血刀老祖)"
+  },
+  {
+    "id": "quest-update-2-txt-1黃金-切磋風波惡任務-6",
+    "name": "- 1黃金 (切磋風波惡任務)",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 2.txt",
+    "rawExcerpt": "- 1黃金 (切磋風波惡任務)\n- 1黃金 (擊斃: 金山找)\n- 2黃金 (擊斃: 葉問 / 長尾妖狐)\n- 5黃金 (擊斃: 血刀老祖)"
+  },
+  {
+    "id": "quest-update-2-txt-2-任務獎勵及內容調整如下-7",
+    "name": "2. 任務獎勵及內容調整如下：",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 2.txt",
+    "rawExcerpt": "2. 任務獎勵及內容調整如下：\n- 門派中階任務的獎勵: 1500 經驗 + 1500 潛能 + 500 白銀 + 3枚門派功勳 (難度及流程不變)"
+  },
+  {
+    "id": "quest-update-2-txt-門派中階任務的獎勵-1500-經驗-1500-潛能-500-白銀-8",
+    "name": "- 門派中階任務的獎勵: 1500 經驗 + 1500 潛能 + 500 白銀 ",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 2.txt",
+    "rawExcerpt": "- 門派中階任務的獎勵: 1500 經驗 + 1500 潛能 + 500 白銀 + 3枚門派功勳 (難度及流程不變)"
+  },
+  {
+    "id": "quest-update-2-txt-1-現在起-各門各派均引進-門派獨家任務-無經驗門檻-完成後可得經驗-潛-9",
+    "name": "1. 現在起，各門各派均引進「門派獨家任務」，無經驗門檻，完成後可得經驗 + 潛",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 2.txt",
+    "rawExcerpt": "1. 現在起，各門各派均引進「門派獨家任務」，無經驗門檻，完成後可得經驗 + 潛能 + 金錢 + 門派功勳。詳情如下：\n- 少林派 (尋找 慧明禪師 領取任務)\n- 武當派 (尋找 俞岱岩 領取任務)\n- 峨眉派 (尋找 尼姑 領取任務)\n- 丐幫 (尋找 梁長老 領取任務)\n- 華山派 (尋找 令狐沖 領取任務)\n- 明教 (尋找 旗將使徒 領取任務)"
+  },
+  {
+    "id": "quest-update-2-txt-少林派-尋找-慧明禪師-領取任務-10",
+    "name": "- 少林派 (尋找 慧明禪師 領取任務)",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 2.txt",
+    "rawExcerpt": "- 少林派 (尋找 慧明禪師 領取任務)\n- 武當派 (尋找 俞岱岩 領取任務)\n- 峨眉派 (尋找 尼姑 領取任務)\n- 丐幫 (尋找 梁長老 領取任務)\n- 華山派 (尋找 令狐沖 領取任務)\n- 明教 (尋找 旗將使徒 領取任務)\n- 星宿派 (尋找 摘星子 領取任務)"
+  },
+  {
+    "id": "quest-update-2-txt-武當派-尋找-俞岱岩-領取任務-11",
+    "name": "- 武當派 (尋找 俞岱岩 領取任務)",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 2.txt",
+    "rawExcerpt": "- 武當派 (尋找 俞岱岩 領取任務)\n- 峨眉派 (尋找 尼姑 領取任務)\n- 丐幫 (尋找 梁長老 領取任務)\n- 華山派 (尋找 令狐沖 領取任務)\n- 明教 (尋找 旗將使徒 領取任務)\n- 星宿派 (尋找 摘星子 領取任務)\n- 嵩山派 (尋找 樂厚 領取任務)"
+  },
+  {
+    "id": "quest-update-2-txt-峨眉派-尋找-尼姑-領取任務-12",
+    "name": "- 峨眉派 (尋找 尼姑 領取任務)",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 2.txt",
+    "rawExcerpt": "- 峨眉派 (尋找 尼姑 領取任務)\n- 丐幫 (尋找 梁長老 領取任務)\n- 華山派 (尋找 令狐沖 領取任務)\n- 明教 (尋找 旗將使徒 領取任務)\n- 星宿派 (尋找 摘星子 領取任務)\n- 嵩山派 (尋找 樂厚 領取任務)\n- 逍遙派 (尋找 蘇星河 領取任務)"
+  },
+  {
+    "id": "quest-update-2-txt-丐幫-尋找-梁長老-領取任務-13",
+    "name": "- 丐幫 (尋找 梁長老 領取任務)",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 2.txt",
+    "rawExcerpt": "- 丐幫 (尋找 梁長老 領取任務)\n- 華山派 (尋找 令狐沖 領取任務)\n- 明教 (尋找 旗將使徒 領取任務)\n- 星宿派 (尋找 摘星子 領取任務)\n- 嵩山派 (尋找 樂厚 領取任務)\n- 逍遙派 (尋找 蘇星河 領取任務)\n- 中階任務的獎勵均為: 1000 經驗 + 1000 潛能 + 500 白銀 + 2枚門派功勳"
+  },
+  {
+    "id": "quest-update-2-txt-華山派-尋找-令狐沖-領取任務-14",
+    "name": "- 華山派 (尋找 令狐沖 領取任務)",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 2.txt",
+    "rawExcerpt": "- 華山派 (尋找 令狐沖 領取任務)\n- 明教 (尋找 旗將使徒 領取任務)\n- 星宿派 (尋找 摘星子 領取任務)\n- 嵩山派 (尋找 樂厚 領取任務)\n- 逍遙派 (尋找 蘇星河 領取任務)\n- 中階任務的獎勵均為: 1000 經驗 + 1000 潛能 + 500 白銀 + 2枚門派功勳\n- 100 門派功勳可找 GM 換取 200 黃金"
+  },
+  {
+    "id": "quest-update-2-txt-明教-尋找-旗將使徒-領取任務-15",
+    "name": "- 明教 (尋找 旗將使徒 領取任務)",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 2.txt",
+    "rawExcerpt": "- 明教 (尋找 旗將使徒 領取任務)\n- 星宿派 (尋找 摘星子 領取任務)\n- 嵩山派 (尋找 樂厚 領取任務)\n- 逍遙派 (尋找 蘇星河 領取任務)\n- 中階任務的獎勵均為: 1000 經驗 + 1000 潛能 + 500 白銀 + 2枚門派功勳\n- 100 門派功勳可找 GM 換取 200 黃金\n- 1000 門派功勳可找 GM 換取 10000 潛能"
+  },
+  {
+    "id": "quest-update-2-txt-星宿派-尋找-摘星子-領取任務-16",
+    "name": "- 星宿派 (尋找 摘星子 領取任務)",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 2.txt",
+    "rawExcerpt": "- 星宿派 (尋找 摘星子 領取任務)\n- 嵩山派 (尋找 樂厚 領取任務)\n- 逍遙派 (尋找 蘇星河 領取任務)\n- 中階任務的獎勵均為: 1000 經驗 + 1000 潛能 + 500 白銀 + 2枚門派功勳\n- 100 門派功勳可找 GM 換取 200 黃金\n- 1000 門派功勳可找 GM 換取 10000 潛能\n- 3000 門派功勳可找 GM 換取 500000 經驗"
+  },
+  {
+    "id": "quest-update-2-txt-嵩山派-尋找-樂厚-領取任務-17",
+    "name": "- 嵩山派 (尋找 樂厚 領取任務)",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 2.txt",
+    "rawExcerpt": "- 嵩山派 (尋找 樂厚 領取任務)\n- 逍遙派 (尋找 蘇星河 領取任務)\n- 中階任務的獎勵均為: 1000 經驗 + 1000 潛能 + 500 白銀 + 2枚門派功勳\n- 100 門派功勳可找 GM 換取 200 黃金\n- 1000 門派功勳可找 GM 換取 10000 潛能\n- 3000 門派功勳可找 GM 換取 500000 經驗"
+  },
+  {
+    "id": "quest-update-2-txt-逍遙派-尋找-蘇星河-領取任務-18",
+    "name": "- 逍遙派 (尋找 蘇星河 領取任務)",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 2.txt",
+    "rawExcerpt": "- 逍遙派 (尋找 蘇星河 領取任務)\n- 中階任務的獎勵均為: 1000 經驗 + 1000 潛能 + 500 白銀 + 2枚門派功勳\n- 100 門派功勳可找 GM 換取 200 黃金\n- 1000 門派功勳可找 GM 換取 10000 潛能\n- 3000 門派功勳可找 GM 換取 500000 經驗"
+  },
+  {
+    "id": "quest-update-2-txt-中階任務的獎勵均為-1000-經驗-1000-潛能-500-白銀-19",
+    "name": "- 中階任務的獎勵均為: 1000 經驗 + 1000 潛能 + 500 白銀 ",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 2.txt",
+    "rawExcerpt": "- 中階任務的獎勵均為: 1000 經驗 + 1000 潛能 + 500 白銀 + 2枚門派功勳\n- 100 門派功勳可找 GM 換取 200 黃金\n- 1000 門派功勳可找 GM 換取 10000 潛能\n- 3000 門派功勳可找 GM 換取 500000 經驗"
+  },
+  {
+    "id": "quest-update-3-txt-1-一品堂任務-任務-npc-死鬥回合將大幅度調高且會保護地圖-1",
+    "name": "1. 一品堂任務: 任務 NPC 死鬥回合將大幅度調高且會保護地圖。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 3.txt",
+    "rawExcerpt": "1. 一品堂任務: 任務 NPC 死鬥回合將大幅度調高且會保護地圖。"
+  },
+  {
+    "id": "quest-update-3-txt-1-修正了任務-力戰六大派高手-完成-6-次任務而無法前往明教述職的-臭蟲-2",
+    "name": "1. 修正了任務[力戰六大派高手]完成 6 次任務而無法前往明教述職的「臭蟲」。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 3.txt",
+    "rawExcerpt": "1. 修正了任務[力戰六大派高手]完成 6 次任務而無法前往明教述職的「臭蟲」。"
+  },
+  {
+    "id": "quest-update-3-txt-1-任務獎勵及內容調整如下-3",
+    "name": "1. 任務獎勵及內容調整如下：",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 3.txt",
+    "rawExcerpt": "1. 任務獎勵及內容調整如下：\n- 蒙古萬夫長: 5 黃金, 3000 潛能 (難度及流程不變)\n- 力戰六大派高手: 任務 NPC 攻擊，防禦，血量均有提昇"
+  },
+  {
+    "id": "quest-update-3-txt-力戰六大派高手-任務-npc-攻擊-防禦-血量均有提昇-4",
+    "name": "- 力戰六大派高手: 任務 NPC 攻擊，防禦，血量均有提昇",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 3.txt",
+    "rawExcerpt": "- 力戰六大派高手: 任務 NPC 攻擊，防禦，血量均有提昇"
+  },
+  {
+    "id": "quest-update-3-txt-1-任務獎勵及內容調整如下-5",
+    "name": "1. 任務獎勵及內容調整如下：",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 3.txt",
+    "rawExcerpt": "1. 任務獎勵及內容調整如下：\n- 蒙古萬夫長: 5 黃金, 1500 潛能\n- 力戰六大派高手: 每完成 6 次任務均須前往明教述職 (江湖百曉生會告知詳情，述職能獲得 1 黃金)\n- 力戰六大派高手: 進入門檻提高至經驗 100 萬\n- 新增 NPC 金毛獅王謝遜，附設為明教述職主要人物\n- 一品堂任務: 相對應的 4 個層次任務經驗門檻增加一倍如下：\n一) 一品堂任務[100萬]"
+  },
+  {
+    "id": "quest-update-3-txt-力戰六大派高手-每完成-6-次任務均須前往明教述職-江湖百曉生會告知詳情-6",
+    "name": "- 力戰六大派高手: 每完成 6 次任務均須前往明教述職 (江湖百曉生會告知詳情",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 3.txt",
+    "rawExcerpt": "- 力戰六大派高手: 每完成 6 次任務均須前往明教述職 (江湖百曉生會告知詳情，述職能獲得 1 黃金)\n- 力戰六大派高手: 進入門檻提高至經驗 100 萬\n- 新增 NPC 金毛獅王謝遜，附設為明教述職主要人物\n- 一品堂任務: 相對應的 4 個層次任務經驗門檻增加一倍如下：\n一) 一品堂任務[100萬]\n二) 一品堂任務[400萬]\n三) 一品堂任務[1000萬]"
+  },
+  {
+    "id": "quest-update-3-txt-一品堂任務-相對應的-4-個層次任務經驗門檻增加一倍如下-7",
+    "name": "- 一品堂任務: 相對應的 4 個層次任務經驗門檻增加一倍如下：",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 3.txt",
+    "rawExcerpt": "- 一品堂任務: 相對應的 4 個層次任務經驗門檻增加一倍如下：\n一) 一品堂任務[100萬]\n二) 一品堂任務[400萬]\n三) 一品堂任務[1000萬]\n四) 一品堂任務[殿堂] *須要達到 1000 萬經驗才能接受任務*"
+  },
+  {
+    "id": "quest-update-3-txt-一-一品堂任務-100萬-8",
+    "name": "一) 一品堂任務[100萬]",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 3.txt",
+    "rawExcerpt": "一) 一品堂任務[100萬]\n二) 一品堂任務[400萬]\n三) 一品堂任務[1000萬]\n四) 一品堂任務[殿堂] *須要達到 1000 萬經驗才能接受任務*"
+  },
+  {
+    "id": "quest-update-3-txt-二-一品堂任務-400萬-9",
+    "name": "二) 一品堂任務[400萬]",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 3.txt",
+    "rawExcerpt": "二) 一品堂任務[400萬]\n三) 一品堂任務[1000萬]\n四) 一品堂任務[殿堂] *須要達到 1000 萬經驗才能接受任務*"
+  },
+  {
+    "id": "quest-update-3-txt-三-一品堂任務-1000萬-10",
+    "name": "三) 一品堂任務[1000萬]",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 3.txt",
+    "rawExcerpt": "三) 一品堂任務[1000萬]\n四) 一品堂任務[殿堂] *須要達到 1000 萬經驗才能接受任務*"
+  },
+  {
+    "id": "quest-update-3-txt-四-一品堂任務-殿堂-須要達到-1000-萬經驗才能接受任務-11",
+    "name": "四) 一品堂任務[殿堂] *須要達到 1000 萬經驗才能接受任務*",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 3.txt",
+    "rawExcerpt": "四) 一品堂任務[殿堂] *須要達到 1000 萬經驗才能接受任務*"
+  },
+  {
+    "id": "quest-update-4-txt-2-調整部份任務的獎勵及門檻-詳情請參考官網資料-1",
+    "name": "2. 調整部份任務的獎勵及門檻，詳情請參考官網資料。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 4.txt",
+    "rawExcerpt": "2. 調整部份任務的獎勵及門檻，詳情請參考官網資料。\n3. 馮員外將進駐祁連山脈，殺之能獲取 1 金。"
+  },
+  {
+    "id": "quest-update-4-txt-3-葉問與金山找的任務修改為擊斃跌落黃金-獎勵不變-2",
+    "name": "3. 葉問與金山找的任務修改為擊斃跌落黃金，獎勵不變。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 4.txt",
+    "rawExcerpt": "3. 葉問與金山找的任務修改為擊斃跌落黃金，獎勵不變。\n4. 新增 NPC 風波惡，江湖傳聞他最近常出沒於 [蘭州城]、[玉門鎮]、[荊州城]，切磋勝利將獲得 2 黃金。"
+  },
+  {
+    "id": "quest-update-4-txt-9-逍遙派新增-門派獨家任務-3",
+    "name": "9. 逍遙派新增「門派獨家任務」。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 4.txt",
+    "rawExcerpt": "9. 逍遙派新增「門派獨家任務」。\n- 逍遙派 (尋找 蘇星河 領取任務)\n- 初階任務的獎勵均為: 3 黃金, 300 經驗, 300 潛能, 1 枚門派功勳\n10. 逍遙派新增 NPC 如下:\n一、逍遙派第一代掌門 無崖子\n二、逍遙派第二代大弟子「聰辯老人」蘇星河\n三、逍遙派“函谷八友”："
+  },
+  {
+    "id": "quest-update-4-txt-逍遙派-尋找-蘇星河-領取任務-4",
+    "name": "- 逍遙派 (尋找 蘇星河 領取任務)",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 4.txt",
+    "rawExcerpt": "- 逍遙派 (尋找 蘇星河 領取任務)\n- 初階任務的獎勵均為: 3 黃金, 300 經驗, 300 潛能, 1 枚門派功勳\n10. 逍遙派新增 NPC 如下:\n一、逍遙派第一代掌門 無崖子\n二、逍遙派第二代大弟子「聰辯老人」蘇星河\n三、逍遙派“函谷八友”：\n「琴顛」康廣陵"
+  },
+  {
+    "id": "quest-update-4-txt-初階任務的獎勵均為-3-黃金-300-經驗-300-潛能-1-枚門派-5",
+    "name": "- 初階任務的獎勵均為: 3 黃金, 300 經驗, 300 潛能, 1 枚門派",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 4.txt",
+    "rawExcerpt": "- 初階任務的獎勵均為: 3 黃金, 300 經驗, 300 潛能, 1 枚門派功勳\n10. 逍遙派新增 NPC 如下:\n一、逍遙派第一代掌門 無崖子\n二、逍遙派第二代大弟子「聰辯老人」蘇星河\n三、逍遙派“函谷八友”：\n「琴顛」康廣陵\n「棋魔」范百齡"
+  },
+  {
+    "id": "quest-update-4-txt-1-任務獎勵調整如下-6",
+    "name": "1. 任務獎勵調整如下：",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 4.txt",
+    "rawExcerpt": "1. 任務獎勵調整如下：\n- 蒙古萬夫長: 5 黃金, 1300 潛能 - (無門檻限制)\n2. 修復了所有副本武器及裝備碎片跌落的臭蟲。\n3. 調整擊斃[長尾妖狐]所能獲得的黃金數量為 5。\n4. 一品堂任務的獎勵大幅度提昇如下：\n- 九天靈芝 (10000經驗值)\n- 寒霜淨心丹 (50000經驗值)"
+  },
+  {
+    "id": "quest-update-4-txt-4-一品堂任務的獎勵大幅度提昇如下-7",
+    "name": "4. 一品堂任務的獎勵大幅度提昇如下：",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 4.txt",
+    "rawExcerpt": "4. 一品堂任務的獎勵大幅度提昇如下：\n- 九天靈芝 (10000經驗值)\n- 寒霜淨心丹 (50000經驗值)\n- 天雷震霆散 (100000經驗值)\n- 天璇星辰丹 (200000經驗值)"
+  },
+  {
+    "id": "quest-update-4-txt-1-新增一品堂任務-請玩家們前往蘭州城覓-赫連鐵樹-領取任務事宜-8",
+    "name": "1. 新增一品堂任務，請玩家們前往蘭州城覓 (赫連鐵樹) 領取任務事宜。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 4.txt",
+    "rawExcerpt": "1. 新增一品堂任務，請玩家們前往蘭州城覓 (赫連鐵樹) 領取任務事宜。\n2. 蘭州城裡頭新增了一些相關一品堂任務的 NPC。\n3. 荊州城裡頭新增了一些相關一品堂任務的 NPC。\n4. 玉門鎮裡頭新增了一些相關一品堂任務的 NPC。\n5. 洛陽城裡頭新增了一些相關一品堂任務的 NPC。\n6. 蘭州城裡頭新增努兒海，專職負責任務的後勤工作。\n7. 修復了 NPC 因內力反震而死亡的臭蟲，這導致他們不會掉落物品、金錢或計算任務。"
+  },
+  {
+    "id": "quest-update-4-txt-2-蘭州城裡頭新增了一些相關一品堂任務的-npc-9",
+    "name": "2. 蘭州城裡頭新增了一些相關一品堂任務的 NPC。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 4.txt",
+    "rawExcerpt": "2. 蘭州城裡頭新增了一些相關一品堂任務的 NPC。\n3. 荊州城裡頭新增了一些相關一品堂任務的 NPC。\n4. 玉門鎮裡頭新增了一些相關一品堂任務的 NPC。\n5. 洛陽城裡頭新增了一些相關一品堂任務的 NPC。\n6. 蘭州城裡頭新增努兒海，專職負責任務的後勤工作。\n7. 修復了 NPC 因內力反震而死亡的臭蟲，這導致他們不會掉落物品、金錢或計算任務。"
+  },
+  {
+    "id": "quest-update-4-txt-3-荊州城裡頭新增了一些相關一品堂任務的-npc-10",
+    "name": "3. 荊州城裡頭新增了一些相關一品堂任務的 NPC。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 4.txt",
+    "rawExcerpt": "3. 荊州城裡頭新增了一些相關一品堂任務的 NPC。\n4. 玉門鎮裡頭新增了一些相關一品堂任務的 NPC。\n5. 洛陽城裡頭新增了一些相關一品堂任務的 NPC。\n6. 蘭州城裡頭新增努兒海，專職負責任務的後勤工作。\n7. 修復了 NPC 因內力反震而死亡的臭蟲，這導致他們不會掉落物品、金錢或計算任務。"
+  },
+  {
+    "id": "quest-update-4-txt-4-玉門鎮裡頭新增了一些相關一品堂任務的-npc-11",
+    "name": "4. 玉門鎮裡頭新增了一些相關一品堂任務的 NPC。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 4.txt",
+    "rawExcerpt": "4. 玉門鎮裡頭新增了一些相關一品堂任務的 NPC。\n5. 洛陽城裡頭新增了一些相關一品堂任務的 NPC。\n6. 蘭州城裡頭新增努兒海，專職負責任務的後勤工作。\n7. 修復了 NPC 因內力反震而死亡的臭蟲，這導致他們不會掉落物品、金錢或計算任務。"
+  },
+  {
+    "id": "quest-update-4-txt-5-洛陽城裡頭新增了一些相關一品堂任務的-npc-12",
+    "name": "5. 洛陽城裡頭新增了一些相關一品堂任務的 NPC。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 4.txt",
+    "rawExcerpt": "5. 洛陽城裡頭新增了一些相關一品堂任務的 NPC。\n6. 蘭州城裡頭新增努兒海，專職負責任務的後勤工作。\n7. 修復了 NPC 因內力反震而死亡的臭蟲，這導致他們不會掉落物品、金錢或計算任務。"
+  },
+  {
+    "id": "quest-update-4-txt-6-蘭州城裡頭新增努兒海-專職負責任務的後勤工作-13",
+    "name": "6. 蘭州城裡頭新增努兒海，專職負責任務的後勤工作。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 4.txt",
+    "rawExcerpt": "6. 蘭州城裡頭新增努兒海，專職負責任務的後勤工作。\n7. 修復了 NPC 因內力反震而死亡的臭蟲，這導致他們不會掉落物品、金錢或計算任務。"
+  },
+  {
+    "id": "quest-update-4-txt-7-修復了-npc-因內力反震而死亡的臭蟲-這導致他們不會掉落物品-金錢或計算-14",
+    "name": "7. 修復了 NPC 因內力反震而死亡的臭蟲，這導致他們不會掉落物品、金錢或計算",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 4.txt",
+    "rawExcerpt": "7. 修復了 NPC 因內力反震而死亡的臭蟲，這導致他們不會掉落物品、金錢或計算任務。"
+  },
+  {
+    "id": "quest-update-5-txt-11-嵩山派新增-門派獨家任務-1",
+    "name": "11. 嵩山派新增「門派獨家任務」。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 5.txt",
+    "rawExcerpt": "11. 嵩山派新增「門派獨家任務」。\n- 嵩山派 (尋找 樂厚 領取任務)\n- 初階任務的獎勵均為: 3 黃金, 300 經驗, 300 潛能, 1 枚門派功勳\n12. 嵩山派新增 NPC 如下:\n- 左冷禪 (可拜師) -> 大師傅\n- 鍾鎮 (可拜師) -> 二階師傅\n- 費彬 (可拜師) -> 二階師傅"
+  },
+  {
+    "id": "quest-update-5-txt-嵩山派-尋找-樂厚-領取任務-2",
+    "name": "- 嵩山派 (尋找 樂厚 領取任務)",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 5.txt",
+    "rawExcerpt": "- 嵩山派 (尋找 樂厚 領取任務)\n- 初階任務的獎勵均為: 3 黃金, 300 經驗, 300 潛能, 1 枚門派功勳\n12. 嵩山派新增 NPC 如下:\n- 左冷禪 (可拜師) -> 大師傅\n- 鍾鎮 (可拜師) -> 二階師傅\n- 費彬 (可拜師) -> 二階師傅\n- 狄修 (可拜師) -> 入門師傅"
+  },
+  {
+    "id": "quest-update-5-txt-初階任務的獎勵均為-3-黃金-300-經驗-300-潛能-1-枚門派-3",
+    "name": "- 初階任務的獎勵均為: 3 黃金, 300 經驗, 300 潛能, 1 枚門派",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 5.txt",
+    "rawExcerpt": "- 初階任務的獎勵均為: 3 黃金, 300 經驗, 300 潛能, 1 枚門派功勳\n12. 嵩山派新增 NPC 如下:\n- 左冷禪 (可拜師) -> 大師傅\n- 鍾鎮 (可拜師) -> 二階師傅\n- 費彬 (可拜師) -> 二階師傅\n- 狄修 (可拜師) -> 入門師傅\n- 趙嶧、張棣燁、樂厚、萬大平、湯英鵠、司馬埕、史登達、沙天江、陸柏、高克新、丁勉、鄧八年、卜沉"
+  },
+  {
+    "id": "quest-update-5-txt-1-任務獎勵調整如下-4",
+    "name": "1. 任務獎勵調整如下：",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 5.txt",
+    "rawExcerpt": "1. 任務獎勵調整如下：\n- 蒙古人: 2 黃金, 100 經驗, 50 潛能 - (門檻: 經驗 20 萬內)\n- 蒙古高手: 600 潛能 - (門檻: 經驗 50 萬內)\n- 門派初階任務: 3 黃金, 300 經驗, 300 潛能, 1 枚門派功勳 - (無門檻限制)\n- 無量山劍湖宮: 600 經驗, 600 潛能 - (門檻: 經驗 100 萬內)\n- 追擊明教五行旗旗主: 1000 經驗, 1000 潛能 - (門檻: 經驗 150 萬內)\n- 蒙古萬夫長: 1300 潛能 - (無門檻限制)"
+  },
+  {
+    "id": "quest-update-5-txt-門派初階任務-3-黃金-300-經驗-300-潛能-1-枚門派功勳-5",
+    "name": "- 門派初階任務: 3 黃金, 300 經驗, 300 潛能, 1 枚門派功勳 ",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 5.txt",
+    "rawExcerpt": "- 門派初階任務: 3 黃金, 300 經驗, 300 潛能, 1 枚門派功勳 - (無門檻限制)\n- 無量山劍湖宮: 600 經驗, 600 潛能 - (門檻: 經驗 100 萬內)\n- 追擊明教五行旗旗主: 1000 經驗, 1000 潛能 - (門檻: 經驗 150 萬內)\n- 蒙古萬夫長: 1300 潛能 - (無門檻限制)\n- 力戰六大派高手: 1500 潛能, 1500 經驗 - (無門檻限制)\n2. 揚州將軍府新增驛馬官，收費 5 黃金可傳送至各門派大師傅處 (明教只到小昭地圖)。"
+  },
+  {
+    "id": "quest-update-5-txt-3-荊州城清風寨山賊任務的山賊數量大增-6",
+    "name": "3. 荊州城清風寨山賊任務的山賊數量大增。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 5.txt",
+    "rawExcerpt": "3. 荊州城清風寨山賊任務的山賊數量大增。"
+  },
+  {
+    "id": "quest-update-5-txt-5-長安-送家書-任務的獎勵調整至-10-白銀及-200-經驗-7",
+    "name": "5. 長安「送家書」任務的獎勵調整至 10 白銀及 200 經驗。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 5.txt",
+    "rawExcerpt": "5. 長安「送家書」任務的獎勵調整至 10 白銀及 200 經驗。"
+  },
+  {
+    "id": "quest-update-6-txt-1-增添任務-追擊明教五行旗旗主-門檻-經驗-150-萬內-詳情請前-1",
+    "name": "1. 增添任務 - 追擊明教五行旗旗主 (門檻: 經驗 150 萬內)，詳情請前",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "1. 增添任務 - 追擊明教五行旗旗主 (門檻: 經驗 150 萬內)，詳情請前往華山尋找「江湖百曉生」解謎進入。\n2. 增添任務 - 力戰六大派高手，詳情請前往華山尋找「江湖百曉生」解謎進入。\n3. 任務獎勵調整如下：\n- 蒙古人: 2 黃金, 100 經驗, 30 潛能 - (門檻: 經驗 20 萬內)\n- 蒙古高手: 500 潛能 - (門檻: 經驗 50 萬內)\n- 門派初階任務: 3 黃金, 300 經驗, 300 潛能, 1 枚門派功勳 - (無門檻限制)\n- 無量山劍湖宮: 500 經驗, 500 潛能 - (門檻: 經驗 100 萬內)"
+  },
+  {
+    "id": "quest-update-6-txt-2-增添任務-力戰六大派高手-詳情請前往華山尋找-江湖百曉生-解謎進入-2",
+    "name": "2. 增添任務 - 力戰六大派高手，詳情請前往華山尋找「江湖百曉生」解謎進入。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "2. 增添任務 - 力戰六大派高手，詳情請前往華山尋找「江湖百曉生」解謎進入。\n3. 任務獎勵調整如下：\n- 蒙古人: 2 黃金, 100 經驗, 30 潛能 - (門檻: 經驗 20 萬內)\n- 蒙古高手: 500 潛能 - (門檻: 經驗 50 萬內)\n- 門派初階任務: 3 黃金, 300 經驗, 300 潛能, 1 枚門派功勳 - (無門檻限制)\n- 無量山劍湖宮: 500 經驗, 500 潛能 - (門檻: 經驗 100 萬內)\n- 追擊明教五行旗旗主: 800 經驗, 800 潛能 - (門檻: 經驗 150 萬內)"
+  },
+  {
+    "id": "quest-update-6-txt-3-任務獎勵調整如下-3",
+    "name": "3. 任務獎勵調整如下：",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "3. 任務獎勵調整如下：\n- 蒙古人: 2 黃金, 100 經驗, 30 潛能 - (門檻: 經驗 20 萬內)\n- 蒙古高手: 500 潛能 - (門檻: 經驗 50 萬內)\n- 門派初階任務: 3 黃金, 300 經驗, 300 潛能, 1 枚門派功勳 - (無門檻限制)\n- 無量山劍湖宮: 500 經驗, 500 潛能 - (門檻: 經驗 100 萬內)\n- 追擊明教五行旗旗主: 800 經驗, 800 潛能 - (門檻: 經驗 150 萬內)\n- 蒙古萬夫長: 1000 潛能 - (無門檻限制)"
+  },
+  {
+    "id": "quest-update-6-txt-門派初階任務-3-黃金-300-經驗-300-潛能-1-枚門派功勳-4",
+    "name": "- 門派初階任務: 3 黃金, 300 經驗, 300 潛能, 1 枚門派功勳 ",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "- 門派初階任務: 3 黃金, 300 經驗, 300 潛能, 1 枚門派功勳 - (無門檻限制)\n- 無量山劍湖宮: 500 經驗, 500 潛能 - (門檻: 經驗 100 萬內)\n- 追擊明教五行旗旗主: 800 經驗, 800 潛能 - (門檻: 經驗 150 萬內)\n- 蒙古萬夫長: 1000 潛能 - (無門檻限制)\n- 力戰六大派高手: 1500 潛能 - (無門檻限制)\n4. 馬車夫及老藥農的戰力大幅度提昇。"
+  },
+  {
+    "id": "quest-update-6-txt-1-任務門檻調整如下-5",
+    "name": "1. 任務門檻調整如下：",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "1. 任務門檻調整如下：\n- 「蒙古人」 - 經驗 20 萬之內\n- 「蒙古高手」 - 經驗 50 萬之內\n- 「無量山劍湖宮」 - 經驗 100 萬之內\n2. 現在起，「門派獨家任務」，完成後可得金錢由原來的 150 白銀提昇至 300 白銀。"
+  },
+  {
+    "id": "quest-update-6-txt-2-現在起-門派獨家任務-完成後可得金錢由原來的-150-白銀提昇至-30-6",
+    "name": "2. 現在起，「門派獨家任務」，完成後可得金錢由原來的 150 白銀提昇至 30",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "2. 現在起，「門派獨家任務」，完成後可得金錢由原來的 150 白銀提昇至 300 白銀。"
+  },
+  {
+    "id": "quest-update-6-txt-7-調整-門派獨家任務-完成後可得金錢由原來的-50-白銀提昇至-150-白-7",
+    "name": "7. 調整「門派獨家任務」，完成後可得金錢由原來的 50 白銀提昇至 150 白",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "7. 調整「門派獨家任務」，完成後可得金錢由原來的 50 白銀提昇至 150 白銀。"
+  },
+  {
+    "id": "quest-update-6-txt-3-以下任務將降低獎勵-調高強度及訂立門檻-蒙古人-蒙古高手-無量山-8",
+    "name": "3. 以下任務將降低獎勵、調高強度及訂立門檻，「蒙古人」、「蒙古高手」、「無量山",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "3. 以下任務將降低獎勵、調高強度及訂立門檻，「蒙古人」、「蒙古高手」、「無量山劍湖宮」、「蒙古萬夫長」，詳情如下：\n- 蒙古人: 2 黃金 + 100 經驗 + 30 潛能\n(門檻: 經驗 10 萬內)\n- 蒙古高手: 500 潛能\n(門檻: 經驗 30 萬內)\n- 無量山劍湖宮: 800 經驗，800 潛能\n(門檻: 經驗 50 萬內)"
+  },
+  {
+    "id": "quest-update-6-txt-6-現在起-各門各派均引進-門派獨家任務-無經驗門檻-完成後可得經驗-潛-9",
+    "name": "6. 現在起，各門各派均引進「門派獨家任務」，無經驗門檻，完成後可得經驗 + 潛",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "6. 現在起，各門各派均引進「門派獨家任務」，無經驗門檻，完成後可得經驗 + 潛能 + 金錢 + 門派功勳。詳情如下：\n- 少林派 (尋找 慧明禪師 領取任務)\n- 武當派 (尋找 俞岱岩 領取任務)\n- 峨眉派 (尋找 尼姑 領取任務)\n- 丐幫 (尋找 梁長老 領取任務)\n- 華山派 (尋找 令狐沖 領取任務)\n- 明教 (尋找 旗將使徒 領取任務)"
+  },
+  {
+    "id": "quest-update-6-txt-少林派-尋找-慧明禪師-領取任務-10",
+    "name": "- 少林派 (尋找 慧明禪師 領取任務)",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "- 少林派 (尋找 慧明禪師 領取任務)\n- 武當派 (尋找 俞岱岩 領取任務)\n- 峨眉派 (尋找 尼姑 領取任務)\n- 丐幫 (尋找 梁長老 領取任務)\n- 華山派 (尋找 令狐沖 領取任務)\n- 明教 (尋找 旗將使徒 領取任務)\n- 星宿派 (尋找 摘星子 領取任務)"
+  },
+  {
+    "id": "quest-update-6-txt-武當派-尋找-俞岱岩-領取任務-11",
+    "name": "- 武當派 (尋找 俞岱岩 領取任務)",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "- 武當派 (尋找 俞岱岩 領取任務)\n- 峨眉派 (尋找 尼姑 領取任務)\n- 丐幫 (尋找 梁長老 領取任務)\n- 華山派 (尋找 令狐沖 領取任務)\n- 明教 (尋找 旗將使徒 領取任務)\n- 星宿派 (尋找 摘星子 領取任務)\n- 初階任務的獎勵均為: 100 經驗 + 100 潛能 + 50 白銀 + 1枚門派功勳"
+  },
+  {
+    "id": "quest-update-6-txt-峨眉派-尋找-尼姑-領取任務-12",
+    "name": "- 峨眉派 (尋找 尼姑 領取任務)",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "- 峨眉派 (尋找 尼姑 領取任務)\n- 丐幫 (尋找 梁長老 領取任務)\n- 華山派 (尋找 令狐沖 領取任務)\n- 明教 (尋找 旗將使徒 領取任務)\n- 星宿派 (尋找 摘星子 領取任務)\n- 初階任務的獎勵均為: 100 經驗 + 100 潛能 + 50 白銀 + 1枚門派功勳\n- 100 門派功勳可找 GM 換取 200 黃金"
+  },
+  {
+    "id": "quest-update-6-txt-丐幫-尋找-梁長老-領取任務-13",
+    "name": "- 丐幫 (尋找 梁長老 領取任務)",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "- 丐幫 (尋找 梁長老 領取任務)\n- 華山派 (尋找 令狐沖 領取任務)\n- 明教 (尋找 旗將使徒 領取任務)\n- 星宿派 (尋找 摘星子 領取任務)\n- 初階任務的獎勵均為: 100 經驗 + 100 潛能 + 50 白銀 + 1枚門派功勳\n- 100 門派功勳可找 GM 換取 200 黃金\n- 1000 門派功勳可找 GM 換取 10000 潛能"
+  },
+  {
+    "id": "quest-update-6-txt-華山派-尋找-令狐沖-領取任務-14",
+    "name": "- 華山派 (尋找 令狐沖 領取任務)",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "- 華山派 (尋找 令狐沖 領取任務)\n- 明教 (尋找 旗將使徒 領取任務)\n- 星宿派 (尋找 摘星子 領取任務)\n- 初階任務的獎勵均為: 100 經驗 + 100 潛能 + 50 白銀 + 1枚門派功勳\n- 100 門派功勳可找 GM 換取 200 黃金\n- 1000 門派功勳可找 GM 換取 10000 潛能\n- 3000 門派功勳可找 GM 換取 500000 經驗"
+  },
+  {
+    "id": "quest-update-6-txt-明教-尋找-旗將使徒-領取任務-15",
+    "name": "- 明教 (尋找 旗將使徒 領取任務)",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "- 明教 (尋找 旗將使徒 領取任務)\n- 星宿派 (尋找 摘星子 領取任務)\n- 初階任務的獎勵均為: 100 經驗 + 100 潛能 + 50 白銀 + 1枚門派功勳\n- 100 門派功勳可找 GM 換取 200 黃金\n- 1000 門派功勳可找 GM 換取 10000 潛能\n- 3000 門派功勳可找 GM 換取 500000 經驗"
+  },
+  {
+    "id": "quest-update-6-txt-星宿派-尋找-摘星子-領取任務-16",
+    "name": "- 星宿派 (尋找 摘星子 領取任務)",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "- 星宿派 (尋找 摘星子 領取任務)\n- 初階任務的獎勵均為: 100 經驗 + 100 潛能 + 50 白銀 + 1枚門派功勳\n- 100 門派功勳可找 GM 換取 200 黃金\n- 1000 門派功勳可找 GM 換取 10000 潛能\n- 3000 門派功勳可找 GM 換取 500000 經驗"
+  },
+  {
+    "id": "quest-update-6-txt-初階任務的獎勵均為-100-經驗-100-潛能-50-白銀-1-17",
+    "name": "- 初階任務的獎勵均為: 100 經驗 + 100 潛能 + 50 白銀 + 1",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "- 初階任務的獎勵均為: 100 經驗 + 100 潛能 + 50 白銀 + 1枚門派功勳\n- 100 門派功勳可找 GM 換取 200 黃金\n- 1000 門派功勳可找 GM 換取 10000 潛能\n- 3000 門派功勳可找 GM 換取 500000 經驗"
+  },
+  {
+    "id": "quest-update-6-txt-1-現在起-長安-送家書-任務的獎勵額外增加至-50-白銀及-500-經驗-18",
+    "name": "1. 現在起，長安「送家書」任務的獎勵額外增加至 50 白銀及 500 經驗。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "1. 現在起，長安「送家書」任務的獎勵額外增加至 50 白銀及 500 經驗。\n2. 現在起，所有「昭明書院」的師傅均不再傳授「太極拳」、「大力金剛拳」、「太極神功」、「易筋經」。\n3. 現在起，四大武館均會傳授獨門武功，分別為「五虎斷門刀」、「太祖長拳」、「回風劍法」、「中平槍法」。\n4. 四大武館館主亦將提昇對應的獨門武功及其基本武功的等級。"
+  },
+  {
+    "id": "quest-update-6-txt-1-有關新手任務中所潛伏於襄陽城外的蒙古人數量劇增-襄陽帥府急需支援-19",
+    "name": "1. 有關新手任務中所潛伏於襄陽城外的蒙古人數量劇增，襄陽帥府急需支援。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "1. 有關新手任務中所潛伏於襄陽城外的蒙古人數量劇增，襄陽帥府急需支援。\n2. 新手進階任務 - 狙擊蒙古高手，數量劇增，襄陽帥府急需支援。\n3. 現在起，可向老藥農一次性購買 100 碗關東煮。"
+  },
+  {
+    "id": "quest-update-6-txt-2-新手進階任務-狙擊蒙古高手-數量劇增-襄陽帥府急需支援-20",
+    "name": "2. 新手進階任務 - 狙擊蒙古高手，數量劇增，襄陽帥府急需支援。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "2. 新手進階任務 - 狙擊蒙古高手，數量劇增，襄陽帥府急需支援。\n3. 現在起，可向老藥農一次性購買 100 碗關東煮。"
+  },
+  {
+    "id": "quest-update-6-txt-1-新增武功-日月輪法-可通過任務-金輪法王-解謎獲取-21",
+    "name": "1. 新增武功: 日月輪法，可通過任務<金輪法王>解謎獲取。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "1. 新增武功: 日月輪法，可通過任務<金輪法王>解謎獲取。\n<學習要求>\n一) 需臂力 70\n二) 需根骨 70\n三) 需內力 3000\n2. 新增蒙古終章任務 - 金輪法王，請玩家們前往襄陽帥府覓 (郭靖) 打聽任務事宜。"
+  },
+  {
+    "id": "quest-update-6-txt-2-新增蒙古終章任務-金輪法王-請玩家們前往襄陽帥府覓-郭靖-打聽任務-22",
+    "name": "2. 新增蒙古終章任務 - 金輪法王，請玩家們前往襄陽帥府覓 (郭靖) 打聽任務",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 6.txt",
+    "rawExcerpt": "2. 新增蒙古終章任務 - 金輪法王，請玩家們前往襄陽帥府覓 (郭靖) 打聽任務事宜。"
+  },
+  {
+    "id": "quest-update-7-txt-1-吳志任務所得經驗由-20000-調整至-5000-1",
+    "name": "1. 吳志任務所得經驗由 20000 調整至 5000。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 7.txt",
+    "rawExcerpt": "1. 吳志任務所得經驗由 20000 調整至 5000。\n2. 金錢進階任務 - 葉問與金山找的任務獎勵調整為5黃金及2黃金。\n3. 江湖活動<破碎虛空>新增周伯通及黃藥師。\n4. 修正武功 - 太華扇無法配置為短兵的「臭蟲」。"
+  },
+  {
+    "id": "quest-update-7-txt-2-金錢進階任務-葉問與金山找的任務獎勵調整為5黃金及2黃金-2",
+    "name": "2. 金錢進階任務 - 葉問與金山找的任務獎勵調整為5黃金及2黃金。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 7.txt",
+    "rawExcerpt": "2. 金錢進階任務 - 葉問與金山找的任務獎勵調整為5黃金及2黃金。\n3. 江湖活動<破碎虛空>新增周伯通及黃藥師。\n4. 修正武功 - 太華扇無法配置為短兵的「臭蟲」。"
+  },
+  {
+    "id": "quest-update-7-txt-1-新增蒙古任務-蒙古萬夫長-請玩家們前往襄陽帥府覓-郭靖-領取任務事-3",
+    "name": "1. 新增蒙古任務 - 蒙古萬夫長，請玩家們前往襄陽帥府覓 (郭靖) 領取任務事",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 7.txt",
+    "rawExcerpt": "1. 新增蒙古任務 - 蒙古萬夫長，請玩家們前往襄陽帥府覓 (郭靖) 領取任務事宜。"
+  },
+  {
+    "id": "quest-update-7-txt-2-增添金錢進階任務-葉問與金山找-敬請前往成都解謎-4",
+    "name": "2. 增添金錢進階任務 - 葉問與金山找，敬請前往成都解謎。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 7.txt",
+    "rawExcerpt": "2. 增添金錢進階任務 - 葉問與金山找，敬請前往成都解謎。"
+  },
+  {
+    "id": "quest-update-7-txt-1-新增新手進階任務-狙擊蒙古高手-請玩家們前往襄陽帥府覓-郭靖-領取-5",
+    "name": "1. 新增新手進階任務 - 狙擊蒙古高手，請玩家們前往襄陽帥府覓 (郭靖) 領取",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 7.txt",
+    "rawExcerpt": "1. 新增新手進階任務 - 狙擊蒙古高手，請玩家們前往襄陽帥府覓 (郭靖) 領取任務事宜。\n2. 荊州城清風寨山賊任務所得金錢調整至 20 黃金。"
+  },
+  {
+    "id": "quest-update-7-txt-2-荊州城清風寨山賊任務所得金錢調整至-20-黃金-6",
+    "name": "2. 荊州城清風寨山賊任務所得金錢調整至 20 黃金。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 7.txt",
+    "rawExcerpt": "2. 荊州城清風寨山賊任務所得金錢調整至 20 黃金。"
+  },
+  {
+    "id": "quest-update-7-txt-1-有關新手任務中所潛伏於襄陽城外的蒙古人數量劇增-襄陽帥府急需支援-7",
+    "name": "1. 有關新手任務中所潛伏於襄陽城外的蒙古人數量劇增，襄陽帥府急需支援。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 7.txt",
+    "rawExcerpt": "1. 有關新手任務中所潛伏於襄陽城外的蒙古人數量劇增，襄陽帥府急需支援。\n2. 新增副本<無量山劍湖宮>，詳情請前往長安尋找「說書人」解謎進入。"
+  },
+  {
+    "id": "quest-update-7-txt-2-吳志任務所得經驗由-1000-調整至-20000-8",
+    "name": "2. 吳志任務所得經驗由 1000 調整至 20000。",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 7.txt",
+    "rawExcerpt": "2. 吳志任務所得經驗由 1000 調整至 20000。\n3. 新增襄陽城商販 NPC (老藥農)，可向其一次性購買 1000 個金創藥、藥酒、九轉還精丹、青草。\n4. 所有新登錄的玩家均可獲得由站長贈送的護具 (武道袍)。\n5. 新增新手任務 - 潛伏的蒙古人，請玩家們前往襄陽帥府覓 (郭靖) 領取任務事宜。"
+  },
+  {
+    "id": "quest-update-7-txt-5-新增新手任務-潛伏的蒙古人-請玩家們前往襄陽帥府覓-郭靖-領取任務-9",
+    "name": "5. 新增新手任務 - 潛伏的蒙古人，請玩家們前往襄陽帥府覓 (郭靖) 領取任務",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "update - 7.txt",
+    "rawExcerpt": "5. 新增新手任務 - 潛伏的蒙古人，請玩家們前往襄陽帥府覓 (郭靖) 領取任務事宜。"
+  },
+  {
+    "id": "quest-遊戲內容-txt-1-任務-1",
+    "name": "1) 任務",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "遊戲內容.txt",
+    "rawExcerpt": "1) 任務\n2) 副本\n3) 江湖活動\n4) 江湖系列及系統\n<任務>\n任務練功內容及獎勵:"
+  },
+  {
+    "id": "quest-遊戲內容-txt-任務-2",
+    "name": "<任務>",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "遊戲內容.txt",
+    "rawExcerpt": "<任務>\n任務練功內容及獎勵:\n1. 蒙古人: 2 黃金, 200 經驗, 100 潛能\n(門檻: 經驗 50 萬內)\n2. 蒙古高手: 600 潛能"
+  },
+  {
+    "id": "quest-遊戲內容-txt-任務練功內容及獎勵-3",
+    "name": "任務練功內容及獎勵:",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "遊戲內容.txt",
+    "rawExcerpt": "任務練功內容及獎勵:\n1. 蒙古人: 2 黃金, 200 經驗, 100 潛能\n(門檻: 經驗 50 萬內)\n2. 蒙古高手: 600 潛能\n(門檻: 經驗 100 萬內)"
+  },
+  {
+    "id": "quest-遊戲內容-txt-3-門派獨家任務-清理叛徒-2-黃金-300-經驗-300-潛能-4",
+    "name": "3. 門派獨家任務 - 清理叛徒: 2 黃金, 300 經驗, 300 潛能, ",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "遊戲內容.txt",
+    "rawExcerpt": "3. 門派獨家任務 - 清理叛徒: 2 黃金, 300 經驗, 300 潛能, 1 枚門派功勳\n(無門檻限制)\n4. 無量山劍湖宮: 600 經驗, 600 潛能\n(門檻: 經驗 150 萬內)\n5. 追擊明教五行旗旗主: 1000 經驗, 1000 潛能"
+  },
+  {
+    "id": "quest-遊戲內容-txt-8-門派獨家任務-江湖仇殺-2-黃金-1500-經驗-1500-潛能-5",
+    "name": "8. 門派獨家任務 - 江湖仇殺: 2 黃金, 1500 經驗, 1500 潛能",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "遊戲內容.txt",
+    "rawExcerpt": "8. 門派獨家任務 - 江湖仇殺: 2 黃金, 1500 經驗, 1500 潛能, 3 枚門派功勳\n(無門檻限制)\n9. 金輪法王: 6金, 1本日月輪法秘笈, 1柄銅輪, 1件護法袈裟\n(前往峨嵋某處解謎)\n10. 一品堂任務: 黃金, 經驗值"
+  },
+  {
+    "id": "quest-遊戲內容-txt-10-一品堂任務-黃金-經驗值-6",
+    "name": "10. 一品堂任務: 黃金, 經驗值",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "遊戲內容.txt",
+    "rawExcerpt": "10. 一品堂任務: 黃金, 經驗值\n(前往蘭州城某處解謎)\n<副本>\n1. 200級 <血刀門>\nNPC:\n血刀老祖 (大BOSS, 血刀, 血刀刀法)"
+  },
+  {
+    "id": "quest-遊戲內容-txt-向浪翻雲領取任務擊敗龐班-可得到-覆雨劍法殘頁-覆雨劍碎片-7",
+    "name": "- 向浪翻雲領取任務擊敗龐班, 可得到: <覆雨劍法殘頁> + <覆雨劍碎片> ",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "遊戲內容.txt",
+    "rawExcerpt": "- 向浪翻雲領取任務擊敗龐班, 可得到: <覆雨劍法殘頁> + <覆雨劍碎片> + *進階資格碎片* + *武道書殘頁*\n- 向龐班領取任務擊敗浪翻雲, 可得到: <天魔策殘頁> + <魔師袍服碎片> + *進階資格碎片* + *武道書殘頁*\n- 覆雨劍 (攻擊力: 300, 防御力: 100)\n- 魔師袍服 (防御值: 300, 抗內力值: 100, 影響輕功: 100)\n6. (需角色轉生後) 900級 <宗師天威試煉>\n- 入場可分別挑戰金庸四大宗師級別人物: 段思平 / 黃裳 / 鬥酒神僧 / 慕容龍城, 如若成功擊倒可得以下物品:"
+  },
+  {
+    "id": "quest-遊戲內容-txt-向龐班領取任務擊敗浪翻雲-可得到-天魔策殘頁-魔師袍服碎片-8",
+    "name": "- 向龐班領取任務擊敗浪翻雲, 可得到: <天魔策殘頁> + <魔師袍服碎片> ",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "遊戲內容.txt",
+    "rawExcerpt": "- 向龐班領取任務擊敗浪翻雲, 可得到: <天魔策殘頁> + <魔師袍服碎片> + *進階資格碎片* + *武道書殘頁*\n- 覆雨劍 (攻擊力: 300, 防御力: 100)\n- 魔師袍服 (防御值: 300, 抗內力值: 100, 影響輕功: 100)\n6. (需角色轉生後) 900級 <宗師天威試煉>\n- 入場可分別挑戰金庸四大宗師級別人物: 段思平 / 黃裳 / 鬥酒神僧 / 慕容龍城, 如若成功擊倒可得以下物品:\n*進階資格碎片* *武道書殘頁*"
+  },
+  {
+    "id": "quest-遊戲內容-txt-一-任務-9",
+    "name": "一) 任務",
+    "description": null,
+    "rewardsText": null,
+    "requirementsText": null,
+    "sourceFile": "遊戲內容.txt",
+    "rawExcerpt": "一) 任務\n- 清理叛徒 (2黃金)\n- 蒙古人 (2黃金)\n- 蒙古萬夫長 (2黃金)\n- 江湖仇殺 (2黃金)\n- 一品堂 (2黃金、3黃金、6黃金、10黃金)\n- 清風寨 (20黃金)\n二) 擊斃 NPC\n- 長尾妖狐 (2黃金)\n- 葉問 (2黃金)\n- 霍都 (5黃金)\n- 血刀老祖 (5黃金)\n三) 指定活動"
+  }
+]

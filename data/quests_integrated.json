@@ -1,0 +1,487 @@
+{
+  "meta": {
+    "schemaVersion": "1.0",
+    "generatedAt": "2026-01-22T00:00:00Z",
+    "language": "zh-Hant",
+    "notes": [
+      "quests_integrated.json：由原始 txt 文件整合而成，供網站直接展示。",
+      "未在文件中出現的欄位不補造；必要時以『文件未提供』或留空表示。"
+    ],
+    "sourcesUsed": [
+      "update - 2.txt",
+      "update - 3.txt",
+      "update - 4.txt",
+      "update - 6.txt",
+      "遊戲內容.txt"
+    ]
+  },
+  "quests": [
+    {
+      "id": "quest-gamecontent-1",
+      "name": "一品堂任務",
+      "category": "練功/多階段",
+      "summary": "多階段練功任務，隨階段提供金錢、經驗與潛能等獎勵。",
+      "giver": "",
+      "location": "蘭州城覓 (赫連鐵樹) ",
+      "requirements": [
+        {
+          "text": ""
+        }
+      ],
+      "rewards": [
+        {
+          "text": "一品堂任務[100萬]: 九天靈芝 (10000經驗值)"
+        },
+        {
+          "text": "一品堂任務[400萬]: 寒霜淨心丹 (50000經驗值)"
+        },
+        {
+          "text": "一品堂任務[1000萬]: 天雷震霆散 (100000經驗值)"
+        },
+        {
+          "text": "一品堂任務[殿堂]: 天璇星辰丹 (200000經驗值) *須要達到 1000 萬經驗才能接受任務*"
+        }
+      ],
+      "steps": [],
+      "related": {},
+      "versionNotes": [
+        {
+          "date": "2023-12-15",
+          "file": "update - 4.txt",
+          "note": "一品堂任務獎勵上調。"
+        },
+        {
+          "date": "(未標示)",
+          "file": "update - 2.txt",
+          "note": "公告稱為籌措軍資，一品堂相關賞金以半數發放（權宜之計）。"
+        }
+      ],
+      "sourceRefs": [
+        {
+          "file": "遊戲內容.txt",
+          "excerpt": "1. 一品堂任務: 3萬金, 300經驗, 300潛能, 1枚門派功勳（無門檻限制）\n\n(門檻:需要達到1000萬經驗才能接受任務)"
+        },
+        {
+          "file": "update - 2.txt",
+          "excerpt": "一品堂緊急通告\n\n為籌措軍資，一品堂所有賞金任務獎金將以半數發放，為權宜之計。"
+        }
+      ]
+    },
+    {
+      "id": "quest-gamecontent-2",
+      "name": "力戰六大派高手",
+      "category": "練功",
+      "summary": "挑戰『六大派高手』的練功任務。",
+      "giver": "",
+      "location": "華山尋找「江湖百曉生」",
+      "requirements": [
+        {
+          "text": "門檻:需要達到100萬經驗以上才能進入"
+        }
+      ],
+      "rewards": [
+        {
+          "text": "1500 潛能"
+        },
+        {
+          "text": "1500經驗"
+        },
+        {
+          "text": "（無門檻限制）"
+        }
+      ],
+      "steps": [],
+      "related": {},
+      "versionNotes": [],
+      "sourceRefs": [
+        {
+          "file": "遊戲內容.txt",
+          "excerpt": "2. 力戰六大派高手: 1500 潛能, 1500經驗 -（無門檻限制）\n\n(門檻:需要達到100萬經驗以上才能進入)"
+        }
+      ]
+    },
+    {
+      "id": "quest-gamecontent-3",
+      "name": "金輪法王",
+      "category": "練功",
+      "summary": "挑戰金輪法王的練功任務。",
+      "giver": "",
+      "location": "襄陽帥府",
+      "requirements": [
+        {
+          "text": "門檻:前往明教三層解謎後即可進入"
+        }
+      ],
+      "rewards": [
+        {
+          "text": "6金"
+        },
+        {
+          "text": "日月輪法秘笈"
+        },
+        {
+          "text": "銅輪與鐵法袈裟"
+        }
+      ],
+      "steps": [],
+      "related": {},
+      "versionNotes": [],
+      "sourceRefs": [
+        {
+          "file": "遊戲內容.txt",
+          "excerpt": "3. 金輪法王: 1000金, 日月輪法秘笈, 銅輪與鐵法袈裟\n\n(門檻:前往明教三層解謎後即可進入)"
+        }
+      ]
+    },
+    {
+      "id": "quest-gamecontent-4",
+      "name": "追擊明教五行旗旗主",
+      "category": "練功",
+      "summary": "追擊明教五行旗旗主的練功任務。",
+      "giver": "",
+      "location": "華山尋找「江湖百曉生」",
+      "requirements": [
+        {
+          "text": "門檻: 經驗 200 萬內"
+        }
+      ],
+      "rewards": [
+        {
+          "text": "1000經驗"
+        },
+        {
+          "text": "1000潛能"
+        }
+      ],
+      "steps": [],
+      "related": {},
+      "versionNotes": [],
+      "sourceRefs": [
+        {
+          "file": "遊戲內容.txt",
+          "excerpt": "4. 追擊明教五行旗旗主: 1000經驗, 1000潛能 -（門檻:經驗 150 萬內）\n\n(門檻:經驗達到150萬內)"
+        }
+      ]
+    },
+    {
+      "id": "quest-gamecontent-5",
+      "name": "無量山劍湖宮",
+      "category": "練功",
+      "summary": "無量山劍湖宮相關任務／挑戰。",
+      "giver": "",
+      "location": "長安尋找「說書人」",
+      "requirements": [
+        {
+          "text": "門檻:經驗 150 萬內"
+        }
+      ],
+      "rewards": [
+        {
+          "text": "600經驗"
+        },
+        {
+          "text": "600潛能"
+        }
+      ],
+      "steps": [],
+      "related": {},
+      "versionNotes": [],
+      "sourceRefs": [
+        {
+          "file": "遊戲內容.txt",
+          "excerpt": "5. 無量山劍湖宮: 600經驗, 600潛能 -（門檻:經驗 100 萬內）\n\n(門檻:經驗 100 萬內)"
+        }
+      ]
+    },
+    {
+      "id": "quest-gamecontent-6",
+      "name": "蒙古萬夫長 (蒙古任務)",
+      "category": "新手/蒙古",
+      "summary": "蒙古系列任務之一，目標為蒙古萬夫長。",
+      "giver": "",
+      "location": "襄陽帥府",
+      "requirements": [
+        {
+          "text": "門檻:無門檻限制"
+        }
+      
+      ],
+      "rewards": [
+        {
+          "text": "3000 潛能"
+        },
+         {
+          "text": "2 黃金"
+        },
+        {
+          "text": "（無門檻限制）"
+        }
+      ],
+      "steps": [],
+      "related": {},
+      "versionNotes": [
+        {
+          "date": "2024-03-??",
+          "file": "update - 3.txt",
+          "note": "蒙古萬夫長任務獎勵數值調整（詳見原公告）。"
+        }
+      ],
+      "sourceRefs": [
+        {
+          "file": "遊戲內容.txt",
+          "excerpt": "6. 蒙古萬夫長: 3000 潛能 -（無門檻限制）\n\n(門檻:無門檻限制)"
+        },
+        {
+          "file": "update - 3.txt",
+          "excerpt": "蒙古萬夫長…（節錄：含任務獎勵/調整內容，原文未在此完整展開）"
+        }
+      ]
+    },
+    
+    {
+      "id": "quest-gamecontent-9",
+      "name": "門派獨家任務 - 江湖仇殺",
+      "category": "門派",
+      "summary": "各門派獨家任務之一：江湖仇殺。文件未提供具體流程與 NPC 名稱。",
+      "giver": "",
+      "location": "",
+      "requirements": [
+        {
+          "text": ""
+        }
+      ],
+      "rewards": [
+        {
+          "text": "500 白銀"
+        },
+        {
+          "text": "1500 經驗"
+        },
+        {
+          "text": "1500 潛能"
+        },
+        {
+          "text": "3 門派功勳"
+        }
+      ],
+      "steps": [],
+      "related": {},
+      "versionNotes": [],
+      "sourceRefs": [
+        {
+          "file": "遊戲內容.txt",
+          "excerpt": "9. 門派獨家任務 - 江湖仇殺: 賞金, 經驗, 潛能, 門派功勳\n\n(門檻:門派 3 階才可領取)"
+        }
+      ]
+    },
+    {
+      "id": "quest-gamecontent-10",
+      "name": "門派獨家任務 - 清剿叛徒",
+      "category": "門派",
+      "summary": "各門派獨家任務之一：清剿叛徒。文件未提供具體流程與 NPC 名稱。",
+      "giver": "",
+      "location": "",
+      "requirements": [
+        {
+          "text": ""
+        }
+      ],
+      "rewards": [
+        {
+          "text": "2 黃金"
+        },
+        {
+          "text": "300 經驗"
+        },
+        {
+          "text": "300 潛能"
+        },
+        {
+          "text": "1 門派功勳"
+        }
+      ],
+      "steps": [],
+      "related": {},
+      "versionNotes": [],
+      "sourceRefs": [
+        {
+          "file": "遊戲內容.txt",
+          "excerpt": "10. 門派獨家任務 - 清剿叛徒: 賞金, 經驗, 潛能, 門派功勳\n\n(門檻:門派 2 階才可領取)"
+        }
+      ]
+    },
+    {
+      "id": "quest-update6-newbie-mongol-spies",
+      "name": "潛伏的蒙古人",
+      "category": "新手",
+      "summary": "襄陽城外蒙古人潛伏數量增加，需協助處理。",
+      "giver": "",
+      "location": "襄陽帥府／襄陽城外",
+      "requirements": [{
+          "text": "門檻: 經驗 50 萬內"
+        }],
+      "rewards": [      {
+          "text": "2 黃金"
+        }, {
+          "text": "200 經驗"
+        },{
+          "text": "100 潛能"
+        }],
+      "steps": [
+        {
+          "text": "前往襄陽帥府找郭靖接取任務。"
+        },
+        {
+          "text": "前往襄陽城外支援處理潛伏的蒙古人（文件未提供數量/細節）。"
+        },
+        {
+          "text": "回報郭靖。"
+        }
+      ],
+      "related": {},
+      "versionNotes": [],
+      "sourceRefs": [
+        {
+          "file": "update - 6.txt",
+          "excerpt": "新手任務中所潛伏於襄陽城外的蒙古人數量劇增，需要支援。"
+        }
+      ]
+    },
+    {
+      "id": "quest-update6-newbie-mongol-snipers",
+      "name": "狙擊蒙古高手",
+      "category": "新手進階",
+      "summary": "新手進階任務：蒙古高手數量增加，需協助狙擊。",
+      "giver": "",
+      "location": "襄陽帥府／襄陽周邊",
+      "requirements": [{
+          "text": "門檻: 經驗 100 萬內"
+        }],
+      "rewards": [{
+          "text": "600 潛能"
+        }],
+      "steps": [
+        {
+          "text": "前往襄陽帥府找郭靖接取任務。"
+        },
+        {
+          "text": "支援處理蒙古高手（文件未提供數量/細節）。"
+        },
+        {
+          "text": "回報郭靖。"
+        }
+      ],
+      "related": {},
+      "versionNotes": [],
+      "sourceRefs": [
+        {
+          "file": "update - 6.txt",
+          "excerpt": "新增新手進階任務 - 狙擊蒙古高手。\n蒙古高手數量劇增，需要支援。"
+        }
+      ]
+    },
+    {
+      "id": "quest-update2-jingzhou-qingfeng",
+      "name": "荊州清風寨剿匪",
+      "category": "城市",
+      "summary": "荊州城郊清風寨匪患加劇，官府徵募義勇剿匪。",
+      "giver": "荊州縣令",
+      "location": "荊州城郊／清風寨",
+      "requirements": [
+        {
+          "text": "需擊斃匪徒三十名方得領賞。"
+        }
+      ],
+      "rewards": [
+        {
+          "text": "30 賞金"
+        }
+      ],
+      "steps": [
+        {
+          "text": "至荊州縣令處承接剿匪令。"
+        },
+        {
+          "text": "前往清風寨擊斃匪徒 30 名。"
+        },
+        {
+          "text": "回報領賞。"
+        }
+      ],
+      "related": {},
+      "versionNotes": [],
+      "sourceRefs": [
+        {
+          "file": "update - 2.txt",
+          "excerpt": "【荊州清風寨匪患加劇】\n清風寨匪眾近來騷擾荊州百姓，縣令廣發剿匪令徵募義勇，需擊斃匪徒三十名方得領賞。賞金維持不變。"
+        }
+      ]
+    },
+    {
+      "id": "quest-gamecontent-az",
+      "name": "為阿紫而戰",
+      "category": "陣營/壞人路線",
+      "summary": "攔江之戰壞人路線任務之一：協助阿紫一方，目標為擊殺蕭峰。",
+      "giver": "游坦之",
+      "location": "",
+      "requirements": [],
+      "rewards": [
+        {
+          "text": "冰蠶毒掌殘頁（集滿100張可換取『冰蠶毒掌』）。"
+        },
+        {
+          "text": "進階資格碎片"
+        }
+      ],
+      "steps": [
+        {
+          "text": "承接『為阿紫而戰』。"
+        },
+        {
+          "text": "擊殺蕭峰。"
+        }
+      ],
+      "related": {},
+      "versionNotes": [],
+      "sourceRefs": [
+        {
+          "file": "遊戲內容.txt",
+          "excerpt": "[為阿紫而戰] - (游坦之) (內容:殺蕭峰)\n(獎勵:冰蠶毒掌殘頁 1 張 (集滿 100 張可換取冰蠶毒掌), 進階資格碎片)\n..."
+        }
+      ]
+    },
+    {
+      "id": "quest-gamecontent-dayan",
+      "name": "為大燕國而戰",
+      "category": "陣營/壞人路線",
+      "summary": "攔江之戰壞人路線任務之一：協助大燕國一方，目標為擊殺段譽。",
+      "giver": "慕容復",
+      "location": "",
+      "requirements": [],
+      "rewards": [
+        {
+          "text": "大燕國玉璽（可換取1000點潛能）。"
+        },
+        {
+          "text": "進階資格碎片"
+        }
+      ],
+      "steps": [
+        {
+          "text": "承接『為大燕國而戰』。"
+        },
+        {
+          "text": "擊殺段譽。"
+        }
+      ],
+      "related": {},
+      "versionNotes": [],
+      "sourceRefs": [
+        {
+          "file": "遊戲內容.txt",
+          "excerpt": "[為大燕國而戰] - (慕容復) (內容:殺段譽)\n(獎勵:大燕國玉璽 1 個 (可換取 1000 點潛能), 進階資格碎片)\n"
+        }
+      ]
+    }
+  ]
+}
