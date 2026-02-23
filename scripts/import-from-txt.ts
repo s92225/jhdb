@@ -452,14 +452,54 @@ function extractManualsFromText(sourceFile: string, text: string): Manual[] {
     }
 
     const rawExcerpt = excerptLines.join('\n')
-    const requirements = parseRequirementsFromLines(excerptLines)
+    const requirementSectionLines: string[] = []
+    const requirementStart = excerptLines.findIndex((line) => line.includes('學習要求'))
+    if (requirementStart >= 0) {
+      for (let k = requirementStart + 1; k < excerptLines.length; k++) {
+        const ln = excerptLines[k].trim()
+        if (!ln) continue
+        if (ln.includes('新增武功')) break
+        if (ln.includes('新增神兵')) break
+        if (/^\d+\./.test(ln)) break
+        requirementSectionLines.push(ln)
+      }
+    }
+
+    const requirements = parseRequirementsFromLines(
+      requirementSectionLines.length ? requirementSectionLines : excerptLines
+    )
+
+    const obtainLine = excerptLines.find((line) => line.includes('新增武功'))
+    let obtain: string | null = null
+    if (obtainLine) {
+      const match = obtainLine.match(/可[^。]+獲取。?/)
+      obtain = match ? match[0].replace(/。$/, '') : obtainLine
+    }
+
+    const reqItems = requirements
+      .filter((r) => !String(r?.name ?? '').includes('新增武功'))
+      .map((r) => ({ name: r.name, value: r.value ?? null }))
+
+    const order = (n: string) => {
+      if (n.includes('內力')) return 0
+      if (n.includes('精力')) return 1
+      if (n.includes('基本')) return 2
+      return 3
+    }
+
+    const learnRequirementsText = reqItems.length
+      ? `學習要求\n${reqItems
+          .sort((a, b) => order(a.name) - order(b.name))
+          .map((r) => `• ${r.name}${r.value !== null ? `：${r.value}` : ''}`)
+          .join('\n')}`
+      : null
 
     idx += 1
     out.push({
       id: slugId('manual', sourceFile, name, idx),
       name,
-      obtain: null,
-      learnRequirementsText: null,
+      obtain,
+      learnRequirementsText,
       requirements,
       sourceFile,
       rawExcerpt: safeSlice(rawExcerpt, 2000),

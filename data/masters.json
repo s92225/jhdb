@@ -1,0 +1,334 @@
+[
+  {
+    "id": "master-鎮遠武館-上官鎮遠",
+    "sect": "鎮遠武館",
+    "name": "上官鎮遠",
+    "location": "振遠武館",
+    "skills": [
+      { "name": "基本刀法", "skillLevel": 100 },
+      { "name": "基本棍法", "skillLevel": 100 },
+      { "name": "基本輕功", "skillLevel": 100 },
+      { "name": "基本內功", "skillLevel": 100 },
+      { "name": "基本招架", "skillLevel": 100 },
+      { "name": "基本短兵", "skillLevel": 100 },
+      { "name": "基本劍法", "skillLevel": 100 },
+      { "name": "基本拳腳", "skillLevel": 100 },
+      { "name": "太祖長拳", "skillLevel": 100 }
+    ]
+  },
+  {
+    "id": "master-峨眉派-郭襄",
+    "sect": "峨眉派",
+    "name": "郭襄",
+    "location": "華藏庵後殿",
+    "skills": [
+      { "name": "峨眉身法", "skillLevel": 80, "readWrite": 30 },
+      { "name": "梅花掌", "skillLevel": 50, "readWrite": 20 },
+      { "name": "峨眉氣功", "skillLevel": 60, "readWrite": 20 },
+      { "name": "峨眉劍法", "skillLevel": 50, "readWrite": 20, "basicQinggong": 40 },
+      { "name": "禪宗心法", "skillLevel": 70, "readWrite": 20 },
+      { "name": "九陰白骨爪", "skillLevel": 60, "readWrite": 20 },
+      { "name": "金頂綿掌", "skillLevel": 60, "readWrite": 20 },
+      { "name": "雁行刀法", "skillLevel": 60, "readWrite": 20 }
+    ]
+  },
+  {
+    "id": "master-丐幫-洪七公",
+    "sect": "丐幫",
+    "name": "洪七公",
+    "location": "竹林小屋",
+    "skills": [
+      { "name": "降龍十八掌", "skillLevel": 80, "readWrite": 20 },
+      { "name": "混天氣功", "skillLevel": 60, "readWrite": 20 },
+      { "name": "踏雪無痕", "skillLevel": 60, "readWrite": 20 },
+      { "name": "打狗棒法", "skillLevel": 50, "readWrite": 20 }
+    ]
+  },
+  {
+    "id": "master-丐幫-丐幫幫主",
+    "sect": "丐幫",
+    "name": "丐幫幫主",
+    "location": "樹洞下",
+    "skills": [
+      { "name": "鎖喉擒拿手", "skillLevel": 100, "readWrite": 20 }
+    ]
+  },
+  {
+    "id": "master-丐幫-王長老",
+    "sect": "丐幫",
+    "name": "王長老",
+    "location": "台階下",
+    "skills": [
+      { "name": "廣陵杖法", "skillLevel": 100, "readWrite": 20 }
+    ]
+  },
+  {
+    "id": "master-丐幫-梁長老",
+    "sect": "丐幫",
+    "name": "梁長老",
+    "location": "小路邊",
+    "skills": [
+      { "name": "蓮花掌", "skillLevel": 100, "readWrite": 20 }
+    ]
+  },
+  {
+    "id": "master-丐幫-左全",
+    "sect": "丐幫",
+    "name": "左全",
+    "location": "樹洞內",
+    "skills": [
+      { "name": "四象六合刀", "skillLevel": 100, "readWrite": 20 }
+    ]
+  },
+  {
+    "id": "master-華山派-岳不群",
+    "sect": "華山派",
+    "name": "岳不群",
+    "location": "正氣堂",
+    "skills": [
+      { "name": "辟邪劍法", "skillLevel": 50, "readWrite": 20, "basicQinggong": 50 },
+      { "name": "劈石破玉拳", "skillLevel": 60, "readWrite": 20 },
+      { "name": "反兩儀刀法", "skillLevel": 60, "readWrite": 20 },
+      { "name": "華山身法", "skillLevel": 60, "readWrite": 20 },
+      { "name": "獨孤九劍", "skillLevel": 70, "readWrite": 20, "basicQinggong": 50 },
+      { "name": "紫霞坤功", "skillLevel": 60, "readWrite": 20 },
+      { "name": "混元掌", "skillLevel": 60, "readWrite": 20 },
+      { "name": "華山劍法", "skillLevel": 50, "readWrite": 30, "basicSword": 30 },
+      { "name": "狂風快劍", "skillLevel": 50 },
+      { "name": "靈蛇生死搏", "skillLevel": 50 }
+    ]
+  },
+  {
+    "id": "master-華山派-風清揚",
+    "sect": "華山派",
+    "name": "風清揚",
+    "location": "含身崖",
+    "skills": []
+  },
+  {
+    "id": "master-崑崙武館-趙崑崙",
+    "sect": "崑崙武館",
+    "name": "趙崑崙",
+    "location": "揚州北大街",
+    "skills": [
+      { "name": "中平槍法", "skillLevel": 100 }
+    ]
+  },
+  {
+    "id": "master-明教-楊逍",
+    "sect": "明教",
+    "name": "楊逍",
+    "location": "西宿房",
+    "skills": [
+      { "name": "不知名劍法", "skillLevel": 100 },
+      { "name": "虎爪手", "skillLevel": 110 }
+    ]
+  },
+  {
+    "id": "master-明教-殷天正",
+    "sect": "明教",
+    "name": "殷天正",
+    "location": "白鷹館",
+    "skills": [
+      { "name": "鷹爪功", "skillLevel": 110 }
+    ]
+  },
+  {
+    "id": "master-明教-韋一笑",
+    "sect": "明教",
+    "name": "韋一笑",
+    "location": "青蝠堂",
+    "skills": [
+      { "name": "寒冰軟棉掌", "skillLevel": 110 }
+    ]
+  },
+  {
+    "id": "master-明教-彭和尚",
+    "sect": "明教",
+    "name": "彭和尚",
+    "location": "教集場",
+    "skills": [
+      { "name": "大風雲飛掌", "skillLevel": 100 }
+    ]
+  },
+  {
+    "id": "master-明教-楊頂天",
+    "sect": "明教",
+    "name": "楊頂天",
+    "location": "明教聖地",
+    "skills": [
+      { "name": "乾坤大挪移", "skillLevel": 120 },
+      { "name": "虎爪手", "skillLevel": 110 },
+      { "name": "寒冰軟棉掌", "skillLevel": 110 },
+      { "name": "鷹爪功", "skillLevel": 110 },
+      { "name": "不知名劍法", "skillLevel": 110 },
+      { "name": "大風雲飛掌", "skillLevel": 110 }
+    ]
+  },
+  {
+    "id": "master-少林派-慧陽禪師",
+    "sect": "少林派",
+    "name": "慧陽禪師",
+    "location": "走廊",
+    "skills": [
+      { "name": "風雲手", "skillLevel": 50, "readWrite": 20 },
+      { "name": "龍爪手", "skillLevel": 50, "readWrite": 20 },
+      { "name": "散花掌", "skillLevel": 50, "readWrite": 20 }
+    ]
+  },
+  {
+    "id": "master-少林派-慧智禪師",
+    "sect": "少林派",
+    "name": "慧智禪師",
+    "location": "走廊",
+    "skills": [
+      { "name": "慈悲刀", "skillLevel": 50, "readWrite": 20 },
+      { "name": "拈花指", "skillLevel": 50, "readWrite": 20 }
+    ]
+  },
+  {
+    "id": "master-少林派-渡空禪師",
+    "sect": "少林派",
+    "name": "渡空禪師",
+    "location": "鼓樓小院",
+    "skills": [
+      { "name": "密宗大手印", "skillLevel": 51 }
+    ]
+  },
+  {
+    "id": "master-少林派-掃地僧",
+    "sect": "少林派",
+    "name": "掃地僧",
+    "location": "藏經閣",
+    "skills": [
+      { "name": "大力金剛拳", "skillLevel": 60, "readWrite": 20 },
+      { "name": "少林身法", "skillLevel": 50, "readWrite": 20 },
+      { "name": "易筋經", "skillLevel": 60, "readWrite": 20 },
+      { "name": "般若掌", "skillLevel": 60, "readWrite": 20 },
+      { "name": "達摩劍", "skillLevel": 50, "readWrite": 20 },
+      { "name": "禪宗心法", "skillLevel": 50, "readWrite": 50 },
+      { "name": "多羅葉指", "skillLevel": 50, "readWrite": 50 },
+      { "name": "如來千葉手", "skillLevel": 50, "readWrite": 50 },
+      { "name": "伏魔劍", "skillLevel": 50, "readWrite": 50 },
+      { "name": "少林醉棍", "skillLevel": 50, "readWrite": 50 },
+      { "name": "燃木刀法", "skillLevel": 50, "readWrite": 50 }
+    ]
+  },
+  {
+    "id": "master-嵩山派-左冷禪",
+    "sect": "嵩山派",
+    "name": "左冷禪",
+    "location": "會盟堂",
+    "skills": [
+      { "name": "寒冰真氣", "skillLevel": 70, "readWrite": 20 },
+      { "name": "九曲劍法", "skillLevel": 70, "readWrite": 20 },
+      { "name": "凌厲步", "skillLevel": 70, "readWrite": 20 },
+      { "name": "嵩山劍法", "skillLevel": 60, "readWrite": 20 },
+      { "name": "嵩山拳法", "skillLevel": 60, "readWrite": 20 },
+      { "name": "嵩山心法", "skillLevel": 50, "readWrite": 50 },
+      { "name": "大嵩陽手", "skillLevel": 50, "readWrite": 50 }
+    ]
+  },
+  {
+    "id": "master-天道武館-王五",
+    "sect": "天道武館",
+    "name": "王五",
+    "location": "天道武館",
+    "skills": [
+      { "name": "五虎斷門刀", "skillLevel": 100 }
+    ]
+  },
+  {
+    "id": "master-武當派-張三豐",
+    "sect": "武當派",
+    "name": "張三豐",
+    "location": "小屋",
+    "skills": [
+      { "name": "太極拳", "skillLevel": 70, "readWrite": 20 },
+      { "name": "太極劍", "skillLevel": 50, "readWrite": 20 },
+      { "name": "梯雲縱", "skillLevel": 70, "readWrite": 20 },
+      { "name": "太極神功", "skillLevel": 60, "readWrite": 20 },
+      { "name": "太極刀", "skillLevel": 60, "readWrite": 20 },
+      { "name": "道學心法", "skillLevel": 50, "readWrite": 50 },
+      { "name": "武當長拳", "skillLevel": 50, "readWrite": 50 },
+      { "name": "武當劍法", "skillLevel": 50, "readWrite": 50 },
+      { "name": "兩儀劍法", "skillLevel": 50, "readWrite": 50 },
+      { "name": "虎爪絕戶手", "skillLevel": 50, "readWrite": 50 },
+      { "name": "倚天屠龍功", "skillLevel": 50, "readWrite": 50 }
+    ]
+  },
+  {
+    "id": "master-星宿派-丁春秋",
+    "sect": "星宿派",
+    "name": "丁春秋",
+    "location": "丁宅",
+    "skills": [
+      { "name": "星宿毒掌", "skillLevel": 60, "readWrite": 20 },
+      { "name": "摘星功", "skillLevel": 60, "readWrite": 20 },
+      { "name": "化功大法", "skillLevel": 50, "readWrite": 20 },
+      { "name": "天山杖法", "skillLevel": 60, "readWrite": 20 },
+      { "name": "飛星術", "skillLevel": 60, "readWrite": 20 }
+    ]
+  },
+  {
+    "id": "master-揚威武館-上官揚威",
+    "sect": "揚威武館",
+    "name": "上官揚威",
+    "location": "揚威武館",
+    "skills": [
+      { "name": "回風劍法", "skillLevel": 100 }
+    ]
+  },
+  {
+    "id": "master-昭明書院-岳雲",
+    "sect": "昭明書院",
+    "name": "岳雲",
+    "location": "書院",
+    "skills": [
+      { "name": "岳家散手", "skillLevel": 80, "readWrite": null, "basicQinggong": 80 }
+    ]
+  },
+  {
+    "id": "master-昭明書院-朱崇陽",
+    "sect": "昭明書院",
+    "name": "朱崇陽",
+    "location": "關中書院",
+    "skills": [
+      { "name": "才子手", "skillLevel": 60, "readWrite": 40 },
+      { "name": "太華氣功", "skillLevel": 40, "readWrite": 40 }
+    ]
+  },
+  {
+    "id": "master-昭明書院-朱嶽麓",
+    "sect": "昭明書院",
+    "name": "朱嶽麓",
+    "location": "昭明台內廳",
+    "skills": [
+      { "name": "讀書寫字", "skillLevel": null, "readWrite": 50 }
+    ]
+  },
+  {
+    "id": "master-昭明書院-朱應天",
+    "sect": "昭明書院",
+    "name": "朱應天",
+    "location": "書院",
+    "skills": [
+      { "name": "太華扇", "skillLevel": 40, "readWrite": 40 },
+      { "name": "太華身法", "skillLevel": 40, "readWrite": 40 }
+    ]
+  },
+  {
+    "id": "master-逍遙派-無崖子",
+    "sect": "逍遙派",
+    "name": "無崖子",
+    "location": "小屋",
+    "skills": [
+      { "name": "凌波微步", "skillLevel": 100, "readWrite": 100 },
+      { "name": "天山六陽掌", "skillLevel": 100, "readWrite": 100 },
+      { "name": "天山折梅手", "skillLevel": 100, "readWrite": 100 },
+      { "name": "玉影流月劍", "skillLevel": 100, "readWrite": 100 },
+      { "name": "如意刀法", "skillLevel": 100, "readWrite": 100 },
+      { "name": "北冥神功", "skillLevel": 100, "readWrite": 100 }
+    ]
+  }
+]

@@ -4,6 +4,11 @@ import Link from "next/link";
 import EmptyState from "@/app/components/EmptyState";
 import { Badge } from "@/app/components/Badge";
 
+
+
+
+
+
 type IntegratedDungeon = {
   id: string;
   name: string;
@@ -125,6 +130,7 @@ export default async function DungeonsPage() {
 
             return (
               <details
+                id={d.id ? String(d.id) : undefined}
                 key={d.id || `${d.name}-${idx}`}
                 className="rounded-xl border bg-white shadow-sm"
                 open={idx < 2}

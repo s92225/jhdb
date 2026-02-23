@@ -1,0 +1,240 @@
+
+LockMouse
+
+Dim walkDelay, mapDelay, gateDelay
+walkDelay = 200
+mapDelay = 1000
+gateDelay = 1000
+
+Call RestartGame()
+
+Rem START
+
+// Clear text input area
+KeyDown "Ctrl", 1
+Delay walkDelay
+KeyPress "A", 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+KeyPress "Delete", 1
+Delay walkDelay
+
+// Drink
+SayString "Use 藥酒 10"
+Delay walkDelay
+KeyPress "Enter", 1
+Delay walkDelay
+
+SayString "Use 青草 5"
+Delay walkDelay
+KeyPress "Enter", 1
+Delay walkDelay
+
+// Walk to middle
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 543, 264
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+// ============================
+// FIND NPC (cyan FindColor)
+// ============================
+Rem FIND_NPC
+TracePrint "Looking for NPC to kill (cyan)..."
+
+FindColor 452, 175, 1027, 523, "FFFF00", intX, intY
+If intX > 0 And intY > 0 Then
+    TracePrint "NPC found at (" & intX & ", " & intY & ")"
+    MoveTo intX + 20, intY + 15
+    RightClick 1
+    Delay walkDelay
+
+    IfColor 525, 515, "0000FF", 0 Then
+        // NPC selected, proceed to kill
+        SayString "kill"
+        Delay walkDelay
+        KeyPress "Enter", 1
+        Delay walkDelay
+
+        Rem COMBAT_LOOP
+        Delay walkDelay
+
+        // HP check: if 333,298 is not black, drink immediately
+        IfColor 333, 298, "000000", 1 Then
+            KeyDown "Ctrl", 1
+            Delay walkDelay
+            KeyPress "A", 1
+            Delay walkDelay
+            KeyUp "Ctrl", 1
+            Delay walkDelay
+            KeyPress "Delete", 1
+            Delay walkDelay
+            SayString "Use 藥酒 20"
+            Delay walkDelay
+            KeyPress "Enter", 1
+            Delay walkDelay
+        Else
+        End If
+
+        // Check kill complete
+        FindColor 745, 280, 808, 295, "FFFF00", intX, intY
+        If intX > 0 And intY > 0 Then
+            TracePrint "Kill complete"
+            Goto KILL_DONE
+        Else
+            Goto COMBAT_LOOP
+        End If
+    Else
+        // NPC not selected, retry
+        TracePrint "NPC not selected, retrying..."
+        Delay walkDelay
+        Goto FIND_NPC
+    End If
+Else
+    TracePrint "NPC not found, retrying..."
+    Delay walkDelay
+    Goto FIND_NPC
+End If
+
+// ============================
+// KILL DONE - save and restart
+// ============================
+Rem KILL_DONE
+Delay mapDelay
+
+SayString "save"
+Delay walkDelay
+KeyPress "Enter", 1
+Delay walkDelay
+
+Call RestartGame()
+Goto START
+
+// ============================================================
+// SUBROUTINES
+// ============================================================
+
+Sub NineClick()
+    KeyDown "Ctrl", 1
+    Delay walkDelay
+    KeyPress "A", 1
+    Delay walkDelay
+    KeyPress "Delete", 1
+    Delay walkDelay
+    KeyUp "Ctrl", 1
+    MoveTo 930, 638
+    Delay walkDelay
+    LeftClick 1
+    Delay walkDelay
+End Sub
+
+// RestartGame — close game, reopen, login, adjust camera
+Sub RestartGame()
+    TracePrint "=== RESTART GAME ==="
+    KeyPress "F7", 1
+    
+    Rem RG_CLOSE
+    MoveTo 1028, 153
+    Delay walkDelay
+    LeftClick 1
+    TracePrint "Game window closed"
+    
+    Do
+        FindColor 476, 266, 747, 359, "A56D39", intX, intY
+        FindColor 476, 266, 747, 359, "A56E3A", intX1, intY1
+        If intX > 0 And intY > 0 Then
+            MoveTo 595, 404
+            Delay walkDelay
+            LeftClick 1
+            Exit Do
+        ElseIf intX1 > 0 And intY1 > 0 Then
+            MoveTo 595, 404
+            Delay walkDelay
+            LeftClick 1
+            Exit Do
+        End If
+        Delay walkDelay
+    Loop
+    
+    Do
+        FindColor 586, 205, 744, 286, "215DE7", intX, intY
+        If intX > 0 And intY > 0 Then
+            MoveTo intX, intY
+            LeftClick 1
+            Exit Do
+        End If
+        Delay walkDelay
+    Loop
+    Delay gateDelay
+    
+    MoveTo 480, 359
+    Delay walkDelay
+    LeftClick 1
+    Delay gateDelay
+    
+    Rem RG_LOGIN
+    Do
+        FindColor 293, 211, 684, 355, "CEFF63", intX, intY
+        If intX > 0 And intY > 0 Then
+            // Only type login ID if account field is empty (no green text)
+            FindColor 750, 530, 810, 550, "00FF00", intX, intY
+            If intX <= 0 Or intY <= 0 Then
+                SayString "A123456"
+            End If
+            MoveTo 796, 679
+            Delay walkDelay
+            LeftClick 1
+            Delay gateDelay
+            Exit Do
+        End If
+        Delay walkDelay
+    Loop
+    
+    Dim loginTime
+    loginTime = now
+    Do
+        If DateDiff("s", loginTime, now) >= 30 Then
+            TracePrint "Login timeout, retrying..."
+            Goto RG_CLOSE
+            Exit Do
+        Else
+            FindColor 350, 203, 488, 287, "3979EF", intX, intY
+            If intX > 0 And intY > 0 Then
+                MoveTo 712, 517
+                Delay walkDelay
+                LeftClick 1
+                Delay walkDelay
+                MoveTo 720, 674
+                Delay walkDelay
+                LeftClick 1
+                Exit Do
+            End If
+        End If
+        Delay walkDelay
+    Loop
+    
+    Do
+        IfColor 263, 189, "8CAAC6", 0 Then
+            Delay walkDelay
+            Call NineClick()
+            Exit Do
+        End If
+        Delay walkDelay
+    Loop
+    
+    HWND = Plugin.Window.Foreground()
+    Dim camI
+    For camI = 1 To 20
+        Call Plugin.Bkgnd.KeyPress(HWND, 33)
+        Delay 100
+    Next
+    
+    Delay walkDelay
+    Call NineClick()
+    TracePrint "=== RESTART COMPLETE ==="
+End Sub

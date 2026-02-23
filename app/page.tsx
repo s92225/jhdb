@@ -1,8 +1,9 @@
 import Link from 'next/link'
-import { getStats } from '@/lib/data'
+import { getStats, getAllUpdates } from '@/lib/data'
 
 export default function HomePage() {
   const stats = getStats()
+  const updates = getAllUpdates().slice(0, 5)
 
   return (
     <div className="space-y-6">
@@ -23,17 +24,33 @@ export default function HomePage() {
         <StatCard title="任務" value={stats.quests} href="/quests" />
         <StatCard title="秘笈" value={stats.manuals} href="/manuals" />
         <StatCard title="副本" value={stats.dungeons} href="/dungeons" />
+        <StatCard title="師傅" value={stats.masters} href="/masters" />
       </div>
 
-      <div className="rounded-2xl border bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold">下一步怎麼補資料</h2>
-        <ol className="mt-3 list-decimal space-y-2 pl-5 text-zinc-700">
-          <li>把你提供的 txt 放進 <code className="rounded bg-zinc-100 px-1">/data/raw</code>（已預放示例）。</li>
-          <li>跑匯入腳本（骨架已給）：<code className="rounded bg-zinc-100 px-1">npm run import</code>（需要你補解析規則）。</li>
-          <li>匯入後會生成 <code className="rounded bg-zinc-100 px-1">/data/*.json</code>，網站就能顯示與比較。</li>
-        </ol>
-        <p className="mt-3 text-sm text-zinc-600">提示：目前 JSON 可能是空陣列，這是正常的（因為不能亂填）。</p>
-      </div>
+      <section className="rounded-2xl border bg-white p-6 shadow-sm">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold">近期更新</h2>
+          <Link className="text-sm text-zinc-600 hover:text-zinc-900" href="/updates">
+            查看全部 →
+          </Link>
+        </div>
+        {updates.length > 0 ? (
+          <div className="mt-4 space-y-3">
+            {updates.map((u) => {
+              const summary = String(u.content || '').split('\n')[0]
+              return (
+                <div key={u.id} className="rounded-xl border p-4">
+                  <div className="text-sm text-zinc-500">{u.date || u.title || '—'}</div>
+                  <div className="mt-2 text-sm text-zinc-700 line-clamp-2">{summary}</div>
+                </div>
+              )
+            })}
+          </div>
+        ) : (
+          <div className="mt-4 text-sm text-zinc-500">尚無更新資料</div>
+        )}
+      </section>
+
     </div>
   )
 }

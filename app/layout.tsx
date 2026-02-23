@@ -16,8 +16,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="mx-auto max-w-7xl px-4 py-6">{children}</main>
           <footer className="border-t bg-white">
             <div className="mx-auto max-w-7xl px-4 py-6 text-sm text-zinc-600">
-              <div>人在江湖資料庫 · 不造資料；缺的欄位保持空白</div>
-              <div className="mt-1">資料來源：你提供的 txt 檔（/data/raw）與匯入後 JSON（/data/*.json）</div>
+              <div>人在江湖資料庫 2026</div>
+              <div className="mt-1">資料來源:寒江湖 本網站可能有錯,請以寒江湖為準</div>
             </div>
           </footer>
         </div>

@@ -5,6 +5,9 @@ const nav = [
   { href: '/quests', label: '任務流程' },
   { href: '/manuals', label: '武功秘笈' },
   { href: '/dungeons', label: '副本資訊' },
+  { href: '/masters', label: '師傅給物' },
+  { href: '/attributes', label: '屬性獲得表' },
+  { href: '/tools/dazuo', label: '打坐計算' },
 ]
 
 export function SiteHeader() {

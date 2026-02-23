@@ -1,22 +1,24 @@
-import type { ReactNode } from "react";
+// app/components/Badge.tsx
+import React from 'react'
 
 export function Badge({
   children,
-  className = "",
+  className = '',
 }: {
-  children: ReactNode;
-  className?: string;
+  children: React.ReactNode
+  className?: string
 }) {
   return (
     <span
       className={[
-        "inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium",
+        'inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium',
+        'border border-gray-200 bg-white text-gray-700',
         className,
-      ]
-        .filter(Boolean)
-        .join(" ")}
+      ].join(' ')}
     >
       {children}
     </span>
-  );
+  )
 }
+
+export default Badge

@@ -3,14 +3,21 @@ import rawQuests from '@/data/quests.json'
 import rawManuals from '@/data/manuals.json'
 import rawDungeons from '@/data/dungeons.json'
 import rawUpdates from '@/data/updates.json'
+import rawMasters from '@/data/masters.json'
 // lib/data.ts
 import fs from 'node:fs'
 import path from 'node:path'
-
 import quests from '@/data/quests.json'
-import type { Quest } from './types'
 
-import type { Skill, Quest, Manual, Dungeon, UpdateNote } from './types'
+import type {
+  Skill,
+  Quest,
+  Manual,
+  Dungeon,
+  UpdateNote,
+  Master,
+} from './types'
+
 import { normalizeSkills } from './skills/normalize'
 
 // -------- helpers (safe array) --------
@@ -110,6 +117,14 @@ export async function getUpdates(): Promise<UpdateNote[]> {
   return getAllUpdates()
 }
 
+export function getAllMasters(): Master[] {
+  return asArray<Master>(rawMasters)
+}
+
+export async function getMasters(): Promise<Master[]> {
+  return getAllMasters()
+}
+
 export function getStats() {
   return {
     skills: getAllSkills().length,
@@ -117,5 +132,6 @@ export function getStats() {
     manuals: getAllManuals().length,
     dungeons: getAllDungeons().length,
     updates: getAllUpdates().length,
+    masters: getAllMasters().length,
   }
 }

@@ -1,0 +1,1219 @@
+
+// ============================================================
+// 力戰六大派高手 v2 — kill-count loop + freeze recovery
+// 按鍵精靈 2014 VBScript
+// ============================================================
+
+LockMouse
+
+Dim walkDelay, mapDelay, gateDelay
+walkDelay = 300
+mapDelay = 1000
+gateDelay = 1000
+
+Dim killCount, killed1, killed2
+killCount = 0
+
+Dim intX, intY, intX1, intY1
+Dim npcRetry, combatStart
+
+TracePrint "=== 力戰六大派高手 v2 started ==="
+
+// ============================================================
+// MAIN KILL-COUNT LOOP — need 6 confirmed double-kills
+// ============================================================
+Rem MAIN_LOOP
+Do While killCount < 6
+    TracePrint "--- Round start (killCount=" & killCount & "/6) ---"
+
+    // Heal & practice
+    Call HealFull()
+
+    // 華山腳 → 莎蘿平
+    Call GoToShaLuoPing()
+
+    // Talk to quest NPC: 江湖百曉生 (special handling — NPC randomly stuck)
+    Call TalkBaiXiaoSheng()
+
+    // If 百曉生 says quest already done, walk back to 華山腳 and go to cart man
+    If killCount >= 6 Then
+        TracePrint "Quest already complete, returning to 華山腳 from 莎蘿平..."
+
+        // 莎蘿平 → 華山腳
+        Call CheckCamera()
+        KeyDown "Ctrl", 1
+        Delay walkDelay
+        MoveTo 515, 385
+        Delay walkDelay
+        LeftClick 1
+        Delay walkDelay
+        KeyUp "Ctrl", 1
+        Delay walkDelay
+
+        Call NineClick()
+        MoveTo 715, 351
+        Delay walkDelay
+        LeftClick 1
+        Delay mapDelay
+        
+
+        // Skip to cart man sequence
+        Goto CART_MAN_START
+    End If
+
+    // 光明頂 → 西驛道 room 1
+    Call GoToXiYiDao_Map1()
+
+    // Kill NPC in room 1
+    killed1 = 0
+    Call FindAndKillNPC(545)
+    killed1 = killOK
+
+    // Walk to room 2
+    Call WalkToXiYiDao_Map2()
+
+    // Heal between rooms
+    Call Heal()
+
+    // Kill NPC in room 2
+    killed2 = 0
+    Call FindAndKillNPC(540)
+    killed2 = killOK
+
+    // Return to 光明頂出口
+    Call ReturnToGuangMingDing()
+
+    // Always report to quest NPC (even if kills missed — NPC may have been killed by others)
+    TracePrint "Reporting to quest NPC (room1=" & killed1 & " room2=" & killed2 & ")..."
+
+    // walk to middle of 光明頂出口
+    KeyDown "Ctrl", 1
+    Delay walkDelay
+    MoveTo 942, 517
+    Delay walkDelay
+    LeftClick 1
+    Delay walkDelay
+    KeyUp "Ctrl", 1
+    Delay walkDelay
+
+    Call FindAndTalkNPC(543, "Ask 願意")
+
+    // Check green text in chat box to confirm quest progress
+    FindColor 672, 614, 760, 718, "009600", intX, intY
+    If intX > 0 And intY > 0 Then
+        killCount = killCount + 1
+        TracePrint "=== Kill round #" & killCount & "/6 complete (green text confirmed) ==="
+    Else
+        TracePrint "Round not counted (no green text), will retry..."
+    End If
+
+    // Return to 華山腳
+    Call ReturnToHuaShanJiao()
+
+    // Save progress
+    Call ClearInput()
+    SayString "save"
+    Delay walkDelay
+    KeyPress "Enter", 1
+    Delay walkDelay
+Loop
+
+TracePrint "=== 6 kills complete, starting cart man sequence ==="
+
+// ============================================================
+// Report Quest SEQUENCE (runs once after 6 kills)
+// ============================================================
+
+
+// Walk to cart man area in 華山腳
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 820, 194
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+Rem CART_MAN_START
+// Find cart man → Ask 洛陽 (華山腳 cart man — can get stuck, refresh via 莎蘿平)
+Call FindCartManHuaShan()
+
+
+// Arrive 洛陽, walk to next cart man
+Delay mapDelay
+Call CheckCamera()
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 964, 182
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 885, 203
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+
+MoveTo 754, 333
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+Call CheckCamera()
+
+// Walk to 2nd cart man area
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 910, 191
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+// Find cart man → Ask 明教
+Call FindPicAndTalk("C:\Program Files\按鍵精靈2014\screen\cart man.bmp", 543, "Ask 明教 ")
+
+// Arrive 明教, walk to gate
+
+MoveTo 740, 319
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+Call CheckCamera()
+
+// 去拜火道
+Delay mapDelay
+Call CheckCamera()
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 530, 184
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 591, 208
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+
+MoveTo 730, 322
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+Call CheckCamera()
+
+//walk to the middle of 拜火道
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 535, 192
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+// Find 謝遜 → Ask 交代戰局
+Call FindPicAndTalk("C:\Program Files\按鍵精靈2014\screen\tseshuen.bmp", 533, "Ask 交代戰局 ")
+
+// Kill bandit
+Dim banditRetry
+banditRetry = 0
+
+Rem FIND_BANDIT
+TracePrint "Looking for bandit..."
+
+FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\bandit.bmp", 1, intX, intY
+If intX > 0 And intY > 0 Then
+    TracePrint "Bandit found at (" & intX & ", " & intY & ")"
+    MoveTo intX + 5, intY + 15
+    RightClick 1
+    Delay walkDelay
+    IfColor 557, 506, "0000FF", 0 Then
+        SayString "kill "
+        Delay walkDelay
+        KeyPress "Enter", 1
+        Delay walkDelay
+    Else
+        Delay walkDelay
+        Goto FIND_BANDIT
+    End If
+Else
+    banditRetry = banditRetry + 1
+    TracePrint "Bandit not found, retry #" & banditRetry
+    If banditRetry > 10 Then
+        TracePrint "Bandit not found after 10 retries, skipping..."
+        Goto AFTER_BANDIT
+    End If
+    Delay mapDelay
+    Goto FIND_BANDIT
+End If
+Delay 5000
+
+// Leave map 去拜火丘
+Rem AFTER_BANDIT
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 959, 488
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+Call NineClick()
+MoveTo 758, 364
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+Call CheckCamera()
+
+// Leave map 去拜火道
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 1005, 515
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 892, 491
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+Call NineClick()
+MoveTo 757, 370
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+Call CheckCamera()
+
+// Walk to cart man in 拜火道
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 879, 201
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+// Find cart man in 拜火道 → Ask 洛陽 (with restart recovery)
+Dim bhdCmRetry, bhdCmRestart
+bhdCmRetry = 0
+bhdCmRestart = 0
+
+Do
+    TracePrint "Looking for cart man in 拜火道..."
+    FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\cart man.bmp", 1, intX, intY
+    If intX > 0 And intY > 0 Then
+        TracePrint "Cart man found at (" & intX & ", " & intY & ")"
+        MoveTo intX + 5, intY + 10
+        RightClick 1
+        Delay walkDelay
+        IfColor 508, 506, "0000FF", 0 Then
+            SayString "Ask 洛陽 "
+            Delay walkDelay
+            KeyPress "Enter", 1
+            Delay walkDelay
+            Exit Do
+        Else
+            bhdCmRetry = bhdCmRetry + 1
+            TracePrint "Cart man red check failed, retry #" & bhdCmRetry
+        End If
+    Else
+        bhdCmRetry = bhdCmRetry + 1
+        TracePrint "Cart man not found, retry #" & bhdCmRetry
+    End If
+
+    If bhdCmRetry >= 15 Then
+        bhdCmRestart = bhdCmRestart + 1
+        If bhdCmRestart > 10 Then
+            TracePrint "拜火道 cart man: gave up after 3 restarts"
+            Exit Do
+        End If
+        TracePrint "拜火道 cart man stuck, restarting game (#" & bhdCmRestart & ")..."
+        Call RestartGame()
+        KeyDown "Ctrl", 1
+        Delay walkDelay
+        MoveTo 892, 185
+        Delay walkDelay
+        LeftClick 1
+        Delay walkDelay
+        KeyUp "Ctrl", 1
+        Delay walkDelay
+        bhdCmRetry = 0
+    End If
+    Delay walkDelay
+Loop
+
+// Arrive 洛陽, walk to next cart man
+Delay mapDelay
+Call CheckCamera()
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 964, 182
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 885, 203
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+Call NineClick()
+MoveTo 754, 333
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+Call CheckCamera()
+
+// Walk to 2nd cart man area
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 910, 191
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+// Find cart man in 洛陽 → Ask 華山 (with restart recovery)
+Dim hsCmRetry, hsCmRestart
+hsCmRetry = 0
+hsCmRestart = 0
+
+Do
+    TracePrint "Looking for cart man (Ask 華山)..."
+    FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\cart man.bmp", 1, intX, intY
+    If intX > 0 And intY > 0 Then
+        TracePrint "Cart man found at (" & intX & ", " & intY & ")"
+        MoveTo intX + 5, intY + 10
+        RightClick 1
+        Delay walkDelay
+        IfColor 543, 506, "0000FF", 0 Then
+            SayString "Ask 華山 "
+            Delay walkDelay
+            KeyPress "Enter", 1
+            Delay walkDelay
+            Exit Do
+        Else
+            hsCmRetry = hsCmRetry + 1
+            TracePrint "Cart man red check failed, retry #" & hsCmRetry
+        End If
+    Else
+        hsCmRetry = hsCmRetry + 1
+        TracePrint "Cart man not found, retry #" & hsCmRetry
+    End If
+
+    If hsCmRetry >= 15 Then
+        hsCmRestart = hsCmRestart + 1
+        If hsCmRestart > 10 Then
+            TracePrint "華山 cart man: gave up after 3 restarts"
+            Exit Do
+        End If
+        TracePrint "華山 cart man stuck, restarting game (#" & hsCmRestart & ")..."
+        Call RestartGame()
+        KeyDown "Ctrl", 1
+        Delay walkDelay
+        MoveTo 892, 185
+        Delay walkDelay
+        LeftClick 1
+        Delay walkDelay
+        KeyUp "Ctrl", 1
+        Delay walkDelay
+        hsCmRetry = 0
+    End If
+    Delay walkDelay
+Loop
+
+// Arrive 華山, walk to starting point and refresh
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 822, 519
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 761, 388
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+Call CheckCamera()
+
+//walk back to 華山腳
+MoveTo 745, 322
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+Call CheckCamera()
+
+Call NineClick()
+MoveTo 825, 519
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+Call CheckCamera()
+
+// ============================================================
+// FINAL: repeat quest from 華山腳
+// ============================================================
+
+// 華山腳 → 莎蘿平 (final talk)
+Call GoToShaLuoPing()
+
+// Talk to quest NPC: Ask 力戰六大派高手
+Call FindAndTalkNPC(569, "Ask 力戰六大派高手")
+
+// 光明頂 → 西驛道 (kill any spawned NPCs to avoid getting stuck)
+Call GoToXiYiDao_Map1()
+Call FindAndKillNPC(545)
+Call WalkToXiYiDao_Map2()
+Call Heal()
+Call FindAndKillNPC(540)
+Call ReturnToGuangMingDing()
+
+// Return to 華山腳
+Call ReturnToHuaShanJiao()
+
+// Save
+Call ClearInput()
+SayString "save"
+Delay walkDelay
+KeyPress "Enter", 1
+Delay walkDelay
+
+TracePrint "=== 力戰六大派高手 COMPLETE ==="
+
+// ============================================================
+// SUBROUTINES
+// ============================================================
+
+// --- NineClick: click chat box for game focus ---
+Sub NineClick()
+    MoveTo 930, 638
+    Delay walkDelay
+    LeftClick 1
+    Delay walkDelay
+End Sub
+
+// --- ClearInput: select all + delete ---
+Sub ClearInput()
+    KeyDown "Ctrl", 1
+    Delay walkDelay
+    KeyPress "A", 1
+    Delay walkDelay
+    KeyUp "Ctrl", 1
+    Delay walkDelay
+    KeyPress "Delete", 1
+    Delay walkDelay
+End Sub
+
+// --- Heal: drink 藥酒 ---
+Sub Heal()
+    Call ClearInput()
+    SayString "Use 藥酒 3"
+    Delay walkDelay
+    KeyPress "Enter", 1
+    Delay walkDelay
+End Sub
+
+// --- HealFull: full heal + practice ---
+Sub HealFull()
+    Call ClearInput()
+
+    SayString "Use 藥酒 3"
+    Delay walkDelay
+    KeyPress "Enter", 1
+    Delay walkDelay
+
+    SayString "Use 關東煮 "
+    Delay walkDelay
+    KeyPress "Enter", 5
+    Delay walkDelay
+
+
+        SayString "Use 青草 2"
+        Delay walkDelay
+        KeyPress "Enter", 1
+        Delay walkDelay
+
+        SayString "Practice 輕功密冊 1800"
+        //SayString "Practice 太玄神功秘笈 400"
+        //SayString "Practice 內功心法 400"
+        Delay walkDelay
+        KeyPress "Enter", 1
+        Delay walkDelay
+
+
+End Sub
+
+// --- TalkBaiXiaoSheng: specialized handler for 江湖百曉生 in 莎蘿平 ---
+// On stuck: restart game, re-position to 莎蘿平, retry (max 3 restarts)
+Sub TalkBaiXiaoSheng()
+    Dim bxsRetry, bxsRestart
+    bxsRetry = 0
+    bxsRestart = 0
+
+    Rem BXS_FIND
+    FindColor 448, 205, 1025, 556, "FFFF00", intX, intY
+    If intX > 0 And intY > 0 Then
+        TracePrint "百曉生 found at (" & intX & ", " & intY & ")"
+        MoveTo intX + 5, intY + 10
+        Delay walkDelay
+        RightClick 1
+        Delay walkDelay
+        IfColor 569, 506, "0000FF", 0 Then
+            SayString "Ask 力戰六大派高手"
+            Delay walkDelay
+            KeyPress "Enter", 1
+            Delay walkDelay
+
+            // Check if quest already complete (green text in chat box)
+            FindColor 832, 615, 959, 721, "009600", intX, intY
+            If intX > 0 And intY > 0 Then
+                TracePrint "百曉生: green text detected — 6 runs already complete!"
+                killCount = 6
+            End If
+        Else
+            bxsRetry = bxsRetry + 1
+            TracePrint "百曉生 red check failed, retry #" & bxsRetry
+            If bxsRetry >= 15 Then
+                bxsRestart = bxsRestart + 1
+                If bxsRestart > 3 Then
+                    TracePrint "百曉生: gave up after 3 restarts"
+                Else
+                    TracePrint "百曉生 stuck, restarting game (#" & bxsRestart & ")..."
+                    Call RestartGame()
+                    // Re-position to 莎蘿平 map middle 
+                    KeyDown "Ctrl", 1
+                    Delay walkDelay
+                    MoveTo 983, 295
+                    Delay walkDelay
+                    LeftClick 1
+                    Delay walkDelay
+                    KeyUp "Ctrl", 1
+                    Delay walkDelay
+                    bxsRetry = 0
+                    Goto BXS_FIND
+                End If
+            Else
+                Delay walkDelay
+                Goto BXS_FIND
+            End If
+        End If
+    Else
+        bxsRetry = bxsRetry + 1
+        TracePrint "百曉生 not found, retry #" & bxsRetry
+        If bxsRetry >= 15 Then
+            bxsRestart = bxsRestart + 1
+            If bxsRestart > 3 Then
+                TracePrint "百曉生: gave up after 3 restarts"
+            Else
+                TracePrint "百曉生 not visible, restarting game (#" & bxsRestart & ")..."
+                Call RestartGame()
+                // Re-position to 莎蘿平 map middle 
+                KeyDown "Ctrl", 1
+                Delay walkDelay
+                MoveTo 983, 295
+                Delay walkDelay
+                LeftClick 1
+                Delay walkDelay
+                KeyUp "Ctrl", 1
+                Delay walkDelay
+                bxsRetry = 0
+                Goto BXS_FIND
+            End If
+        Else
+            Delay walkDelay
+            Goto BXS_FIND
+        End If
+    End If
+End Sub
+
+// --- FindAndTalkNPC: find cyan NPC, right-click, say dialogue ---
+// redCheckX = x-coordinate for IfColor red check (varies per map)
+// dialogue = what to say (e.g. "Ask 力戰六大派高手")
+// Note: "0000FF" in BGR = red (FF0000 RGB), confirms NPC selected
+Sub FindAndTalkNPC(redCheckX, dialogue)
+    Dim talkRetry
+    talkRetry = 0
+
+    Rem TALK_FIND
+    FindColor 448, 205, 1025, 556, "FFFF00", intX, intY
+    If intX > 0 And intY > 0 Then
+        TracePrint "NPC found at (" & intX & ", " & intY & ")"
+        MoveTo intX + 5, intY + 10
+        Delay walkDelay
+        RightClick 1
+        Delay walkDelay
+        IfColor redCheckX, 506, "0000FF", 0 Then
+            SayString dialogue
+            Delay walkDelay
+            KeyPress "Enter", 1
+            Delay walkDelay
+        Else
+            talkRetry = talkRetry + 1
+            If talkRetry >= 30 Then
+                TracePrint "Talk NPC: red check failed after 30 retries"
+            Else
+                Delay walkDelay
+                Goto TALK_FIND
+            End If
+        End If
+    Else
+        talkRetry = talkRetry + 1
+        If talkRetry >= 30 Then
+            TracePrint "Talk NPC: not found after 30 retries"
+        Else
+            Delay walkDelay
+            Goto TALK_FIND
+        End If
+    End If
+End Sub
+
+// --- FindAndKillNPC: find cyan NPC, kill, combat loop with HP check ---
+// redCheckX = x-coordinate for IfColor red check
+// Sets global killOK = 1 on success, 0 on failure (map empty)
+// Note: "0000FF" in BGR = red (FF0000 RGB), confirms NPC selected
+Dim killOK
+Sub FindAndKillNPC(redCheckX)
+    killOK = 0
+    Dim fkRetry
+    fkRetry = 0
+
+    Rem FK_FIND
+    FindColor 448, 205, 1025, 556, "FFFF00", intX, intY
+    If intX > 0 And intY > 0 Then
+        TracePrint "Kill target found at (" & intX & ", " & intY & ")"
+        MoveTo intX + 5, intY + 15
+        Delay walkDelay
+        RightClick 1
+        Delay walkDelay
+        IfColor redCheckX, 506, "0000FF", 0 Then
+            Call ClearInput()
+            SayString "kill"
+            Delay walkDelay
+            KeyPress "Enter", 1
+            Delay walkDelay
+
+            // Combat loop with HP check
+            combatStart = now
+            Rem FK_COMBAT
+            Do
+                // Timeout: 120s max combat
+                If DateDiff("s", combatStart, now) >= 120 Then
+                    TracePrint "Combat timeout (120s), giving up..."
+                    Exit Do
+                End If
+
+                // HP check: if first HP digit is black (low HP), heal
+                IfColor 274, 298, "000000", 0 Then
+                    Call ClearInput()
+                    SayString "Use 藥酒 7"
+                    Delay walkDelay
+                    KeyPress "Enter", 1
+                    Delay walkDelay
+                End If
+
+                // Kill confirmation: yellow text in result area
+                FindColor 756, 284, 791, 293, "FFFF00", intX, intY
+                If intX > 0 And intY > 0 Then
+                    TracePrint "Kill confirmed!"
+                    killOK = 1
+                    Exit Do
+                End If
+                Delay walkDelay
+            Loop
+        Else
+            // Red check failed, retry
+            fkRetry = fkRetry + 1
+            If fkRetry >= 15 Then
+                TracePrint "Kill NPC: red check failed after 15 retries, map may be empty"
+                killOK = 0
+            Else
+                Delay walkDelay
+                Goto FK_FIND
+            End If
+        End If
+    Else
+        fkRetry = fkRetry + 1
+        TracePrint "Kill NPC not found, retry #" & fkRetry
+        If fkRetry >= 15 Then
+            TracePrint "Kill NPC: not found after 5 retries, map empty"
+            killOK = 0
+        Else
+            Delay walkDelay
+            Goto FK_FIND
+        End If
+    End If
+End Sub
+
+// --- FindPicAndTalk: find NPC by image, right-click, say dialogue ---
+// picPath = full path to .bmp image
+// redCheckX = x-coordinate for IfColor red check
+// dialogue = what to say
+// Note: "0000FF" in BGR = red (FF0000 RGB), confirms NPC selected
+Sub FindPicAndTalk(picPath, redCheckX, dialogue)
+    Dim fpRetry
+    fpRetry = 0
+
+    Rem FP_FIND
+    TracePrint "Looking for image: " & picPath
+    FindPic 451, 208, 1034, 555, picPath, 1, intX, intY
+    If intX > 0 And intY > 0 Then
+        TracePrint "Image found at (" & intX & ", " & intY & ")"
+        MoveTo intX + 5, intY + 10
+        RightClick 1
+        Delay walkDelay
+        IfColor redCheckX, 506, "0000FF", 0 Then
+            SayString dialogue
+            Delay walkDelay
+            KeyPress "Enter", 1
+            Delay walkDelay
+        Else
+            fpRetry = fpRetry + 1
+            If fpRetry >= 15 Then
+                TracePrint "FindPic: red check failed after 15 retries"
+            Else
+                Delay walkDelay
+                Goto FP_FIND
+            End If
+        End If
+    Else
+        fpRetry = fpRetry + 1
+        TracePrint "Image not found, retry #" & fpRetry
+        If fpRetry >= 15 Then
+            TracePrint "FindPic: not found after 15 retries"
+        Else
+            Delay walkDelay
+            Goto FP_FIND
+        End If
+    End If
+    Delay walkDelay
+End Sub
+
+// --- FindCartManHuaShan: find cart man in 華山腳 ---
+// On stuck: restart game, re-position to 華山腳 middle then cart man area, retry (max 3 restarts)
+Sub FindCartManHuaShan()
+    Dim cmRetry, cmRestart
+    cmRetry = 0
+    cmRestart = 0
+
+    Rem CM_FIND
+    TracePrint "Looking for cart man in 華山腳..."
+    FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\cart man.bmp", 1, intX, intY
+    If intX > 0 And intY > 0 Then
+        TracePrint "Cart man found at (" & intX & ", " & intY & ")"
+        MoveTo intX + 5, intY + 15
+        RightClick 1
+        Delay walkDelay
+        IfColor 545, 506, "0000FF", 0 Then
+            SayString "Ask 洛陽 "
+            Delay walkDelay
+            KeyPress "Enter", 1
+            Delay walkDelay
+        Else
+            cmRetry = cmRetry + 1
+            TracePrint "Cart man red check failed, retry #" & cmRetry
+            If cmRetry >= 30 Then
+                cmRestart = cmRestart + 1
+                If cmRestart > 10 Then
+                    TracePrint "Cart man: gave up after 3 restarts"
+                Else
+                    TracePrint "Cart man stuck, restarting game (#" & cmRestart & ")..."
+                    Call RestartGame()
+                    // Re-position to cart man area after restart
+                    KeyDown "Ctrl", 1
+                    Delay walkDelay
+                    MoveTo 943, 418
+                    Delay walkDelay
+                    LeftClick 1
+                    Delay walkDelay
+                    KeyUp "Ctrl", 1
+                    Delay walkDelay
+                    cmRetry = 0
+                    Goto CM_FIND
+                End If
+            Else
+                Delay walkDelay
+                Goto CM_FIND
+            End If
+        End If
+    Else
+        cmRetry = cmRetry + 1
+        TracePrint "Cart man not found, retry #" & cmRetry
+        If cmRetry >= 30 Then
+            cmRestart = cmRestart + 1
+            If cmRestart > 10 Then
+                TracePrint "Cart man: not found after 3 restarts"
+            Else
+                TracePrint "Cart man not visible, restarting game (#" & cmRestart & ")..."
+                Call RestartGame()
+                KeyDown "Ctrl", 1
+                Delay walkDelay
+                MoveTo 943, 418
+                Delay walkDelay
+                LeftClick 1
+                Delay walkDelay
+                KeyUp "Ctrl", 1
+                Delay walkDelay
+                cmRetry = 0
+                Goto CM_FIND
+            End If
+        Else
+            Delay walkDelay
+            Goto CM_FIND
+        End If
+    End If
+    Delay walkDelay
+End Sub
+
+// --- CheckCamera: detect camera reset and fix with PageDown x20 ---
+// When camera is zoomed in (bad), character name green "21FF42" appears at (772,243)
+// When camera is correct (zoomed out), that pixel is NOT green
+Sub CheckCamera()
+    IfColor 772, 243, "21FF42", 0 Then
+        TracePrint "Camera reset detected, fixing..."
+        HWND = Plugin.Window.Foreground()
+        Dim camI
+        For camI = 1 To 20
+            Call Plugin.Bkgnd.KeyPress(HWND, 34)
+            Delay 100
+        Next
+        Call NineClick()
+    End If
+End Sub
+
+// ============================================================
+// MOVEMENT SUBS
+// ============================================================
+
+// --- GoToShaLuoPing: 華山腳 → 莎蘿平 ---
+Sub GoToShaLuoPing()
+    TracePrint "Moving: 華山腳 → 莎蘿平"
+    Call NineClick()
+
+    // Teleport toward gate
+    KeyDown "Ctrl", 1
+    Delay walkDelay
+    MoveTo 825, 191
+    Delay walkDelay
+    LeftClick 1
+    Delay walkDelay
+    KeyUp "Ctrl", 1
+    Delay walkDelay
+
+    // Walk through gate (normal click, map transition)
+    
+    MoveTo 764, 338
+    Delay walkDelay
+    LeftClick 1
+    Delay mapDelay
+    Call CheckCamera()
+
+    // walk to look for 百曉生 area in 莎蘿平
+    KeyDown "Ctrl", 1
+    Delay walkDelay
+    MoveTo 983, 295
+    Delay walkDelay
+    LeftClick 1
+    Delay walkDelay
+    KeyUp "Ctrl", 1
+    Delay walkDelay
+End Sub
+
+// --- GoToXiYiDao_Map1: 光明頂 → 西驛道 room 1 ---
+Sub GoToXiYiDao_Map1()
+    TracePrint "Moving: 光明頂 → 西驛道 room 1"
+
+    // Teleport left
+    Call CheckCamera()
+    KeyDown "Ctrl", 1
+    Delay walkDelay
+    MoveTo 460, 316 
+    Delay walkDelay
+    LeftClick 1
+    Delay walkDelay
+    KeyUp "Ctrl", 1
+    Delay walkDelay
+
+    // Teleport to gate area
+    KeyDown "Ctrl", 1
+    Delay walkDelay
+    MoveTo 614, 373
+    Delay walkDelay
+    LeftClick 1
+    Delay walkDelay
+    KeyUp "Ctrl", 1
+    Delay walkDelay
+
+    // Walk through gate (map transition)
+    Call NineClick()
+    MoveTo 723, 360
+    Delay walkDelay
+    LeftClick 1
+    Delay mapDelay
+
+
+    // Teleport to center of 西驛道
+    KeyDown "Ctrl", 1
+    Delay walkDelay
+    MoveTo 517, 504
+    Delay walkDelay
+    LeftClick 1
+    Delay walkDelay
+    KeyUp "Ctrl", 1
+    Delay walkDelay
+End Sub
+
+// --- WalkToXiYiDao_Map2: 西驛道 room 1 → room 2 ---
+Sub WalkToXiYiDao_Map2()
+    TracePrint "Moving: 西驛道 room 1 → room 2"
+
+    // Teleport toward exit
+    KeyDown "Ctrl", 1
+    Delay walkDelay
+    MoveTo 922, 208
+    Delay walkDelay
+    LeftClick 1
+    Delay walkDelay
+    KeyUp "Ctrl", 1
+    Delay walkDelay
+
+    // Walk through gate (map transition)
+    Call NineClick()
+    MoveTo 760, 332
+    Delay walkDelay
+    LeftClick 1
+    Delay mapDelay
+    Call CheckCamera()
+
+    // Teleport to center of room 2
+    KeyDown "Ctrl", 1
+    Delay walkDelay
+    MoveTo 946, 192
+    Delay walkDelay
+    LeftClick 1
+    Delay walkDelay
+    KeyUp "Ctrl", 1
+    Delay walkDelay
+End Sub
+
+// --- ReturnToGuangMingDing: 西驛道 room 2 → 光明頂出口 ---
+Sub ReturnToGuangMingDing()
+    TracePrint "Moving: 西驛道 room 2 → 光明頂出口"
+
+    // Teleport toward exit
+    KeyDown "Ctrl", 1
+    Delay walkDelay
+    MoveTo 526, 489
+    Delay walkDelay
+    LeftClick 1
+    Delay walkDelay
+    KeyUp "Ctrl", 1
+    Delay walkDelay
+
+    // Walk through gate (map transition)
+    Call NineClick()
+    MoveTo 722, 363
+    Delay walkDelay
+    LeftClick 1
+    Delay mapDelay
+    Call CheckCamera()
+End Sub
+
+// --- ReturnToHuaShanJiao: 光明頂出口 → 華山腳 ---
+Sub ReturnToHuaShanJiao()
+    TracePrint "Moving: 光明頂出口 → 華山腳"
+    Call NineClick()
+
+    // Teleport toward exit of 光明頂出口
+    KeyDown "Ctrl", 1
+    Delay walkDelay
+    MoveTo 583, 193
+    Delay walkDelay
+    LeftClick 1
+    Delay walkDelay
+    KeyUp "Ctrl", 1
+    Delay walkDelay
+
+    // Walk through gate (map transition) arrive 東村口
+    
+    MoveTo 735, 334
+    Delay walkDelay
+    LeftClick 1
+    Delay mapDelay
+    Call CheckCamera()
+
+    // Walk to starting point in 華山腳
+    
+    MoveTo 744, 315
+    Delay walkDelay
+    LeftClick 1
+    Delay mapDelay
+    Call CheckCamera()
+End Sub
+
+// ============================================================
+// RESTART GAME
+// ============================================================
+Sub RestartGame()
+    TracePrint "=== RESTART GAME ==="
+    KeyPress "F7", 1
+
+    Rem RG_CLOSE
+    MoveTo 1028, 153
+    Delay walkDelay
+    LeftClick 1
+    TracePrint "Game window closed"
+
+    Do
+        FindColor 476, 266, 747, 359, "A56D39", intX, intY
+        FindColor 476, 266, 747, 359, "A56E3A", intX1, intY1
+        If intX > 0 And intY > 0 Then
+            MoveTo 595, 404
+            Delay walkDelay
+            LeftClick 1
+            Exit Do
+        ElseIf intX1 > 0 And intY1 > 0 Then
+            MoveTo 595, 404
+            Delay walkDelay
+            LeftClick 1
+            Exit Do
+        End If
+        Delay walkDelay
+    Loop
+
+    Do
+        FindColor 586, 205, 744, 286, "215DE7", intX, intY
+        If intX > 0 And intY > 0 Then
+            MoveTo intX, intY
+            LeftClick 1
+            Exit Do
+        End If
+        Delay walkDelay
+    Loop
+    Delay gateDelay
+
+    MoveTo 480, 359
+    Delay walkDelay
+    LeftClick 1
+    Delay gateDelay
+
+    Rem RG_LOGIN
+    Do
+        FindColor 293, 211, 684, 355, "CEFF63", intX, intY
+        If intX > 0 And intY > 0 Then
+            // Only type login ID if account field is empty (no green text)
+            FindColor 750, 530, 810, 550, "00FF00", intX, intY
+            If intX <= 0 Or intY <= 0 Then
+                SayString "A12345678"
+            End If
+            MoveTo 796, 679
+            Delay walkDelay
+            LeftClick 1
+            Delay gateDelay
+            Exit Do
+        End If
+        Delay walkDelay
+    Loop
+
+    Dim loginTime
+    loginTime = now
+    Do
+        If DateDiff("s", loginTime, now) >= 30 Then
+            TracePrint "Login timeout, retrying..."
+            Goto RG_CLOSE
+            Exit Do
+        Else
+            FindColor 350, 203, 488, 287, "3979EF", intX, intY
+            If intX > 0 And intY > 0 Then
+                MoveTo 712, 517
+                Delay walkDelay
+                LeftClick 1
+                Delay walkDelay
+                MoveTo 720, 674
+                Delay walkDelay
+                LeftClick 1
+                Exit Do
+            End If
+        End If
+        Delay walkDelay
+    Loop
+
+    Do
+        IfColor 263, 189, "8CAAC6", 0 Then
+            Delay walkDelay
+            Call NineClick()
+            Exit Do
+        End If
+        Delay walkDelay
+    Loop
+
+    HWND = Plugin.Window.Foreground()
+    Dim camI
+    For camI = 1 To 20
+        Call Plugin.Bkgnd.KeyPress(HWND, 34)
+        Delay 100
+    Next
+
+    Delay walkDelay
+    Call NineClick()
+    KeyDown "Ctrl", 1
+    Delay walkDelay
+    KeyPress "A", 1
+    Delay walkDelay
+    KeyUp "Ctrl", 1
+    Delay walkDelay
+    KeyPress "Delete", 1
+    Delay walkDelay
+
+    TracePrint "=== RESTART COMPLETE ==="
+End Sub
+
+// ============================================================
+// PLACEHOLDER: RecoverPosition
+// TODO: Add map detection + walk-back to 華山腳 after reconnect
+// Maps to detect: 華山腳, 莎蘿平, 光明頂, 西驛道(room1), 西驛道(room2),
+//                 拜火道, 拜火丘, 洛陽, 明教
+// Each map needs: FindColor/FindPic detection + walk-back route
+// ============================================================
+Sub RecoverPosition()
+    TracePrint "RecoverPosition: NOT IMPLEMENTED YET"
+    TracePrint "TODO: detect current map and walk back to 華山腳"
+    // Dim map1Timeouts, map2Timeouts  // per-map timeout counters
+End Sub
+

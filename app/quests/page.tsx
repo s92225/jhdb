@@ -1,394 +1,385 @@
-import Link from "next/link";
-import integrated from "@/data/quests_integrated.json";
+// app/quests/page.tsx
+import fs from 'fs'
+import path from 'path'
+import Link from 'next/link'
+import Badge from '@/app/components/Badge'
+
+type WeaponItem = {
+  name: string
+  attack: number
+  defense: number
+  forgeable: boolean
+  upgradedName?: string
+  upgradedAttack?: number
+  upgradedDefense?: number
+}
+
+type WeaponCategory = {
+  type: string
+  forgingMaterial: string
+  items: WeaponItem[]
+}
+
+type WeaponsData = {
+  total: number
+  price: number
+  categories: WeaponCategory[]
+  forging?: {
+    description?: string
+    materials?: Array<{ name: string; forType: string }>
+    materialSource?: string
+  }
+}
 
 type IntegratedQuest = {
-  id: string;
-  title: string;
-  category?: string; // 新手/練功/門派...
-  tags?: string[];
-  summary?: string;
+  id: string
+  name: string
+  category?: string
+  sourceFiles?: string[]
+  summary?: string
 
-  // 常見欄位（可能有、可能沒有；缺就顯示 —）
-  start?: string; // 接取方式/入口/NPC
-  requirements?: string; // 門檻
-  route?: string; // 路線/流程
-  rewards?: string; // 獎勵/掉落
-  notes?: string; // 補充
-
-  // 更新區（可選）
-  updates?: Array<{
-    version?: string;
-    text: string;
-    source?: string;
-  }>;
-
-  // 來源
-  source?: string; // 檔名
-};
-
-type IntegratedRoot = {
-  quests?: IntegratedQuest[];
-};
-
-const CATEGORY_ORDER = [
-  "新手",
-  "練功",
-  "門派",
-  "刷錢",
-  "城市",
-  "陣營",
-  "轉生後",
-  "活動",
-  "其他",
-] as const;
-
-function asArray<T>(v: unknown): T[] {
-  return Array.isArray(v) ? (v as T[]) : [];
+  // structured fields (best effort)
+  accept?: string[] // 接取方式
+  requirements?: string[] // 門檻/條件
+  rewards?: string[] // 獎勵
+  workflow?: string[] // 流程
+  notes?: string[] // 其他補充
+  weapons?: WeaponsData // 神兵資料
 }
 
-function getQuests(): IntegratedQuest[] {
-  // 允許 root.quests 或直接 array
-  if (Array.isArray(integrated)) return integrated as unknown as IntegratedQuest[];
-  const root = integrated as unknown as IntegratedRoot;
-  return asArray<IntegratedQuest>(root?.quests);
-}
+type IntegratedRoot = { quests?: IntegratedQuest[] }
 
-function catIndex(cat?: string) {
-  const c = (cat ?? "其他").trim() || "其他";
-  const i = CATEGORY_ORDER.indexOf(c as any);
-  return i === -1 ? CATEGORY_ORDER.length : i;
-}
+function readIntegratedQuests(): { quests: IntegratedQuest[]; error?: string } {
+  try {
+    const p = path.join(process.cwd(), 'data', 'quests_integrated.json')
+    if (!fs.existsSync(p)) return { quests: [], error: '找不到 data/quests_integrated.json' }
 
-function badgeClassByCategory(cat?: string) {
-  const c = (cat ?? "其他").trim() || "其他";
-  switch (c) {
-    case "新手":
-      return "bg-emerald-50 text-emerald-700 border-emerald-200";
-    case "練功":
-      return "bg-sky-50 text-sky-700 border-sky-200";
-    case "門派":
-      return "bg-violet-50 text-violet-700 border-violet-200";
-    case "刷錢":
-      return "bg-amber-50 text-amber-800 border-amber-200";
-    case "城市":
-      return "bg-slate-50 text-slate-700 border-slate-200";
-    case "陣營":
-      return "bg-rose-50 text-rose-700 border-rose-200";
-    case "轉生後":
-      return "bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200";
-    case "活動":
-      return "bg-lime-50 text-lime-800 border-lime-200";
-    default:
-      return "bg-gray-50 text-gray-700 border-gray-200";
+    const raw = fs.readFileSync(p, 'utf-8')
+    if (!raw.trim()) return { quests: [], error: 'quests_integrated.json 是空檔案' }
+
+    const parsed = JSON.parse(raw) as IntegratedRoot | IntegratedQuest[]
+    const quests = Array.isArray(parsed) ? parsed : Array.isArray(parsed?.quests) ? parsed.quests : []
+    return { quests }
+  } catch (e: any) {
+    return { quests: [], error: e?.message || String(e) }
   }
 }
 
-function clean(s?: string) {
-  const t = (s ?? "").trim();
-  return t || "—";
+function stringifyItem(v: any): string | null {
+  if (typeof v === 'string') return v.trim() || null
+  if (typeof v === 'number') return Number.isFinite(v) ? String(v) : null
+  if (v && typeof v === 'object') {
+    const text = typeof v.text === 'string' ? v.text.trim() : ''
+    if (text) return text
+    const value = typeof v.value === 'string' ? v.value.trim() : ''
+    if (value) return value
+    return null
+  }
+  return null
 }
 
-type PageProps = {
-  searchParams?: {
-    tab?: string;
-    view?: string;
-    sort?: string;
-    q?: string;
-  };
-};
+function arr(v: any): string[] {
+  if (Array.isArray(v)) return v.map(stringifyItem).filter(Boolean) as string[]
+  const single = stringifyItem(v)
+  return single ? [single] : []
+}
 
-export default function QuestsPage({ searchParams }: PageProps) {
-  const all = getQuests().map((q) => ({
-    ...q,
-    category: (q.category ?? "其他").trim() || "其他",
-    tags: asArray<string>(q.tags),
-  }));
+function WeaponsSection({ weapons }: { weapons: WeaponsData }) {
+  const cats = Array.isArray(weapons.categories) ? weapons.categories : []
+  const forging = weapons.forging
+  const materials = Array.isArray(forging?.materials) ? forging!.materials : []
 
-  // tabs：只顯示有資料的分類
-  const categories = CATEGORY_ORDER.filter((c) => all.some((q) => q.category === c));
-  const tabs = ["全部", ...categories];
+  return (
+    <div className="mt-6 space-y-6">
+      {/* header */}
+      <div className="flex flex-wrap items-center gap-3">
+        <h3 className="text-lg font-semibold text-gray-900">神兵一覽</h3>
+        <Badge className="bg-amber-50 text-amber-700 border-amber-200">
+          共 {weapons.total} 把
+        </Badge>
+        <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200">
+          每把 {weapons.price.toLocaleString()} 黃金
+        </Badge>
+      </div>
 
-  const tabQ = (searchParams?.tab ?? "全部").trim();
-  const viewQ = (searchParams?.view ?? "table").trim();
-  const sortQ = (searchParams?.sort ?? "category").trim();
-  const qQ = (searchParams?.q ?? "").trim();
+      {/* forging rules */}
+      {forging?.description ? (
+        <div className="rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-3 text-sm text-indigo-900">
+          <span className="font-semibold">鑄煉規則：</span>{forging.description}
+        </div>
+      ) : null}
 
-  const selectedTab = tabs.includes(tabQ) ? tabQ : "全部";
-  const viewMode: "cards" | "table" = viewQ === "cards" ? "cards" : "table";
-  const sortMode: "category" | "title" = sortQ === "title" ? "title" : "category";
+      {/* materials */}
+      {materials.length > 0 ? (
+        <div className="rounded-xl border bg-gray-50 p-4">
+          <h4 className="text-sm font-semibold text-gray-900">鑄煉素材</h4>
+          {forging?.materialSource ? (
+            <p className="mt-1 text-xs text-gray-500">{forging.materialSource}</p>
+          ) : null}
+          <div className="mt-3 grid gap-2 sm:grid-cols-2 md:grid-cols-4">
+            {materials.map((m) => (
+              <div key={m.name} className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm">
+                <div className="font-semibold text-gray-800">{m.name}</div>
+                <div className="text-xs text-gray-500">用於：{m.forType}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : null}
 
-  let list = all;
+      {/* weapon tables per category */}
+      {cats.map((cat) => {
+        const items = Array.isArray(cat.items) ? cat.items : []
+        return (
+          <div key={cat.type} className="rounded-xl border bg-white overflow-hidden">
+            <div className="flex items-center gap-2 border-b bg-gray-50 px-4 py-3">
+              <h4 className="text-sm font-semibold text-gray-900">{cat.type}</h4>
+              <span className="text-xs text-gray-500">鑄煉素材：{cat.forgingMaterial}</span>
+              <Badge className="ml-auto bg-gray-100 text-gray-600 border-gray-200 text-xs">
+                {items.length} 把
+              </Badge>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-gray-50 text-gray-600">
+                  <tr>
+                    <th className="px-4 py-2 font-medium">名稱</th>
+                    <th className="px-4 py-2 font-medium text-right">攻擊力</th>
+                    <th className="px-4 py-2 font-medium text-right">防御力</th>
+                    <th className="px-4 py-2 font-medium text-right">攻防總和</th>
+                    <th className="px-4 py-2 font-medium text-center">可鑄煉</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {items.map((w) => (
+                    <tr key={w.name} className={w.forgeable ? 'bg-amber-50/40' : ''}>
+                      <td className="px-4 py-2 font-medium text-gray-900">{w.name}</td>
+                      <td className="px-4 py-2 text-right tabular-nums text-gray-700">{w.attack}</td>
+                      <td className="px-4 py-2 text-right tabular-nums text-gray-700">{w.defense}</td>
+                      <td className="px-4 py-2 text-right tabular-nums font-semibold text-gray-800">{w.attack + w.defense}</td>
+                      <td className="px-4 py-2 text-center">
+                        {w.forgeable ? (
+                          <span className="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800 ring-1 ring-inset ring-amber-300">
+                            可鑄煉
+                          </span>
+                        ) : (
+                          <span className="text-xs text-gray-400">—</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )
+      })}
 
-  // filter tab
-  if (selectedTab !== "全部") {
-    list = list.filter((x) => (x.category ?? "其他") === selectedTab);
+      {/* upgraded weapons table */}
+      {(() => {
+        const upgraded = cats.flatMap((cat) =>
+          (cat.items || []).filter((w) => w.forgeable && w.upgradedName).map((w) => ({
+            original: w.name,
+            name: w.upgradedName!,
+            attack: w.upgradedAttack!,
+            defense: w.upgradedDefense!,
+          }))
+        )
+        if (!upgraded.length) return null
+        return (
+          <div className="rounded-xl border border-amber-300 bg-amber-50 overflow-hidden">
+            <div className="flex items-center gap-2 border-b border-amber-200 bg-amber-100/60 px-4 py-3">
+              <h4 className="text-sm font-semibold text-amber-900">鑄煉後神兵（真神兵）</h4>
+              <Badge className="ml-auto bg-amber-200 text-amber-900 border-amber-300 text-xs">
+                {upgraded.length} 把
+              </Badge>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-amber-100/40 text-amber-800">
+                  <tr>
+                    <th className="px-4 py-2 font-medium">鑄煉後名稱</th>
+                    <th className="px-4 py-2 font-medium text-right">攻擊力</th>
+                    <th className="px-4 py-2 font-medium text-right">防御力</th>
+                    <th className="px-4 py-2 font-medium text-right">攻防總和</th>
+                    <th className="px-4 py-2 font-medium">原始神兵</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-amber-100">
+                  {upgraded.map((w) => (
+                    <tr key={w.name + w.original}>
+                      <td className="px-4 py-2 font-semibold text-amber-900">{w.name}</td>
+                      <td className="px-4 py-2 text-right tabular-nums text-amber-800">{w.attack}</td>
+                      <td className="px-4 py-2 text-right tabular-nums text-amber-800">{w.defense}</td>
+                      <td className="px-4 py-2 text-right tabular-nums font-semibold text-amber-900">{w.attack + w.defense}</td>
+                      <td className="px-4 py-2 text-sm text-amber-700">{w.original}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )
+      })()}
+    </div>
+  )
+}
+
+export default function QuestsPage() {
+  const { quests, error } = readIntegratedQuests()
+
+  // JSON 壞掉：給可讀錯誤頁，不要直接 500
+  if (error) {
+    return (
+      <div className="mx-auto max-w-6xl px-4 py-8">
+        <div className="mb-6">
+          <h1 className="text-2xl font-semibold text-gray-900">任務流程</h1>
+          <p className="mt-2 text-sm text-gray-600">整合版資料讀取失敗（本頁不會讓站台 500）。</p>
+        </div>
+
+        <div className="rounded-2xl border bg-white p-5">
+          <div className="text-sm font-medium text-red-700">quests_integrated.json 讀取失敗</div>
+          <div className="mt-2 text-sm text-gray-700 break-words">{error}</div>
+          <div className="mt-4 text-sm text-gray-500">
+            請確認：
+            <ul className="mt-2 list-disc list-inside space-y-1">
+              <li>檔案路徑：<code className="px-1">/data/quests_integrated.json</code></li>
+              <li>JSON 格式正確（最後一行不要缺 <code className="px-1">]</code> 或 <code className="px-1">{'}'}</code>）</li>
+              <li>Vercel 有抓到最新 commit</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    )
   }
-
-  // search
-  if (qQ) {
-    const needle = qQ.toLowerCase();
-    list = list.filter((x) => {
-      const hay = [
-        x.title,
-        x.category,
-        ...(x.tags ?? []),
-        x.summary,
-        x.start,
-        x.requirements,
-        x.route,
-        x.rewards,
-        x.notes,
-      ]
-        .filter(Boolean)
-        .join("\n")
-        .toLowerCase();
-      return hay.includes(needle);
-    });
-  }
-
-  // sort
-  list = [...list].sort((a, b) => {
-    if (sortMode === "title") return (a.title ?? "").localeCompare(b.title ?? "", "zh-Hant");
-    const ca = catIndex(a.category);
-    const cb = catIndex(b.category);
-    if (ca !== cb) return ca - cb;
-    return (a.title ?? "").localeCompare(b.title ?? "", "zh-Hant");
-  });
-
-  // href builder
-  const href = (next: Partial<{ tab: string; view: string; sort: string; q: string }>) => {
-    const p = new URLSearchParams();
-    const t = next.tab ?? selectedTab;
-    const v = next.view ?? viewMode;
-    const s = next.sort ?? sortMode;
-    const qq = next.q ?? qQ;
-
-    if (t && t !== "全部") p.set("tab", t);
-    if (v && v !== "table") p.set("view", v);
-    if (s && s !== "category") p.set("sort", s);
-    if (qq) p.set("q", qq);
-
-    const qs = p.toString();
-    return qs ? `/quests?${qs}` : `/quests`;
-  };
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      {/* Header */}
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold">任務流程</h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            ✅ 使用整合攻略資料（quests_integrated.json）。缺資料顯示「—」。
-          </p>
-        </div>
+      <div className="mb-6">
+        <h1 className="text-2xl font-semibold text-gray-900">任務流程</h1>
+        <p className="mt-2 text-sm text-gray-600">
+          整理版：把多個文件的描述整合成同一筆任務資料；缺資料顯示「未提及／—」。
+        </p>
 
-        <div className="flex flex-col items-end gap-2">
-          <span className="rounded-full border bg-gray-50 px-3 py-1 text-xs text-muted-foreground">
-            只顯示目前版本資訊
-          </span>
-
-          <div className="flex flex-wrap items-center gap-2">
-            <Link
-              href={href({ view: "cards" })}
-              className={`rounded-full border px-3 py-1 text-xs ${
-                viewMode === "cards" ? "bg-black text-white border-black" : "bg-white text-gray-700"
-              }`}
-            >
-              卡片
-            </Link>
-            <Link
-              href={href({ view: "table" })}
-              className={`rounded-full border px-3 py-1 text-xs ${
-                viewMode === "table" ? "bg-black text-white border-black" : "bg-white text-gray-700"
-              }`}
-            >
-              表格
-            </Link>
-
-            <Link
-              href={href({ sort: "category" })}
-              className={`rounded-full border px-3 py-1 text-xs ${
-                sortMode === "category" ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-700"
-              }`}
-            >
-              依分類排序
-            </Link>
-            <Link
-              href={href({ sort: "title" })}
-              className={`rounded-full border px-3 py-1 text-xs ${
-                sortMode === "title" ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-700"
-              }`}
-            >
-              依名稱排序
-            </Link>
-          </div>
+        <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
+          <Badge className="bg-slate-50 text-slate-700 ring-1 ring-inset ring-slate-200 border-none">
+            共 {Array.isArray(quests) ? quests.length : 0} 筆
+          </Badge>
+          <Link className="text-blue-600 hover:underline" href="/dungeons">
+            → 看副本
+          </Link>
+          <Link className="text-blue-600 hover:underline" href="/skills">
+            → 看武技
+          </Link>
         </div>
       </div>
 
-      {/* Search */}
-      <div className="mt-6">
-        <div className="rounded-2xl border bg-white p-4">
-          <div className="flex flex-wrap items-center gap-3">
-            <input
-              defaultValue={qQ}
-              placeholder="搜尋：任務名 / 分類 / 關鍵字..."
-              className="w-full flex-1 rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200"
-              onKeyDown={(e) => {
-                if (e.key !== "Enter") return;
-                const v = (e.currentTarget.value ?? "").trim();
-                window.location.href = href({ q: v });
-              }}
-            />
-            <Link
-              href={href({ q: "" })}
-              className="rounded-xl border bg-white px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
-            >
-              清除
-            </Link>
-            <span className="rounded-xl border bg-gray-50 px-3 py-2 text-sm text-muted-foreground">
-              共 {list.length} 筆
-            </span>
-          </div>
-        </div>
-      </div>
+      <div className="space-y-4">
+        {Array.isArray(quests) && quests.length > 0 ? (
+          quests.map((q) => {
+            const category = (q.category || '').trim() || '未分類'
+            const accept = arr(q.accept)
+            const requirements = arr(q.requirements)
+            const rewards = arr(q.rewards)
+            const workflow = arr(q.workflow)
+            const notes = arr(q.notes)
+            const sources = Array.isArray(q.sourceFiles) ? q.sourceFiles.filter(Boolean) : []
 
-      {/* Tabs */}
-      <div className="mt-6 flex flex-wrap gap-2">
-        {tabs.map((t) => {
-          const active = t === selectedTab;
-          return (
-            <Link
-              key={t}
-              href={href({ tab: t })}
-              className={`rounded-full border px-3 py-1 text-sm ${
-                active ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-700"
-              }`}
-            >
-              {t}
-            </Link>
-          );
-        })}
-      </div>
-
-      {/* Content */}
-      <div className="mt-6">{viewMode === "table" ? <QuestTable list={list} /> : <QuestCards list={list} />}</div>
-    </div>
-  );
-}
-
-function QuestCards({ list }: { list: IntegratedQuest[] }) {
-  return (
-    <div className="space-y-4">
-      {list.map((q) => (
-        <section key={q.id} className="rounded-2xl border bg-white p-5 shadow-sm">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div className="min-w-0">
-              <div className="flex flex-wrap items-center gap-2">
-                <h2 className="text-lg font-semibold">{q.title}</h2>
-                <span className={`rounded-full border px-2 py-0.5 text-[11px] ${badgeClassByCategory(q.category)}`}>
-                  {q.category ?? "其他"}
-                </span>
-              </div>
-              {q.summary ? <p className="mt-2 text-sm text-muted-foreground">{q.summary}</p> : null}
-            </div>
-
-            {q.source ? <div className="text-xs text-muted-foreground">來源：{q.source}</div> : null}
-          </div>
-
-          <div className="mt-4 grid gap-3 md:grid-cols-2">
-            <Field label="接取方式 / 入口" text={q.start} />
-            <Field label="門檻 / 條件" text={q.requirements} />
-            <Field label="流程 / 路線" text={q.route} wide />
-            <Field label="獎勵 / 掉落" text={q.rewards} wide />
-            <Field label="補充" text={q.notes} wide />
-          </div>
-
-          {Array.isArray(q.updates) && q.updates.length ? (
-            <details className="mt-4 rounded-xl border bg-gray-50 px-4 py-3">
-              <summary className="cursor-pointer text-sm font-medium">更新與調整</summary>
-              <div className="mt-2 space-y-2 text-sm text-gray-700">
-                {q.updates.map((u, idx) => (
-                  <div key={idx} className="rounded-lg border bg-white p-3">
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <div className="text-xs text-muted-foreground">{u.version ? `版本：${u.version}` : "版本：—"}</div>
-                      {u.source ? <div className="text-xs text-muted-foreground">來源：{u.source}</div> : null}
+            return (
+              <div key={q.id} className="rounded-2xl border bg-white p-5">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge className="bg-blue-50 text-blue-700 border-blue-100">{category}</Badge>
+                      <h2 className="truncate text-lg font-semibold text-gray-900">{q.name}</h2>
                     </div>
-                    <div className="mt-2 whitespace-pre-wrap leading-6">{u.text}</div>
+                    {q.summary ? <p className="mt-2 text-sm text-gray-700">{q.summary}</p> : null}
                   </div>
-                ))}
-              </div>
-            </details>
-          ) : null}
-        </section>
-      ))}
-    </div>
-  );
-}
 
-function QuestTable({ list }: { list: IntegratedQuest[] }) {
-  return (
-    <div className="overflow-hidden rounded-2xl border bg-white">
-      <div className="overflow-x-auto">
-        <table className="min-w-[980px] w-full text-sm">
-          <thead className="bg-gray-50 text-left text-xs text-muted-foreground">
-            <tr className="[&>th]:px-4 [&>th]:py-3">
-              <th className="w-[120px]">分類</th>
-              <th className="w-[220px]">任務</th>
-              <th>接取方式</th>
-              <th>門檻</th>
-              <th>獎勵</th>
-              <th className="w-[80px] text-right">更新</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y">
-            {list.map((q) => (
-              <tr key={q.id} className="[&>td]:px-4 [&>td]:py-3 align-top">
-                <td>
-                  <span className={`inline-flex rounded-full border px-2 py-1 text-xs ${badgeClassByCategory(q.category)}`}>
-                    {q.category ?? "其他"}
-                  </span>
-                </td>
-                <td className="font-medium text-gray-900">{q.title}</td>
-                <td className="whitespace-pre-wrap text-gray-700">{clean(q.start)}</td>
-                <td className="whitespace-pre-wrap text-gray-700">{clean(q.requirements)}</td>
-                <td className="whitespace-pre-wrap text-gray-700">{clean(q.rewards)}</td>
-                <td className="text-right">
-                  {Array.isArray(q.updates) && q.updates.length ? (
-                    <details className="inline-block text-left">
-                      <summary className="cursor-pointer text-blue-600 hover:underline">查看</summary>
-                      <div className="mt-2 w-[360px] rounded-xl border bg-white p-3 shadow-sm">
-                        <div className="text-xs text-muted-foreground">
-                          {q.source ? `來源：${q.source}` : "來源：—"}
-                        </div>
-                        <div className="mt-2 space-y-2 text-sm text-gray-700">
-                          {q.updates.map((u, idx) => (
-                            <div key={idx} className="rounded-lg border bg-gray-50 p-2">
-                              <div className="text-xs text-muted-foreground">{u.version ? `版本：${u.version}` : "版本：—"}</div>
-                              <div className="mt-1 whitespace-pre-wrap">{u.text}</div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </details>
+                  {sources.length > 0 ? (
+                    <div className="shrink-0 text-xs text-gray-500">
+                      來源：{sources.slice(0, 3).join('、')}
+                      {sources.length > 3 ? '…' : ''}
+                    </div>
                   ) : (
-                    <span className="text-muted-foreground">—</span>
+                    <div className="shrink-0 text-xs text-gray-400">來源：—</div>
                   )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                </div>
+
+                <div className="mt-4 grid gap-4 md:grid-cols-2">
+                  <section className="rounded-xl bg-gray-50 p-4">
+                    <h3 className="text-sm font-semibold text-gray-900">接取方式</h3>
+                    {accept.length ? (
+                      <ul className="mt-2 list-disc list-inside space-y-1 text-sm text-gray-700">
+                        {accept.map((x, i) => (
+                          <li key={i}>{x}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-sm text-gray-400">未提及</p>
+                    )}
+                  </section>
+
+                  <section className="rounded-xl bg-gray-50 p-4">
+                    <h3 className="text-sm font-semibold text-gray-900">門檻</h3>
+                    {requirements.length ? (
+                      <ul className="mt-2 list-disc list-inside space-y-1 text-sm text-gray-700">
+                        {requirements.map((x, i) => (
+                          <li key={i}>{x}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-sm text-gray-400">未提及</p>
+                    )}
+                  </section>
+
+                  <section className="rounded-xl bg-gray-50 p-4">
+                    <h3 className="text-sm font-semibold text-gray-900">獎勵</h3>
+                    {rewards.length ? (
+                      <ul className="mt-2 list-disc list-inside space-y-1 text-sm text-gray-700">
+                        {rewards.map((x, i) => (
+                          <li key={i}>{x}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-sm text-gray-400">未提及</p>
+                    )}
+                  </section>
+
+                  <section className="rounded-xl bg-gray-50 p-4">
+                    <h3 className="text-sm font-semibold text-gray-900">流程</h3>
+                    {workflow.length ? (
+                      <ol className="mt-2 list-decimal list-inside space-y-1 text-sm text-gray-700">
+                        {workflow.map((x, i) => (
+                          <li key={i}>{x}</li>
+                        ))}
+                      </ol>
+                    ) : (
+                      <p className="mt-2 text-sm text-gray-400">未提及</p>
+                    )}
+                  </section>
+                </div>
+
+                {notes.length ? (
+                  <div className="mt-4 rounded-xl border bg-white p-4">
+                    <div className="text-sm font-semibold text-gray-900">備註</div>
+                    <ul className="mt-2 list-disc list-inside space-y-1 text-sm text-gray-700">
+                      {notes.map((x, i) => (
+                        <li key={i}>{x}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+
+                {q.weapons ? <WeaponsSection weapons={q.weapons} /> : null}
+              </div>
+            )
+          })
+        ) : (
+          <div className="rounded-2xl border bg-white p-6 text-sm text-gray-600">目前沒有任務資料。</div>
+        )}
       </div>
     </div>
-  );
+  )
 }
 
-function Field({ label, text, wide }: { label: string; text?: string; wide?: boolean }) {
-  return (
-    <div className={`${wide ? "md:col-span-2" : ""} rounded-xl border bg-gray-50 p-4`}>
-      <div className="text-xs font-medium text-gray-700">{label}</div>
-      <div className="mt-2 whitespace-pre-wrap text-sm text-gray-800">{clean(text)}</div>
-    </div>
-  );
-}

@@ -21,28 +21,26 @@
       "name": "一品堂任務",
       "category": "練功/多階段",
       "summary": "多階段練功任務，隨階段提供金錢、經驗與潛能等獎勵。",
-      "giver": "",
-      "location": "蘭州城覓 (赫連鐵樹) ",
+      "giver": "赫連鐵樹",
+      "location": "蘭州城",
+      "accept": [
+        "前往蘭州城覓 (赫連鐵樹)"
+      ],
       "requirements": [
-        {
-          "text": ""
-        }
+        "門檻:需要達到1000萬經驗才能接受任務"
       ],
       "rewards": [
-        {
-          "text": "一品堂任務[100萬]: 九天靈芝 (10000經驗值)"
-        },
-        {
-          "text": "一品堂任務[400萬]: 寒霜淨心丹 (50000經驗值)"
-        },
-        {
-          "text": "一品堂任務[1000萬]: 天雷震霆散 (100000經驗值)"
-        },
-        {
-          "text": "一品堂任務[殿堂]: 天璇星辰丹 (200000經驗值) *須要達到 1000 萬經驗才能接受任務*"
-        }
+        "一品堂任務[100萬]: 九天靈芝 (10000經驗值)",
+        "一品堂任務[400萬]: 寒霜淨心丹 (50000經驗值)",
+        "一品堂任務[1000萬]: 天雷震霆散 (100000經驗值)",
+        "一品堂任務[殿堂]: 天璇星辰丹 (200000經驗值) *須要達到 1000 萬經驗才能接受任務*"
       ],
-      "steps": [],
+      "workflow": [
+        "前往蘭州城尋找「赫連鐵樹」領取任務",
+        "任務分為四個階段：100萬、400萬、1000萬、殿堂",
+        "各階段需擊殺一品堂相關 NPC（蘭州、荊州、玉門、洛陽均有相關 NPC）",
+        "完成後回報領取經驗丹獎勵"
+      ],
       "related": {},
       "versionNotes": [
         {
@@ -72,25 +70,24 @@
       "name": "力戰六大派高手",
       "category": "練功",
       "summary": "挑戰『六大派高手』的練功任務。",
-      "giver": "",
-      "location": "華山尋找「江湖百曉生」",
+      "giver": "江湖百曉生",
+      "location": "華山",
+      "accept": [
+        "前往華山尋找「江湖百曉生」解謎進入"
+      ],
       "requirements": [
-        {
-          "text": "門檻:需要達到100萬經驗以上才能進入"
-        }
+        "門檻:需要達到100萬經驗以上才能進入"
       ],
       "rewards": [
-        {
-          "text": "1500 潛能"
-        },
-        {
-          "text": "1500經驗"
-        },
-        {
-          "text": "（無門檻限制）"
-        }
+        "1500 潛能",
+        "1500 經驗"
       ],
-      "steps": [],
+      "workflow": [
+        "前往華山尋找「江湖百曉生」解謎進入",
+        "挑戰六大派高手",
+        "每完成 6 次任務須前往明教向「金毛獅王謝遜」述職（可獲得 1 黃金）",
+        "完成後領取經驗與潛能獎勵"
+      ],
       "related": {},
       "versionNotes": [],
       "sourceRefs": [
@@ -104,26 +101,28 @@
       "id": "quest-gamecontent-3",
       "name": "金輪法王",
       "category": "練功",
-      "summary": "挑戰金輪法王的練功任務。",
-      "giver": "",
+      "summary": "蒙古終章任務，挑戰金輪法王。",
+      "giver": "郭靖",
       "location": "襄陽帥府",
+      "accept": [
+        "前往襄陽帥府覓 (郭靖) 打聽任務事宜",
+        "或前往峨嵋某處解謎"
+      ],
       "requirements": [
-        {
-          "text": "門檻:前往明教三層解謎後即可進入"
-        }
+        "門檻:前往明教三層解謎後即可進入"
       ],
       "rewards": [
-        {
-          "text": "6金"
-        },
-        {
-          "text": "日月輪法秘笈"
-        },
-        {
-          "text": "銅輪與鐵法袈裟"
-        }
+        "6 金",
+        "日月輪法秘笈",
+        "銅輪",
+        "護法袈裟"
       ],
-      "steps": [],
+      "workflow": [
+        "前往襄陽帥府覓郭靖打聽任務事宜",
+        "前往峨嵋某處或明教三層解謎進入",
+        "擊敗金輪法王",
+        "獲得 6 金、日月輪法秘笈、銅輪、護法袈裟"
+      ],
       "related": {},
       "versionNotes": [],
       "sourceRefs": [
@@ -138,8 +137,8 @@
       "name": "追擊明教五行旗旗主",
       "category": "練功",
       "summary": "追擊明教五行旗旗主的練功任務。",
-      "giver": "",
-      "location": "華山尋找「江湖百曉生」",
+      "giver": "江湖百曉生",
+      "location": "華山",
       "requirements": [
         {
           "text": "門檻: 經驗 200 萬內"
@@ -153,7 +152,11 @@
           "text": "1000潛能"
         }
       ],
-      "steps": [],
+      "steps": [
+        { "text": "前往華山尋找「江湖百曉生」解謎進入" },
+        { "text": "追擊並擊敗明教五行旗旗主" },
+        { "text": "完成後領取 1000 經驗與 1000 潛能" }
+      ],
       "related": {},
       "versionNotes": [],
       "sourceRefs": [
@@ -164,60 +167,30 @@
       ]
     },
     {
-      "id": "quest-gamecontent-5",
-      "name": "無量山劍湖宮",
-      "category": "練功",
-      "summary": "無量山劍湖宮相關任務／挑戰。",
-      "giver": "",
-      "location": "長安尋找「說書人」",
-      "requirements": [
-        {
-          "text": "門檻:經驗 150 萬內"
-        }
-      ],
-      "rewards": [
-        {
-          "text": "600經驗"
-        },
-        {
-          "text": "600潛能"
-        }
-      ],
-      "steps": [],
-      "related": {},
-      "versionNotes": [],
-      "sourceRefs": [
-        {
-          "file": "遊戲內容.txt",
-          "excerpt": "5. 無量山劍湖宮: 600經驗, 600潛能 -（門檻:經驗 100 萬內）\n\n(門檻:經驗 100 萬內)"
-        }
-      ]
-    },
-    {
       "id": "quest-gamecontent-6",
       "name": "蒙古萬夫長 (蒙古任務)",
       "category": "新手/蒙古",
       "summary": "蒙古系列任務之一，目標為蒙古萬夫長。",
-      "giver": "",
+      "giver": "郭靖",
       "location": "襄陽帥府",
       "requirements": [
         {
           "text": "門檻:無門檻限制"
         }
-      
       ],
       "rewards": [
         {
-          "text": "3000 潛能"
-        },
-         {
-          "text": "2 黃金"
+          "text": "5 黃金"
         },
         {
-          "text": "（無門檻限制）"
+          "text": "3000 潛能"
         }
       ],
-      "steps": [],
+      "steps": [
+        { "text": "前往襄陽帥府覓郭靖領取任務" },
+        { "text": "擊敗蒙古萬夫長" },
+        { "text": "回報郭靖領取獎勵" }
+      ],
       "related": {},
       "versionNotes": [
         {
@@ -242,12 +215,12 @@
       "id": "quest-gamecontent-9",
       "name": "門派獨家任務 - 江湖仇殺",
       "category": "門派",
-      "summary": "各門派獨家任務之一：江湖仇殺。文件未提供具體流程與 NPC 名稱。",
-      "giver": "",
-      "location": "",
+      "summary": "各門派中階獨家任務：江湖仇殺。",
+      "giver": "各門派指定 NPC",
+      "location": "各門派",
       "requirements": [
         {
-          "text": ""
+          "text": "無門檻限制"
         }
       ],
       "rewards": [
@@ -264,7 +237,11 @@
           "text": "3 門派功勳"
         }
       ],
-      "steps": [],
+      "steps": [
+        { "text": "前往所屬門派尋找指定 NPC 領取任務（少林:慧明禪師、武當:俞岱岩、峨眉:尼姑、丐幫:梁長老、華山:令狐沖、明教:旗將使徒、星宿:摘星子、嵩山:樂厚、逍遙:蘇星河）" },
+        { "text": "完成江湖仇殺任務目標" },
+        { "text": "回報領取獎勵" }
+      ],
       "related": {},
       "versionNotes": [],
       "sourceRefs": [
@@ -278,17 +255,17 @@
       "id": "quest-gamecontent-10",
       "name": "門派獨家任務 - 清剿叛徒",
       "category": "門派",
-      "summary": "各門派獨家任務之一：清剿叛徒。文件未提供具體流程與 NPC 名稱。",
-      "giver": "",
-      "location": "",
+      "summary": "各門派初階獨家任務：清剿叛徒。",
+      "giver": "各門派指定 NPC",
+      "location": "各門派",
       "requirements": [
         {
-          "text": ""
+          "text": "無門檻限制"
         }
       ],
       "rewards": [
         {
-          "text": "2 黃金"
+          "text": "3 黃金"
         },
         {
           "text": "300 經驗"
@@ -300,7 +277,11 @@
           "text": "1 門派功勳"
         }
       ],
-      "steps": [],
+      "steps": [
+        { "text": "前往所屬門派尋找指定 NPC 領取任務（少林:慧明禪師、武當:俞岱岩、峨眉:尼姑、丐幫:梁長老、華山:令狐沖、明教:旗將使徒、星宿:摘星子、嵩山:樂厚、逍遙:蘇星河）" },
+        { "text": "清剿門派叛徒" },
+        { "text": "回報領取獎勵" }
+      ],
       "related": {},
       "versionNotes": [],
       "sourceRefs": [
@@ -418,68 +399,106 @@
       ]
     },
     {
-      "id": "quest-gamecontent-az",
-      "name": "為阿紫而戰",
-      "category": "陣營/壞人路線",
-      "summary": "攔江之戰壞人路線任務之一：協助阿紫一方，目標為擊殺蕭峰。",
-      "giver": "游坦之",
-      "location": "",
+      "id": "quest-神兵取得流程",
+      "name": "神兵取得流程",
+      "category": "裝備/神兵",
+      "summary": "透過荊州歐治子開啟神兵任務線，擊殺楚昭王取回人頭後，即可進入神州向韋小寶購買神兵，或挑戰東南西北取得進階真神兵材料。神兵共 20 把，分為劍類、刀類、棍棒類、短兵類。",
+      "giver": "歐治子",
+      "location": "荊州",
+      "accept": [
+        "前往荊州找歐治子詢問《神兵》"
+      ],
       "requirements": [],
       "rewards": [
-        {
-          "text": "冰蠶毒掌殘頁（集滿100張可換取『冰蠶毒掌』）。"
-        },
-        {
-          "text": "進階資格碎片"
-        }
+        "神兵（每把 5000 黃金）",
+        "神兵進階真神兵材料（東南西北方向取得）"
       ],
-      "steps": [
-        {
-          "text": "承接『為阿紫而戰』。"
-        },
-        {
-          "text": "擊殺蕭峰。"
-        }
+      "workflow": [
+        "前往荊州找歐治子詢問《神兵》",
+        "去玉門擊殺《楚昭王》取回人頭",
+        "回荊州找歐治子詢問《神州》並給予人頭",
+        "給予人頭後前往洛陽找《小寒》進入神州",
+        "進入神州後找到韋小寶，可購買神兵（一把 5000 黃金）",
+        "亦可至東南西北方向打神兵進階真神兵材料"
       ],
+      "notes": [
+        "神兵單價 5000 黃金",
+        "神州內可透過東南西北方向取得進階真神兵材料",
+        "不可鑄煉神兵：攻擊力與防御力總和 = 250",
+        "可鑄煉神兵：首階段總和 = 200，終階段總和 = 350"
+      ],
+      "weapons": {
+        "total": 20,
+        "price": 5000,
+        "categories": [
+          {
+            "type": "劍類",
+            "forgingMaterial": "隕星鐵石",
+            "items": [
+              { "name": "干將劍", "attack": 240, "defense": 10, "forgeable": false },
+              { "name": "玄鐵神劍", "attack": 180, "defense": 20, "forgeable": true, "upgradedName": "真．玄鐵神劍", "upgradedAttack": 350, "upgradedDefense": 0 },
+              { "name": "莫邪劍", "attack": 245, "defense": 5, "forgeable": false },
+              { "name": "倚天劍", "attack": 200, "defense": 0, "forgeable": true, "upgradedName": "真．倚天劍", "upgradedAttack": 330, "upgradedDefense": 20 },
+              { "name": "魚腸劍", "attack": 250, "defense": 0, "forgeable": false },
+              { "name": "越王勾踐劍", "attack": 235, "defense": 15, "forgeable": false },
+              { "name": "湛盧劍", "attack": 240, "defense": 10, "forgeable": false },
+              { "name": "真武劍", "attack": 200, "defense": 50, "forgeable": false },
+              { "name": "鎮岳尚方", "attack": 230, "defense": 20, "forgeable": false }
+            ]
+          },
+          {
+            "type": "刀類",
+            "forgingMaterial": "海底金母",
+            "items": [
+              { "name": "闖王寶刀", "attack": 245, "defense": 5, "forgeable": false },
+              { "name": "屠龍刀", "attack": 170, "defense": 30, "forgeable": true, "upgradedName": "真．屠龍刀", "upgradedAttack": 340, "upgradedDefense": 10 },
+              { "name": "伏魔刀", "attack": 200, "defense": 0, "forgeable": true, "upgradedName": "真．伏魔刀", "upgradedAttack": 350, "upgradedDefense": 0 },
+              { "name": "古錠刀", "attack": 250, "defense": 0, "forgeable": false },
+              { "name": "冷月寶刀", "attack": 215, "defense": 35, "forgeable": false }
+            ]
+          },
+          {
+            "type": "棍棒類",
+            "forgingMaterial": "千年神木",
+            "items": [
+              { "name": "打狗棒", "attack": 150, "defense": 50, "forgeable": true, "upgradedName": "真．打狗棒", "upgradedAttack": 345, "upgradedDefense": 5 },
+              { "name": "金烏杖", "attack": 250, "defense": 0, "forgeable": false }
+            ]
+          },
+          {
+            "type": "短兵類",
+            "forgingMaterial": "寒絲羽竹",
+            "items": [
+              { "name": "百轉千形扇", "attack": 200, "defense": 50, "forgeable": true, "upgradedName": "五輪歸一", "upgradedAttack": 300, "upgradedDefense": 50 },
+              { "name": "金龍鞭", "attack": 210, "defense": 40, "forgeable": false },
+              { "name": "金輪", "attack": 185, "defense": 15, "forgeable": true, "upgradedName": "五輪歸一", "upgradedAttack": 300, "upgradedDefense": 50 },
+              { "name": "銀輪", "attack": 250, "defense": 0, "forgeable": false }
+            ]
+          }
+        ],
+        "forging": {
+          "description": "可鑄煉神兵分為首階段（攻防總和 200）及終階段（攻防總和 350），不可鑄煉神兵攻防總和固定為 250。",
+          "materials": [
+            { "name": "隕星鐵石", "forType": "劍類" },
+            { "name": "海底金母", "forType": "刀類" },
+            { "name": "千年神木", "forType": "棍棒類" },
+            { "name": "寒絲羽竹", "forType": "短兵類" }
+          ],
+          "materialSource": "前往神州解謎取得"
+        }
+      },
       "related": {},
-      "versionNotes": [],
+      "versionNotes": [
+        {
+          "date": "2024-06-10",
+          "file": "update - 6.txt",
+          "note": "新增神兵系統，詳情請前往荊州尋找「歐冶子」解謎。"
+        }
+      ],
       "sourceRefs": [
         {
           "file": "遊戲內容.txt",
-          "excerpt": "[為阿紫而戰] - (游坦之) (內容:殺蕭峰)\n(獎勵:冰蠶毒掌殘頁 1 張 (集滿 100 張可換取冰蠶毒掌), 進階資格碎片)\n..."
-        }
-      ]
-    },
-    {
-      "id": "quest-gamecontent-dayan",
-      "name": "為大燕國而戰",
-      "category": "陣營/壞人路線",
-      "summary": "攔江之戰壞人路線任務之一：協助大燕國一方，目標為擊殺段譽。",
-      "giver": "慕容復",
-      "location": "",
-      "requirements": [],
-      "rewards": [
-        {
-          "text": "大燕國玉璽（可換取1000點潛能）。"
-        },
-        {
-          "text": "進階資格碎片"
-        }
-      ],
-      "steps": [
-        {
-          "text": "承接『為大燕國而戰』。"
-        },
-        {
-          "text": "擊殺段譽。"
-        }
-      ],
-      "related": {},
-      "versionNotes": [],
-      "sourceRefs": [
-        {
-          "file": "遊戲內容.txt",
-          "excerpt": "[為大燕國而戰] - (慕容復) (內容:殺段譽)\n(獎勵:大燕國玉璽 1 個 (可換取 1000 點潛能), 進階資格碎片)\n"
+          "excerpt": "神兵系統一共劃分為: 劍類 / 刀類 / 棍棒類 / 短兵類神兵, 共20把"
         }
       ]
     }

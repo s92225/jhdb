@@ -8,6 +8,34 @@ export type UISkillMove = {
   level: number | null
 }
 
+/** 連擊進攻：攻擊時有一定機率於當回合連續出招多次，每招傷害按比例縮放 */
+export type ComboAttack = {
+  type: '連擊進攻'
+  /** 發動機率（0–1），例如 0.33 ≈ 33% */
+  triggerChance: number
+  /** 發動時連續出招次數 */
+  hitCount: number
+  /** 發動時每招傷害倍率下限（0–1） */
+  damageMultiplierMin: number
+  /** 發動時每招傷害倍率上限（0–1） */
+  damageMultiplierMax: number
+  /** 給 UI 顯示的完整說明 */
+  description: string
+}
+
+/**
+ * 技能特殊效果（discriminated union）。
+ * 日後新增其他效果時，只需加入新的 type 並擴充此 union。
+ */
+export type SkillSpecialEffect = ComboAttack
+
+export type SkillWeaponBonus = {
+  weaponName: string   // 兵器名稱
+  bonusPercentMin: number // 傷害加成百分比下限
+  bonusPercentMax: number // 傷害加成百分比上限
+  description: string
+}
+
 export type UISkill = {
   id: string
   name: string
@@ -28,7 +56,53 @@ export type UISkill = {
     beishan?: number | null
     beizhao?: number | null
   } | null
+  specialEffects?: SkillSpecialEffect[] | null
+  weaponBonus?: SkillWeaponBonus[] | null
   rawSource?: string | null
+}
+
+// ---- 連擊進攻：18 種技能 ----
+const COMBO_ATTACK_SKILLS = new Set([
+  '如意刀法',
+  '打狗棒法',
+  '飛星術',
+  '太極劍',
+  '少林醉棍',
+  '九陰白骨爪',
+  '不知名劍法',
+  '辟邪劍法',
+  '九曲劍法',
+  '岳家散手',
+  '胡家刀法',
+  '鐵掌掌法',
+  '空明拳',
+  '銀索金鈴',
+  '六脈神劍',
+  '覆雨劍法',
+  '天刀八訣',
+  '燎原槍法',
+])
+
+// ---- 兵器專屬威力加成 ----
+const WEAPON_BONUS_MAP: Record<string, SkillWeaponBonus> = {
+  '血刀刀法': {
+    weaponName: '血刀',
+    bonusPercentMin: 50,
+    bonusPercentMax: 100,
+    description: '裝備「血刀」時使用「血刀刀法」，每一招傷害均提升 50%-100%',
+  },
+  '玄鐵劍法': {
+    weaponName: '真．玄鐵神劍',
+    bonusPercentMin: 50,
+    bonusPercentMax: 100,
+    description: '裝備「真．玄鐵神劍」時使用「玄鐵劍法」，每一招傷害均提升 50%-100%',
+  },
+  '日月輪法': {
+    weaponName: '五輪歸一',
+    bonusPercentMin: 50,
+    bonusPercentMax: 100,
+    description: '裝備「五輪歸一」時使用「日月輪法」，每一招傷害均提升 50%-100%',
+  },
 }
 
 function splitConfigs(s: unknown): string[] {
@@ -156,7 +230,10 @@ export function normalizeSkill(raw: any): UISkill {
   const configs = splitConfigs(raw?.configs ?? raw?.config)
 
   const movesArr = Array.isArray(raw?.moves) ? raw.moves : []
-  const moves = movesArr.map(normalizeMove).filter((m) => m.name)
+
+  const moves = movesArr.map(normalizeMove).filter((m: UISkillMove) => m.name)
+
+
 
   // 你的 skills.json：family 就是門派/公共武技
   const family = typeof raw?.family === 'string' ? raw.family.trim() : ''
@@ -181,6 +258,24 @@ export function normalizeSkill(raw: any): UISkill {
         ? raw.sourceFile
         : null
 
+  // ---- 特殊效果 ----
+  const specialEffects: SkillSpecialEffect[] = []
+  if (COMBO_ATTACK_SKILLS.has(name)) {
+    specialEffects.push({
+      type: '連擊進攻',
+      triggerChance: 0.33,
+      hitCount: 2,
+      damageMultiplierMin: 0.5,
+      damageMultiplierMax: 1.0,
+      description: '攻擊時有約 33% 機率發動，於當回合連續出招兩次。發動時，每招傷害為原本的 50%-100%。',
+    })
+  }
+
+  const weaponBonus: SkillWeaponBonus[] = []
+  if (WEAPON_BONUS_MAP[name]) {
+    weaponBonus.push(WEAPON_BONUS_MAP[name])
+  }
+
   return {
     id,
     name,
@@ -191,6 +286,8 @@ export function normalizeSkill(raw: any): UISkill {
     requirement: normalizeRequirement(raw),
     moves,
     averages: normalizeAverages(raw),
+    specialEffects: specialEffects.length ? specialEffects : null,
+    weaponBonus: weaponBonus.length ? weaponBonus : null,
     rawSource,
   }
 }

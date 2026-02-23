@@ -118,6 +118,56 @@ export default async function SkillDetailPage({
         )}
       </section>
 
+      {skill.specialEffects && skill.specialEffects.length > 0 ? (
+        <section className="mt-6 rounded-xl border border-amber-300 bg-amber-50 p-5">
+          <h2 className="text-lg font-semibold text-amber-900">特殊效果</h2>
+          <div className="mt-3 space-y-3">
+            {skill.specialEffects.map((e, i) => (
+              <div key={i} className="rounded-lg border border-amber-200 bg-white px-4 py-3">
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex shrink-0 items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800 ring-1 ring-inset ring-amber-300">
+                    {e.type}
+                  </span>
+                  <span className="text-sm text-slate-800">{e.description}</span>
+                </div>
+                {e.type === '連擊進攻' && (
+                  <div className="mt-3 grid gap-3 sm:grid-cols-3">
+                    <div className="rounded-lg border border-amber-100 px-3 py-2">
+                      <div className="text-xs text-slate-500">發動機率</div>
+                      <div className="mt-1 text-sm font-semibold text-slate-800">{Math.round(e.triggerChance * 100)}%</div>
+                    </div>
+                    <div className="rounded-lg border border-amber-100 px-3 py-2">
+                      <div className="text-xs text-slate-500">連續出招</div>
+                      <div className="mt-1 text-sm font-semibold text-slate-800">{e.hitCount} 次</div>
+                    </div>
+                    <div className="rounded-lg border border-amber-100 px-3 py-2">
+                      <div className="text-xs text-slate-500">每招傷害倍率</div>
+                      <div className="mt-1 text-sm font-semibold text-slate-800">{Math.round(e.damageMultiplierMin * 100)}%-{Math.round(e.damageMultiplierMax * 100)}%</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {skill.weaponBonus && skill.weaponBonus.length > 0 ? (
+        <section className="mt-6 rounded-xl border border-violet-300 bg-violet-50 p-5">
+          <h2 className="text-lg font-semibold text-violet-900">兵器專屬加成</h2>
+          <div className="mt-3 space-y-3">
+            {skill.weaponBonus.map((wb, i) => (
+              <div key={i} className="flex items-start gap-3 rounded-lg border border-violet-200 bg-white px-4 py-3">
+                <span className="inline-flex shrink-0 items-center rounded-full bg-violet-100 px-2.5 py-0.5 text-xs font-semibold text-violet-800 ring-1 ring-inset ring-violet-300">
+                  {wb.weaponName} +{wb.bonusPercentMin}%-{wb.bonusPercentMax}%
+                </span>
+                <span className="text-sm text-slate-800">{wb.description}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
       {skill.rawSource ? (
         <p className="mt-6 text-xs text-slate-500">來源：{skill.rawSource}</p>
       ) : null}

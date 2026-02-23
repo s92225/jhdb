@@ -1,0 +1,1425 @@
+//一品堂任務 (1000萬經驗以下) 流程
+//蘭州接任務 > 玉門殺NPC > 回蘭州解任
+
+LockMouse
+
+Dim walkDelay, mapDelay, gateDelay
+walkDelay = 300
+mapDelay = 1500
+gateDelay = 1000
+
+Dim runCount
+runCount = 0
+Dim mapResult
+mapResult = ""
+
+TracePrint "=== Script started ==="
+// --- Check for error dialog on start ---
+Do
+    FindColor 476, 266, 747, 359, "A56D39", intX, intY
+    FindColor 476, 266, 747, 359, "A56E3A", intX1, intY1
+    If intX > 0 And intY > 0 Then
+        TracePrint "Error dialog detected (A56D39), restarting..."
+        Call RestartGame()
+        Exit Do
+    ElseIf intX1 > 0 And intY1 > 0 Then
+        TracePrint "Error dialog detected (A56E3A), restarting..."
+        Call RestartGame()
+        Exit Do
+    Else
+        TracePrint "No error dialog, continuing..."
+        Exit Do
+    End If
+Loop
+
+
+
+Rem RUN_START
+runCount = runCount + 1
+TracePrint "=== RUN " & runCount & " ==="
+
+// Restart game every 10 runs
+If runCount > 1 And (runCount - 1) Mod 10 = 0 Then
+    TracePrint "10 runs completed, restarting game..."
+    Call RestartGame()
+End If
+
+// Eat and drink
+SayString "Use 關東煮 10"
+Delay walkDelay
+KeyPress "Enter",1
+Delay walkDelay
+
+SayString "Use 藥酒 3"
+Delay walkDelay
+KeyPress "Enter",3
+Delay walkDelay
+
+SayString "Practice 道德經 1600"
+KeyPress "Enter",1
+
+SayString "YunGong 400"
+Delay walkDelay
+KeyPress "Enter",1
+Delay walkDelay
+
+IfColor 384, 329, "63EF63", 0 Then
+Delay walkDelay
+	SayString "Use 青草 4"
+	Delay walkDelay
+	KeyPress "Enter", 1
+	Delay walkDelay
+Else 
+	
+End If
+
+// start at mission room, walk to middle
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 624, 238
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+// ============================
+// TAKE QUEST 2 (lin NPC again)
+// ============================
+Rem TAKE_QUEST_2
+TracePrint "Looking for lin NPC to take quest (2nd)..."
+npcTime = 0
+
+Rem FIND_LIN_2
+FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\lin.bmp", 1, intX, intY
+If intX > 0 And intY > 0 Then
+    TracePrint "lin found at (" & intX & ", " & intY & ")"
+    MoveTo intX, intY + 10
+    RightClick 1
+    Delay walkDelay
+    IfColor 557, 506, "0000FF", 0 Then
+        SayString "Ask 一品堂任務[1000萬]"
+        Delay walkDelay
+        KeyPress "Enter",1
+        Delay walkDelay
+    Else
+        // wrong NPC selected (overlap), deselect and retry
+        TracePrint "Wrong NPC selected, deselecting..."
+        MoveTo 736, 352
+        LeftClick 1
+        Delay 3000
+        Goto FIND_LIN_2
+    End If
+Else
+    npcTime = npcTime + 1
+    If npcTime >= 15 Then
+        TracePrint "lin NPC not found after 15 retries, continuing..."
+    Else
+        Delay walkDelay
+        Goto FIND_LIN_2
+    End If
+End If
+
+
+// ============================
+// COMPLETE QUEST (yi NPC)
+// ============================
+Dim npcTime
+
+Rem COMPLETE_QUEST_1
+TracePrint "Looking for yi NPC to complete quest..."
+npcTime = 0
+
+Rem FIND_YI_1
+FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\yi.bmp", 1, intX, intY
+If intX > 0 And intY > 0 Then
+    TracePrint "yi found at (" & intX & ", " & intY & ")"
+    MoveTo intX, intY + 10
+    RightClick 1
+    Delay walkDelay
+    IfColor 557, 506, "0000FF", 0 Then
+        // wrong NPC selected (overlap), deselect and retry
+        TracePrint "Wrong NPC selected, deselecting..."
+        MoveTo 736, 352
+        LeftClick 1
+        Delay 3000
+        Goto FIND_YI_1
+    Else
+        SayString "Ask 白自在的頭顱 "
+        Delay walkDelay
+        KeyPress "Enter",1
+        Delay walkDelay
+    End If
+Else
+    npcTime = npcTime + 1
+    If npcTime >= 15 Then
+        TracePrint "yi NPC not found after 15 retries, continuing..."
+    Else
+        Delay walkDelay
+        Goto FIND_YI_1
+    End If
+End If
+
+// ============================
+// TAKE QUEST (lin NPC)
+// ============================
+Rem TAKE_QUEST_1
+TracePrint "Looking for lin NPC to take quest..."
+npcTime = 0
+
+Rem FIND_LIN_1
+FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\lin.bmp", 1, intX, intY
+If intX > 0 And intY > 0 Then
+    TracePrint "lin found at (" & intX & ", " & intY & ")"
+    MoveTo intX, intY + 10
+    RightClick 1
+    Delay walkDelay
+    IfColor 557, 506, "0000FF", 0 Then
+        SayString "Ask 一品堂任務[1000萬]"
+        Delay walkDelay
+        KeyPress "Enter",1
+        Delay walkDelay
+    Else
+        // wrong NPC selected (overlap), deselect and retry
+        TracePrint "Wrong NPC selected, deselecting..."
+        MoveTo 736, 352
+        LeftClick 1
+        Delay 3000
+        Goto FIND_LIN_1
+    End If
+Else
+    npcTime = npcTime + 1
+    If npcTime >= 15 Then
+        TracePrint "lin NPC not found after 15 retries, continuing..."
+    Else
+        Delay walkDelay
+        Goto FIND_LIN_1
+    End If
+End If
+
+// ============================
+// COMPLETE QUEST 2 (yi NPC again)
+// ============================
+Rem COMPLETE_QUEST_2
+TracePrint "Looking for yi NPC to complete quest (2nd)..."
+npcTime = 0
+
+Rem FIND_YI_2
+FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\yi.bmp", 1, intX, intY
+If intX > 0 And intY > 0 Then
+    TracePrint "yi found at (" & intX & ", " & intY & ")"
+    MoveTo intX, intY + 10
+    RightClick 1
+    Delay walkDelay
+    IfColor 557, 506, "0000FF", 0 Then
+        // wrong NPC selected (overlap), deselect and retry
+        TracePrint "Wrong NPC selected, deselecting..."
+        MoveTo 736, 352
+        LeftClick 1
+        Delay 3000
+        Goto FIND_YI_2
+    Else
+        SayString "Ask 白自在的頭顱 "
+        Delay walkDelay
+        KeyPress "Enter",1
+        Delay walkDelay
+    End If
+Else
+    npcTime = npcTime + 1
+    If npcTime >= 15 Then
+        TracePrint "yi NPC not found after 15 retries, continuing..."
+    Else
+        Delay walkDelay
+        Goto FIND_YI_2
+    End If
+End If
+
+
+// ============================
+// WALK OUT from mission room
+// ============================
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 865, 434
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 745, 362
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// check: should have left mission room → 濱河大街西
+Call DetectMap()
+If mapResult = "mission" Then
+    TracePrint "Failed to leave mission room, restarting..."
+    Call RestartGame()
+    Goto RUN_START
+End If
+
+//cross road
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 1017, 347
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 817, 328
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 773, 344
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// check: should have left 濱河大街西 → 濱河大街
+Call DetectMap()
+If mapResult = "binhexi" Then
+    TracePrint "Failed to leave 濱河大街西, restarting..."
+    Call RestartGame()
+    Goto RUN_START
+End If
+
+//濱河大街
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 1017, 304
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 935, 375
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 762, 359
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// check: should have left 濱河大街 → 城
+Call DetectMap()
+If mapResult = "binhe" Then
+    TracePrint "Failed to leave 濱河大街, restarting..."
+    Call RestartGame()
+    Goto RUN_START
+End If
+
+//城堭廟廣場
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 882, 438
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 1006, 519
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 711, 390
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 740, 365
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// check: should have left 城 → 蘭州林蔭道
+Call DetectMap()
+If mapResult = "cheng" Then
+    TracePrint "Failed to leave 城, restarting..."
+    Call RestartGame()
+    Goto RUN_START
+End If
+
+//蘭洲林蔭道
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 992, 513
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 947, 518
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 732, 389
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 730, 364
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// check: should have left 蘭州林蔭道 → 蘭州南門
+Call DetectMap()
+If mapResult = "linyindao" Then
+    TracePrint "Failed to leave 蘭州林蔭道, restarting..."
+    Call RestartGame()
+    Goto RUN_START
+End If
+
+//蘭洲南門
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 1015, 519
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 993, 519
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 755, 415
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 738, 369
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// check: should have left 蘭州南門 → 蘭州官道
+Call DetectMap()
+If mapResult = "nanmen" Then
+    TracePrint "Failed to leave 蘭州南門, restarting..."
+    Call RestartGame()
+    Goto RUN_START
+End If
+
+//蘭洲官道
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 851, 516
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 656, 519
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 735, 410
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// check: should have left 蘭州官道 → 敦煌大街
+Call DetectMap()
+If mapResult = "guandao" Then
+    TracePrint "Failed to leave 蘭州官道, restarting..."
+    Call RestartGame()
+    Goto RUN_START
+End If
+
+// ============================
+// CART MAN 1 (Ask 玉門)
+// ============================
+//walk to middle and travel
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 569, 480
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+// pre-cart-man map check (only catch 巫山小道 stuck)
+Call DetectMap()
+If mapResult = "wushan" Then
+    TracePrint "Still on 巫山小道 before cart man 1, recovering..."
+    Call RestartGame()
+    Call DetectMap()
+    If mapResult = "wushan" Then Goto RECOVER_WUSHAN
+    If mapResult = "beidajie" Then Goto RETURN_BEIDAJIE
+    Goto RUN_START
+End If
+
+Dim cartTime
+Dim cartRefresh
+cartRefresh = 0
+Rem FIND_CART_1
+TracePrint "Looking for cart man (玉門)..."
+cartTime = 0
+
+Rem FIND_CART_1_LOOP
+FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\cart man.bmp", 1, intX, intY
+If intX > 0 And intY > 0 Then
+    TracePrint "Cart man found at (" & intX & ", " & intY & ")"
+    MoveTo intX, intY + 10
+    RightClick 1
+    Delay walkDelay
+    IfColor 545, 506, "0000FF", 0 Then
+        SayString "Ask 玉門"
+        Delay walkDelay
+        KeyPress "Enter",1
+        Delay walkDelay
+    Else
+        Delay walkDelay
+        Goto FIND_CART_1_LOOP
+    End If
+Else
+    cartTime = cartTime + 1
+    If cartTime >= 5 Then
+        cartRefresh = cartRefresh + 1
+        TracePrint "Cart man not found after 5s, refresh #" & cartRefresh & "..."
+        If cartRefresh >= 3 Then
+            TracePrint "Cart man not found after 3 refreshes, detecting map..."
+            Call DetectMap()
+            TracePrint "Stuck on: " & mapResult & ", restarting..."
+            Call RestartGame()
+            Call DetectMap()
+            If mapResult = "wushan" Then Goto RECOVER_WUSHAN
+            If mapResult = "beidajie" Then Goto RETURN_BEIDAJIE
+            If mapResult = "yumen" Then Goto RETURN_YUMEN
+            If mapResult = "dunhuang" Then Goto RETURN_DUNHUANG
+            Goto RUN_START
+        End If
+        // walk out
+        KeyDown "Ctrl", 1
+        Delay walkDelay
+        MoveTo 879, 226
+        Delay walkDelay
+        LeftClick 1
+        Delay walkDelay
+        KeyUp "Ctrl", 1
+        Delay walkDelay
+        MoveTo 760, 331
+        Delay walkDelay
+        LeftClick 1
+        Delay mapDelay
+        // re-enter
+        MoveTo 742, 321
+        Delay walkDelay
+        LeftClick 1
+        Delay mapDelay
+        // walk to middle
+        KeyDown "Ctrl", 1
+        Delay walkDelay
+        MoveTo 569, 480
+        Delay walkDelay
+        LeftClick 1
+        Delay walkDelay
+        KeyUp "Ctrl", 1
+        Delay walkDelay
+        Goto FIND_CART_1
+    Else
+        Delay mapDelay
+        Goto FIND_CART_1_LOOP
+    End If
+End If
+Delay mapDelay
+
+// ============================
+// 敦煌大街
+// ============================
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 842, 183
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 997, 193
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 764, 340
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// check: should have left 敦煌大街 → 玉門鎮
+Call DetectMap()
+If mapResult = "dunhuang" Then
+    TracePrint "Failed to leave 敦煌大街, restarting..."
+    Call RestartGame()
+    Goto RUN_START
+End If
+
+// ============================
+// 玉門鎮
+// ============================
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 866, 179
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 704, 178
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 692, 328
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 720, 330
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// check: should have left 玉門鎮 → 北大街
+Call DetectMap()
+If mapResult = "yumen" Then
+    TracePrint "Failed to leave 玉門鎮, restarting..."
+    Call RestartGame()
+    Goto RUN_START
+End If
+
+// ============================
+// 北大街
+// ============================
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 535, 194
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 605, 189
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 728, 326
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// check: should have left 北大街 → 巫山小道
+Call DetectMap()
+If mapResult = "beidajie" Then
+    TracePrint "Failed to leave 北大街, restarting..."
+    Call RestartGame()
+    Goto RUN_START
+End If
+
+// ============================
+// 巫山小道
+// ============================
+
+//refresh
+MoveTo 740, 320
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+MoveTo 738, 325
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+//walk to middle
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 569, 182
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+// ============================
+// KILL NPC (bai.bmp)
+// ============================
+Rem FIND_NPC_KILL
+TracePrint "Looking for NPC to kill (bai.bmp)..."
+
+FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\bai.bmp", 1, intX, intY
+If intX > 0 And intY > 0 Then
+    TracePrint "NPC found at (" & intX & ", " & intY & ")"
+    MoveTo intX + 20, intY + 15
+    RightClick 1
+    Delay walkDelay
+
+    SayString "kill"
+    Delay walkDelay
+    KeyPress "Enter", 1
+    Delay walkDelay
+
+    Rem COMBAT_LOOP
+    //hp check
+    IfColor 279, 329, "000000", 0 Then
+        IfColor 283, 333, "63EF63", 0 Then
+            IfColor 280, 328, "000000", 0 Then
+                Delay walkDelay
+                SayString "Use 藥酒 7"
+                Delay walkDelay
+                KeyPress "Enter", 1
+                Delay walkDelay
+            Else 
+            End If
+        Else
+        End If
+    Else
+    End If
+
+    FindColor 752,282,792,297,"FFFF00",intX,intY
+    If intX > 0 And intY > 0 Then
+        TracePrint "Kill complete"
+        Goto KILL_DONE
+    Else 
+        Goto COMBAT_LOOP
+    End if
+Else
+    TracePrint "NPC not found, retrying..."
+    Delay walkDelay
+    Goto FIND_NPC_KILL
+End If
+
+Rem KILL_DONE
+Delay mapDelay
+
+// ============================
+// EXIT 巫山小道 (walk back)
+// ============================
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 924, 498
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 755, 368
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// check if stuck on 巫山小道
+Call DetectMap()
+If mapResult = "wushan" Then
+    TracePrint "Still on 巫山小道 after exit, waiting 20s..."
+    Dim stuckTime
+    stuckTime = now
+    Do
+        If DateDiff("s", stuckTime, now) >= 20 Then
+            TracePrint "Stuck on 巫山小道 for 20s, restarting game..."
+            Call RestartGame()
+            Call DetectMap()
+            If mapResult = "wushan" Then Goto RECOVER_WUSHAN
+            If mapResult = "beidajie" Then Goto RETURN_BEIDAJIE
+            Exit Do
+        End If
+        Delay 1000
+        Call DetectMap()
+        If mapResult <> "wushan" Then
+            TracePrint "Left 巫山小道 successfully"
+            Exit Do
+        End If
+    Loop
+End If
+Goto RETURN_BEIDAJIE
+
+// ============================
+// RECOVER: 巫山小道 → walk to 北大街
+// ============================
+Rem RECOVER_WUSHAN
+TracePrint "=== RECOVER_WUSHAN ==="
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 985, 519
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay mapDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 819, 454
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay mapDelay
+
+MoveTo 755, 365
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// verify we actually left 巫山小道
+Call DetectMap()
+If mapResult = "wushan" Then
+    TracePrint "RECOVER_WUSHAN failed, still on 巫山小道. Restarting fresh..."
+    Call RestartGame()
+    Goto RUN_START
+End If
+TracePrint "Arrived at 北大街, resuming flow..."
+
+// ============================
+// 北大街(回)
+Rem RETURN_BEIDAJIE
+// ============================
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 970, 514
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 905, 502
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 754, 370
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// check map after 北大街 exit
+Call DetectMap()
+If mapResult = "wushan" Then
+    TracePrint "Still on 巫山小道 after 北大街 exit, restarting..."
+    Call RestartGame()
+    Goto RECOVER_WUSHAN
+ElseIf mapResult = "beidajie" Then
+    TracePrint "Still on 北大街, retrying exit..."
+    Goto RETURN_BEIDAJIE //restart and goto recover flow for beidajie, place holder
+
+End If
+
+// ============================
+// 玉門鎮(回)
+Rem RETURN_YUMEN
+// ============================
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 784, 514
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 675, 521
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 742, 399
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// check map after 玉門鎮 exit
+Call DetectMap()
+If mapResult = "wushan" Then
+    TracePrint "Still on 巫山小道 after 玉門鎮 exit, restarting..."
+    Call RestartGame()
+    Goto RECOVER_WUSHAN
+ElseIf mapResult = "beidajie" Then
+    TracePrint "Still on 北大街, going to 北大街 return flow..."
+    Goto RETURN_BEIDAJIE
+ElseIf mapResult = "yumen" Then
+    TracePrint "Still on 玉門鎮, retrying exit..."
+    Goto RETURN_YUMEN
+End If
+
+// ============================
+// 敦煌大街 - CART MAN 2 (Ask 蘭州)
+Rem RETURN_DUNHUANG
+// ============================
+//walk to middle to look for cart man
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 506, 482
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+// pre-cart-man 2 map check (only catch 巫山小道 stuck)
+Call DetectMap()
+If mapResult = "wushan" Then
+    TracePrint "Still on 巫山小道 before cart man 2, recovering..."
+    Call RestartGame()
+    Call DetectMap()
+    If mapResult = "wushan" Then Goto RECOVER_WUSHAN
+    If mapResult = "beidajie" Then Goto RETURN_BEIDAJIE
+    Goto RUN_START
+End If
+
+Rem FIND_CART_2
+TracePrint "Looking for cart man (蘭州)..."
+cartTime = 0
+cartRefresh = 0
+
+Rem FIND_CART_2_LOOP
+FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\cart man.bmp", 1, intX, intY
+If intX > 0 And intY > 0 Then
+    TracePrint "Cart man found at (" & intX & ", " & intY & ")"
+    MoveTo intX, intY + 10
+    RightClick 1
+    Delay walkDelay
+    IfColor 545, 507, "0000FF", 0 Then
+        SayString "Ask 蘭州"
+        Delay walkDelay
+        KeyPress "Enter",1
+        Delay walkDelay
+    Else
+        Delay walkDelay
+        Goto FIND_CART_2_LOOP
+    End If
+Else
+    cartTime = cartTime + 1
+    If cartTime >= 15 Then
+        cartRefresh = cartRefresh + 1
+        TracePrint "Cart man not found after 5s, refresh #" & cartRefresh & "..."
+        If cartRefresh >= 3 Then
+            TracePrint "Cart man 2 not found after 3 refreshes, detecting map..."
+            Call DetectMap()
+            TracePrint "Stuck on: " & mapResult & ", restarting..."
+            Call RestartGame()
+            Call DetectMap()
+            If mapResult = "wushan" Then Goto RECOVER_WUSHAN
+            If mapResult = "beidajie" Then Goto RETURN_BEIDAJIE
+            If mapResult = "yumen" Then Goto RETURN_YUMEN
+            If mapResult = "dunhuang" Then Goto RETURN_DUNHUANG
+            Goto RUN_START
+        End If
+        cartTime = 0
+        Delay mapDelay
+        Goto FIND_CART_2_LOOP
+    Else
+        Delay mapDelay
+        Goto FIND_CART_2_LOOP
+    End If
+End If
+Delay mapDelay
+
+// ============================
+// 蘭州驛站 - WALK BACK to mission room
+// ============================
+//walk to 蘭州官道
+MoveTo 744, 321
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// check: should have left 蘭州驛站 → 蘭州官道
+Call DetectMap()
+If mapResult = "yizhan" Then
+    TracePrint "Failed to leave 蘭州驛站, restarting..."
+    Call RestartGame()
+    Goto RUN_START
+End If
+
+// 蘭州官道(回)
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 769, 184
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 702, 177
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 736, 302
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// check: should have left 蘭州官道 → 蘭州南門
+Call DetectMap()
+If mapResult = "guandao" Then
+    TracePrint "Failed to leave 蘭州官道(回), restarting..."
+    Call RestartGame()
+    Goto RUN_START
+End If
+
+//蘭州南門(回)
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 517, 179
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 550, 175
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 693, 276
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// check: should have left 蘭州南門 → 蘭州林蔭道
+Call DetectMap()
+If mapResult = "nanmen" Then
+    TracePrint "Failed to leave 蘭州南門(回), restarting..."
+    Call RestartGame()
+    Goto RUN_START
+End If
+
+//蘭州林蔭道(回)
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 592, 183
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 527, 178
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 729, 308
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// check: should have left 蘭州林蔭道 → 城
+Call DetectMap()
+If mapResult = "linyindao" Then
+    TracePrint "Failed to leave 蘭州林蔭道(回), restarting..."
+    Call RestartGame()
+    Goto RUN_START
+End If
+
+//城(回)
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 624, 219
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 536, 180
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 735, 319
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// check: should have left 城 → 濱河大街
+Call DetectMap()
+If mapResult = "cheng" Then
+    TracePrint "Failed to leave 城(回), restarting..."
+    Call RestartGame()
+    Goto RUN_START
+End If
+
+//濱河大街(回)
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 482, 263
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 537, 399
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 721, 363
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// check: should have left 濱河大街 → 濱河大街西
+Call DetectMap()
+If mapResult = "binhe" Then
+    TracePrint "Failed to leave 濱河大街(回), restarting..."
+    Call RestartGame()
+    Goto RUN_START
+End If
+
+//濱河大街西(回)
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 459, 321
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 678, 357
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 721, 357
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// check: should have left 濱河大街西 → mission room
+Call DetectMap()
+If mapResult = "binhexi" Then
+    TracePrint "Failed to leave 濱河大街西(回), restarting..."
+    Call RestartGame()
+    Goto RUN_START
+End If
+
+// back at mission room, loop
+TracePrint "=== RUN " & runCount & " COMPLETE ==="
+Goto RUN_START
+
+// ============================================================
+// SUBROUTINES
+// ============================================================
+
+Sub NineClick()
+    KeyDown "Ctrl", 1
+    Delay walkDelay
+    KeyPress "A", 1
+    Delay walkDelay
+    KeyPress "Delete", 1
+    Delay walkDelay
+    KeyUp "Ctrl", 1
+    MoveTo 930, 638
+    Delay walkDelay
+    LeftClick 1
+    Delay walkDelay
+End Sub
+
+// DetectMap — identify current map by IfColor on map name text
+// Sets mapResult to: wushan, beidajie, yumen, dunhuang, yizhan,
+//   guandao, nanmen, linyindao, cheng, binhe, binhexi, mission, unknown
+Sub DetectMap()
+    mapResult = "unknown"
+    
+    // Step 1: has char5? (501,177) golden = 5+ char map name
+    IfColor 501, 177, "73BEF7", 0 Then
+        // 5-char maps: mission, linyindao, cheng, binhexi
+        IfColor 500, 180, "73BEF7", 0 Then
+            mapResult = "mission"
+            TracePrint "DetectMap: mission (一品堂)"
+            Exit Sub
+        End If
+        IfColor 488, 177, "73BEF7", 0 Then
+            mapResult = "linyindao"
+            TracePrint "DetectMap: linyindao (蘭州林蔭道)"
+            Exit Sub
+        End If
+        IfColor 464, 177, "73BEF7", 0 Then
+            mapResult = "cheng"
+            TracePrint "DetectMap: cheng (城)"
+            Exit Sub
+        End If
+        mapResult = "binhexi"
+        TracePrint "DetectMap: binhexi (濱河大街西)"
+        Exit Sub
+    End If
+    
+    // Step 2: has char4? (492,177) or (491,177) or (495,177)
+    Dim hasC4
+    hasC4 = 0
+    IfColor 492, 177, "73BEF7", 0 Then
+        hasC4 = 1
+    End If
+    If hasC4 = 0 Then
+        IfColor 491, 177, "73BEF7", 0 Then
+            hasC4 = 1
+        End If
+    End If
+    If hasC4 = 0 Then
+        IfColor 495, 177, "73BEF7", 0 Then
+            hasC4 = 1
+        End If
+    End If
+    
+    If hasC4 = 0 Then
+        // 3-char maps: yumen, beidajie
+        IfColor 468, 177, "73BEF7", 0 Then
+            mapResult = "yumen"
+            TracePrint "DetectMap: yumen (玉門鎮)"
+            Exit Sub
+        End If
+        mapResult = "beidajie"
+        TracePrint "DetectMap: beidajie (北大街)"
+        Exit Sub
+    End If
+    
+    // Step 3: 4-char maps: wushan, dunhuang, yizhan, guandao, nanmen, binhe
+    IfColor 454, 180, "73BEF7", 0 Then
+        mapResult = "wushan"
+        TracePrint "DetectMap: wushan (巫山小道)"
+        Exit Sub
+    End If
+    IfColor 466, 177, "73BEF7", 0 Then
+        mapResult = "dunhuang"
+        TracePrint "DetectMap: dunhuang (敦煌大街)"
+        Exit Sub
+    End If
+    IfColor 476, 177, "73BEF7", 0 Then
+        IfColor 484, 180, "73BEF7", 1 Then
+            mapResult = "nanmen"
+            TracePrint "DetectMap: nanmen (蘭州南門)"
+            Exit Sub
+        End If
+    End If
+    IfColor 486, 180, "73BEF7", 0 Then
+        mapResult = "yizhan"
+        TracePrint "DetectMap: yizhan (蘭州驛站)"
+        Exit Sub
+    End If
+    IfColor 484, 180, "73BEF7", 0 Then
+        mapResult = "guandao"
+        TracePrint "DetectMap: guandao (蘭州官道)"
+        Exit Sub
+    End If
+    mapResult = "binhe"
+    TracePrint "DetectMap: binhe (濱河大街)"
+End Sub
+
+// RestartGame — close game, reopen, login, adjust camera
+Sub RestartGame()
+    TracePrint "=== RESTART GAME ==="
+    KeyPress "F7", 1
+    
+    Rem RG_CLOSE
+    MoveTo 1028, 153
+    Delay walkDelay
+    LeftClick 1
+    TracePrint "Game window closed"
+    
+    Do
+        FindColor 476, 266, 747, 359, "A56D39", intX, intY
+        FindColor 476, 266, 747, 359, "A56E3A", intX1, intY1
+        If intX > 0 And intY > 0 Then
+            MoveTo 595, 404
+            Delay walkDelay
+            LeftClick 1
+            Exit Do
+        ElseIf intX1 > 0 And intY1 > 0 Then
+            MoveTo 595, 404
+            Delay walkDelay
+            LeftClick 1
+            Exit Do
+        End If
+        Delay walkDelay
+    Loop
+    
+    Do
+        FindColor 586, 205, 744, 286, "215DE7", intX, intY
+        If intX > 0 And intY > 0 Then
+            MoveTo intX, intY
+            LeftClick 1
+            Exit Do
+        End If
+        Delay walkDelay
+    Loop
+    Delay gateDelay
+    
+    MoveTo 480, 359
+    Delay walkDelay
+    LeftClick 1
+    Delay gateDelay
+    
+    Rem RG_LOGIN
+    Do
+        FindColor 293, 211, 684, 355, "CEFF63", intX, intY
+        If intX > 0 And intY > 0 Then
+            // Only type login ID if account field is empty (no green text)
+            FindColor 750, 530, 810, 550, "00FF00", intX, intY
+            If intX <= 0 Or intY <= 0 Then
+                SayString "A123456"
+            End If
+            MoveTo 796, 679
+            Delay walkDelay
+            LeftClick 1
+            Delay gateDelay
+            Exit Do
+        End If
+        Delay walkDelay
+    Loop
+    
+    Dim loginTime
+    loginTime = now
+    Do
+        If DateDiff("s", loginTime, now) >= 30 Then
+            TracePrint "Login timeout, retrying..."
+            Goto RG_CLOSE
+            Exit Do
+        Else
+            FindColor 350, 203, 488, 287, "3979EF", intX, intY
+            If intX > 0 And intY > 0 Then
+                MoveTo 712, 517
+                Delay walkDelay
+                LeftClick 1
+                Delay walkDelay
+                MoveTo 720, 674
+                Delay walkDelay
+                LeftClick 1
+                Exit Do
+            End If
+        End If
+        Delay walkDelay
+    Loop
+    
+    Do
+        IfColor 263, 189, "8CAAC6", 0 Then
+            Delay walkDelay
+            Call NineClick()
+            Exit Do
+        End If
+        Delay walkDelay
+    Loop
+    
+    HWND = Plugin.Window.Foreground()
+    Dim camI
+    For camI = 1 To 20
+        Call Plugin.Bkgnd.KeyPress(HWND, 34)
+        Delay 100
+    Next
+    
+    Delay walkDelay
+    Call NineClick()
+    TracePrint "=== RESTART COMPLETE ==="
+End Sub

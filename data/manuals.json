@@ -2,14 +2,9 @@
   {
     "id": "manual-update-3-txt-天刀八訣-1",
     "name": "天刀八訣",
-    "obtain": null,
-    "learnRequirementsText": null,
+    "obtain": "可擊斃<宋缺>獲取,此刻正身處[終南山]",
+    "learnRequirementsText": "學習要求\n• 內力：7000\n• 基本刀法：700",
     "requirements": [
-      {
-        "name": "新增武功: 天刀八訣，可擊斃<宋缺>獲取。",
-        "value": null,
-        "raw": "新增武功: 天刀八訣，可擊斃<宋缺>獲取。"
-      },
       {
         "name": "基本刀法",
         "value": 700,
@@ -27,14 +22,9 @@
   {
     "id": "manual-update-4-txt-逆轉九陰真經-1",
     "name": "逆轉九陰真經",
-    "obtain": null,
-    "learnRequirementsText": null,
+    "obtain": "可前往白駝山擊斃<歐陽鋒>獲取",
+    "learnRequirementsText": "學習要求\n• 內力：3500",
     "requirements": [
-      {
-        "name": "新增武功: 逆轉九陰真經，可前往白駝山擊斃<歐陽鋒>獲取。",
-        "value": null,
-        "raw": "新增武功: 逆轉九陰真經，可前往白駝山擊斃<歐陽鋒>獲取。"
-      },
       {
         "name": "內力",
         "value": 3500,
@@ -47,14 +37,9 @@
   {
     "id": "manual-update-4-txt-燎原槍法-2",
     "name": "燎原槍法",
-    "obtain": null,
-    "learnRequirementsText": null,
+    "obtain": "可前往白駝山擊斃<厲若海>獲取",
+    "learnRequirementsText": "學習要求\n• 內力：7000\n• 基本棍法：700",
     "requirements": [
-      {
-        "name": "新增武功: 燎原槍法，可前往白駝山擊斃<厲若海>獲取。",
-        "value": null,
-        "raw": "新增武功: 燎原槍法，可前往白駝山擊斃<厲若海>獲取。"
-      },
       {
         "name": "基本棍法",
         "value": 700,
@@ -72,14 +57,9 @@
   {
     "id": "manual-update-4-txt-天魔策-3",
     "name": "天魔策",
-    "obtain": null,
-    "learnRequirementsText": null,
+    "obtain": "可前往副本<攔江之戰>解謎獲取",
+    "learnRequirementsText": "學習要求\n• 內力：7000\n• 基本拳腳：700\n• 基本內功：700\n• 基本招架：700\n• 基本輕功：700",
     "requirements": [
-      {
-        "name": "新增武功: 天魔策，可前往副本<攔江之戰>解謎獲取。",
-        "value": null,
-        "raw": "新增武功: 天魔策，可前往副本<攔江之戰>解謎獲取。"
-      },
       {
         "name": "基本拳腳",
         "value": 700,
@@ -112,38 +92,33 @@
   {
     "id": "manual-update-4-txt-覆雨劍法-4",
     "name": "覆雨劍法",
-    "obtain": null,
-    "learnRequirementsText": null,
+    "obtain": "可前往副本<攔江之戰>解謎獲取",
+    "learnRequirementsText": "學習要求\n• 內力：7000\n• 基本劍法：700\n• 基本內功：700\n• 基本招架：700\n• 基本輕功：700",
     "requirements": [
-      {
-        "name": "新增武功: 覆雨劍法，可前往副本<攔江之戰>解謎獲取。",
-        "value": null,
-        "raw": "新增武功: 覆雨劍法，可前往副本<攔江之戰>解謎獲取。"
-      },
       {
         "name": "基本劍法",
         "value": 700,
-        "raw": "需基本劍法 700"
+        "raw": "一) 需基本劍法 700"
       },
       {
         "name": "基本內功",
         "value": 700,
-        "raw": "需基本內功 700"
+        "raw": "二) 需基本內功 700"
       },
       {
         "name": "內力",
         "value": 7000,
-        "raw": "需內力 7000"
+        "raw": "三) 需內力 7000"
       },
       {
         "name": "基本招架",
         "value": 700,
-        "raw": "需基本招架 700"
+        "raw": "四) 需基本招架 700"
       },
       {
         "name": "基本輕功",
         "value": 700,
-        "raw": "需基本輕功 700"
+        "raw": "五) 需基本輕功 700"
       }
     ],
     "sourceFile": "update - 4.txt",
@@ -152,33 +127,28 @@
   {
     "id": "manual-update-5-txt-純陽拳-1",
     "name": "純陽拳",
-    "obtain": null,
-    "learnRequirementsText": null,
+    "obtain": "可前往副本<古墓>解謎獲取",
+    "learnRequirementsText": "學習要求\n• 內力：2000\n• 精力：500\n• 基本拳腳：200\n• 基本內功：200",
     "requirements": [
-      {
-        "name": "新增武功: 純陽拳，可前往副本<古墓>解謎獲取。",
-        "value": null,
-        "raw": "新增武功: 純陽拳，可前往副本<古墓>解謎獲取。"
-      },
       {
         "name": "基本拳腳",
         "value": 200,
-        "raw": "需基本拳腳 200"
+        "raw": "一) 需基本拳腳 200"
       },
       {
         "name": "基本內功",
         "value": 200,
-        "raw": "需基本內功 200"
+        "raw": "二) 需基本內功 200"
       },
       {
         "name": "內力",
         "value": 2000,
-        "raw": "需內力 2000"
+        "raw": "三) 需內力 2000"
       },
       {
         "name": "精力",
         "value": 500,
-        "raw": "需精力 500"
+        "raw": "四) 需精力 500"
       }
     ],
     "sourceFile": "update - 5.txt",
@@ -187,14 +157,9 @@
   {
     "id": "manual-update-5-txt-赤煉神掌-2",
     "name": "赤煉神掌",
-    "obtain": null,
-    "learnRequirementsText": null,
+    "obtain": "可前往副本<古墓>解謎獲取",
+    "learnRequirementsText": "學習要求\n• 內力：3000\n• 基本拳腳：300\n• 基本內功：300",
     "requirements": [
-      {
-        "name": "新增武功: 赤煉神掌，可前往副本<古墓>解謎獲取。",
-        "value": null,
-        "raw": "新增武功: 赤煉神掌，可前往副本<古墓>解謎獲取。"
-      },
       {
         "name": "基本拳腳",
         "value": 300,
@@ -217,28 +182,23 @@
   {
     "id": "manual-update-5-txt-玄鐵劍法-3",
     "name": "玄鐵劍法",
-    "obtain": null,
-    "learnRequirementsText": null,
+    "obtain": "可前往副本<古墓>解謎獲取",
+    "learnRequirementsText": "學習要求\n• 內力：4000\n• 基本劍法：400\n• 基本內功：400",
     "requirements": [
-      {
-        "name": "新增武功: 玄鐵劍法，可前往副本<古墓>解謎獲取。",
-        "value": null,
-        "raw": "新增武功: 玄鐵劍法，可前往副本<古墓>解謎獲取。"
-      },
       {
         "name": "基本劍法",
         "value": 400,
-        "raw": "需基本劍法 400"
+        "raw": "一) 需基本劍法 400"
       },
       {
         "name": "基本內功",
         "value": 400,
-        "raw": "需基本內功 400"
+        "raw": "二) 需基本內功 400"
       },
       {
         "name": "內力",
         "value": 4000,
-        "raw": "需內力 4000"
+        "raw": "三) 需內力 4000"
       }
     ],
     "sourceFile": "update - 5.txt",
@@ -247,28 +207,23 @@
   {
     "id": "manual-update-5-txt-銀索金鈴-4",
     "name": "銀索金鈴",
-    "obtain": null,
-    "learnRequirementsText": null,
+    "obtain": "可前往副本<古墓>解謎獲取",
+    "learnRequirementsText": "學習要求\n• 內力：2000\n• 基本短兵：200\n• 基本輕功：200",
     "requirements": [
-      {
-        "name": "新增武功: 銀索金鈴，可前往副本<古墓>解謎獲取",
-        "value": null,
-        "raw": "新增武功: 銀索金鈴，可前往副本<古墓>解謎獲取"
-      },
       {
         "name": "基本短兵",
         "value": 200,
-        "raw": "需基本短兵 200"
+        "raw": "一) 需基本短兵 200"
       },
       {
         "name": "基本輕功",
         "value": 200,
-        "raw": "需基本輕功 200"
+        "raw": "二) 需基本輕功 200"
       },
       {
         "name": "內力",
         "value": 2000,
-        "raw": "需內力 2000"
+        "raw": "三) 需內力 2000"
       }
     ],
     "sourceFile": "update - 5.txt",
@@ -277,13 +232,13 @@
   {
     "id": "manual-update-5-txt-岳家散手-5",
     "name": "岳家散手",
-    "obtain": null,
+    "obtain": "6. 昭明書院新增武功: 岳家散手，可向岳雲拜師學習。",
     "learnRequirementsText": null,
     "requirements": [
       {
-        "name": "昭明書院新增武功: 岳家散手，可向岳雲拜師學習。",
+        "name": "6. 昭明書院新增武功: 岳家散手，可向岳雲拜師學習。",
         "value": null,
-        "raw": "昭明書院新增武功: 岳家散手，可向岳雲拜師學習。"
+        "raw": "6. 昭明書院新增武功: 岳家散手，可向岳雲拜師學習。"
       }
     ],
     "sourceFile": "update - 5.txt",
@@ -292,28 +247,23 @@
   {
     "id": "manual-update-6-txt-胡家刀法-1",
     "name": "胡家刀法",
-    "obtain": null,
-    "learnRequirementsText": null,
+    "obtain": "可前往荊州擊斃<胡斐>獲取",
+    "learnRequirementsText": "學習要求\n• 內力：2500\n• 基本刀法：250\n• 基本內功：250",
     "requirements": [
-      {
-        "name": "新增武功: 胡家刀法，可前往荊州擊斃<胡斐>獲取。",
-        "value": null,
-        "raw": "新增武功: 胡家刀法，可前往荊州擊斃<胡斐>獲取。"
-      },
       {
         "name": "基本刀法",
         "value": 250,
-        "raw": "需基本刀法 250"
+        "raw": "一) 需基本刀法 250"
       },
       {
         "name": "基本內功",
         "value": 250,
-        "raw": "需基本內功 250"
+        "raw": "二) 需基本內功 250"
       },
       {
         "name": "內力",
         "value": 2500,
-        "raw": "需內力 2500"
+        "raw": "三) 需內力 2500"
       }
     ],
     "sourceFile": "update - 6.txt",
@@ -322,14 +272,9 @@
   {
     "id": "manual-update-6-txt-苗家劍法-2",
     "name": "苗家劍法",
-    "obtain": null,
-    "learnRequirementsText": null,
+    "obtain": "可前往醫館擊斃<苗人鳳>獲取",
+    "learnRequirementsText": "學習要求\n• 內力：2500\n• 基本劍法：250\n• 基本內功：250",
     "requirements": [
-      {
-        "name": "新增武功: 苗家劍法，可前往醫館擊斃<苗人鳳>獲取。",
-        "value": null,
-        "raw": "新增武功: 苗家劍法，可前往醫館擊斃<苗人鳳>獲取。"
-      },
       {
         "name": "基本劍法",
         "value": 250,
@@ -352,28 +297,23 @@
   {
     "id": "manual-update-6-txt-日月輪法-3",
     "name": "日月輪法",
-    "obtain": null,
-    "learnRequirementsText": null,
+    "obtain": "可通過任務<金輪法王>解謎獲取",
+    "learnRequirementsText": "學習要求\n• 內力：3000\n• 臂力：70\n• 根骨：70",
     "requirements": [
-      {
-        "name": "新增武功: 日月輪法，可通過任務<金輪法王>解謎獲取。",
-        "value": null,
-        "raw": "新增武功: 日月輪法，可通過任務<金輪法王>解謎獲取。"
-      },
       {
         "name": "臂力",
         "value": 70,
-        "raw": "需臂力 70"
+        "raw": "一) 需臂力 70"
       },
       {
         "name": "根骨",
         "value": 70,
-        "raw": "需根骨 70"
+        "raw": "二) 需根骨 70"
       },
       {
         "name": "內力",
         "value": 3000,
-        "raw": "需內力 3000"
+        "raw": "三) 需內力 3000"
       }
     ],
     "sourceFile": "update - 6.txt",
@@ -382,14 +322,9 @@
   {
     "id": "manual-update-6-txt-太玄神功-4",
     "name": "太玄神功",
-    "obtain": null,
-    "learnRequirementsText": null,
+    "obtain": "可前往副本<俠客島>解謎獲取",
+    "learnRequirementsText": "學習要求\n• 內力：3000\n• 悟性：70\n• 根骨：70",
     "requirements": [
-      {
-        "name": "2. 新增武功: 太玄神功，可前往副本<俠客島>解謎獲取。",
-        "value": null,
-        "raw": "2. 新增武功: 太玄神功，可前往副本<俠客島>解謎獲取。"
-      },
       {
         "name": "悟性",
         "value": 70,
@@ -404,11 +339,6 @@
         "name": "內力",
         "value": 3000,
         "raw": "三) 需內力 3000"
-      },
-      {
-        "name": "4. 太玄神功可以同時配置為: 拳腳、招架、輕功，且招架與輕功均擁有特殊效果加成及描述。",
-        "value": null,
-        "raw": "4. 太玄神功可以同時配置為: 拳腳、招架、輕功，且招架與輕功均擁有特殊效果加成及描述。"
       }
     ],
     "sourceFile": "update - 6.txt",
@@ -417,14 +347,9 @@
   {
     "id": "manual-update-6-txt-鐵掌掌法-5",
     "name": "鐵掌掌法",
-    "obtain": null,
-    "learnRequirementsText": null,
+    "obtain": "4. 新增武功: 鐵掌掌法，可從<破碎虛空>中解謎(30張)合成。",
+    "learnRequirementsText": "學習要求\n• 內力：2000\n• 臂力：50\n• 根骨：50\n• 身法：50",
     "requirements": [
-      {
-        "name": "4. 新增武功: 鐵掌掌法，可從<破碎虛空>中解謎(30張)合成。",
-        "value": null,
-        "raw": "4. 新增武功: 鐵掌掌法，可從<破碎虛空>中解謎(30張)合成。"
-      },
       {
         "name": "臂力",
         "value": 50,
@@ -452,14 +377,9 @@
   {
     "id": "manual-update-7-txt-彈指神通-1",
     "name": "彈指神通",
-    "obtain": null,
-    "learnRequirementsText": null,
+    "obtain": "2. 新增武功: 彈指神通，可從<破碎虛空>中解謎(20張)合成。",
+    "learnRequirementsText": "學習要求\n• 內力：1500\n• 臂力：50\n• 根骨：50",
     "requirements": [
-      {
-        "name": "2. 新增武功: 彈指神通，可從<破碎虛空>中解謎(20張)合成。",
-        "value": null,
-        "raw": "2. 新增武功: 彈指神通，可從<破碎虛空>中解謎(20張)合成。"
-      },
       {
         "name": "臂力",
         "value": 50,
@@ -482,14 +402,9 @@
   {
     "id": "manual-update-7-txt-空明拳-2",
     "name": "空明拳",
-    "obtain": null,
-    "learnRequirementsText": null,
+    "obtain": "3. 新增武功: 空明拳，可從<破碎虛空>中解謎(20張)合成。",
+    "learnRequirementsText": "學習要求\n• 內力：1500\n• 臂力：50\n• 根骨：50",
     "requirements": [
-      {
-        "name": "3. 新增武功: 空明拳，可從<破碎虛空>中解謎(20張)合成。",
-        "value": null,
-        "raw": "3. 新增武功: 空明拳，可從<破碎虛空>中解謎(20張)合成。"
-      },
       {
         "name": "臂力",
         "value": 50,
@@ -512,14 +427,9 @@
   {
     "id": "manual-update-7-txt-金剛瑜迦母拳-3",
     "name": "金剛瑜迦母拳",
-    "obtain": null,
-    "learnRequirementsText": null,
+    "obtain": "可前往副本<血刀門>解謎獲取",
+    "learnRequirementsText": "學習要求\n• 內力：1000",
     "requirements": [
-      {
-        "name": "2. 新增武功: 金剛瑜迦母拳，可前往副本<血刀門>解謎獲取。",
-        "value": null,
-        "raw": "2. 新增武功: 金剛瑜迦母拳，可前往副本<血刀門>解謎獲取。"
-      },
       {
         "name": "內力",
         "value": 1000,
@@ -532,14 +442,9 @@
   {
     "id": "manual-update-7-txt-血刀刀法-4",
     "name": "血刀刀法",
-    "obtain": null,
-    "learnRequirementsText": null,
+    "obtain": "可前往副本<血刀門>解謎獲取",
+    "learnRequirementsText": "學習要求\n• 內力：2000\n• 基本刀法：200\n• 臂力：50\n• 身法：50",
     "requirements": [
-      {
-        "name": "1. 新增武功: 血刀刀法，可前往副本<血刀門>解謎獲取。",
-        "value": null,
-        "raw": "1. 新增武功: 血刀刀法，可前往副本<血刀門>解謎獲取。"
-      },
       {
         "name": "臂力",
         "value": 50,
@@ -560,7 +465,6 @@
         "value": 200,
         "raw": "四) 需基本刀法 200"
       }
-
     ],
     "sourceFile": "update - 7.txt",
     "rawExcerpt": "1. 新增武功: 血刀刀法，可前往副本<血刀門>解謎獲取。\n<學習要求>\n一) 需臂力 50\n二) 需身法 50\n三) 需內力 2000\n四) 需基本刀法 200\n1. 新增新手進階任務 - 狙擊蒙古高手，請玩家們前往襄陽帥府覓 (郭靖) 領取任務事宜。\n2. 荊州城清風寨山賊任務所得金錢調整至 20 黃金。\n1. 有關新手任務中所潛伏於襄陽城外的蒙古人數量劇增，襄陽帥府急需支援。\n2. 新增副本<無量山劍湖宮>，詳情請前往長安尋找「說書人」解謎進入。\n1. 胡青牛販賣的九轉還精丹降價至 1 白銀。\n1. 新增 NPC (鬼市黑商)，其位於敦煌某處，可覓其購買武功秘笈。"
@@ -568,14 +472,9 @@
   {
     "id": "manual-update-7-txt-玄冥神掌-5",
     "name": "玄冥神掌",
-    "obtain": null,
-    "learnRequirementsText": null,
+    "obtain": "2. 新增武功: 玄冥神掌，可覓鬼市黑商了解詳情。",
+    "learnRequirementsText": "學習要求\n• 內力：1500\n• 基本拳腳：150\n• 悟性：30\n• 臂力：30\n• 根骨：50\n• 身法：30",
     "requirements": [
-      {
-        "name": "2. 新增武功: 玄冥神掌，可覓鬼市黑商了解詳情。",
-        "value": null,
-        "raw": "2. 新增武功: 玄冥神掌，可覓鬼市黑商了解詳情。"
-      },
       {
         "name": "悟性",
         "value": 30,
@@ -613,14 +512,9 @@
   {
     "id": "manual-update-7-txt-須彌山掌-6",
     "name": "須彌山掌",
-    "obtain": null,
-    "learnRequirementsText": null,
+    "obtain": "3. 新增武功: 須彌山掌，可覓鬼市黑商了解詳情。",
+    "learnRequirementsText": "學習要求\n• 內力：1500\n• 基本拳腳：150\n• 悟性：30\n• 臂力：50\n• 根骨：30\n• 身法：30",
     "requirements": [
-      {
-        "name": "3. 新增武功: 須彌山掌，可覓鬼市黑商了解詳情。",
-        "value": null,
-        "raw": "3. 新增武功: 須彌山掌，可覓鬼市黑商了解詳情。"
-      },
       {
         "name": "悟性",
         "value": 30,
@@ -654,5 +548,83 @@
     ],
     "sourceFile": "update - 7.txt",
     "rawExcerpt": "3. 新增武功: 須彌山掌，可覓鬼市黑商了解詳情。\n<學習要求>\n一) 需悟性 30\n二) 需臂力 50\n三) 需根骨 30\n四) 需身法 30\n五) 需內力 1500\n六) 需基本拳腳 150\n1. 所有城鎮裡均增添 2 名「陪練童子」，其根骨特高，能夠抵抗高內力玩家的反震。\n2. 所有食物和飲料的重量均調整為 1。\n1. 所有藥品的重量均調整為 1。\n2. 吳志任務所得經驗由 1000 調整至 20000。\n3. 新增襄陽城商販 NPC (老藥農)，可向其一次性購買 1000 個金創藥、藥酒、九轉還精丹、青草。\n4. 所有新登錄的玩家均可獲得由站長贈送的護具 (武道袍)。\n5. 新增新手任務 - 潛伏的蒙古人，請玩家們前往襄陽帥府覓 (郭靖) 領取任務事宜。"
+  },
+  {
+    "id": "manual-custom-九陽神功-1",
+    "name": "九陽神功",
+    "obtain": "三大神級高手之一（斗酒僧）持有真跡，擊敗後可隨機獲得。曾現身地點：蘭州、祁連山脈、白駝山。",
+    "learnRequirementsText": "學習要求\n• 內力：5000\n• 相關基本技能：1500",
+    "requirements": [
+      {
+        "name": "相關基本技能",
+        "value": 1500,
+        "raw": "相關基本技能 1500"
+      },
+      {
+        "name": "內力",
+        "value": 5000,
+        "raw": "內力 5000"
+      }
+    ],
+    "sourceFile": "user-provided",
+    "rawExcerpt": "新增三大神級內功：九陽神功，等級上限 2000。每提升 10 級增加 1 點根骨。領悟條件：相關基本技能 1500 等級，內力 5000。三大神級高手（斗酒僧）持有真跡，擊敗後可隨機獲得。曾現身：蘭州、祁連山脈、白駝山。"
+  },
+  {
+    "id": "manual-custom-九陰神功-1",
+    "name": "九陰神功",
+    "obtain": "三大神級高手之一（黃裳）持有真跡，擊敗後可隨機獲得。曾現身地點：蘭州、祁連山脈、白駝山。",
+    "learnRequirementsText": "學習要求\n• 內力：5000\n• 相關基本技能：1500",
+    "requirements": [
+      {
+        "name": "相關基本技能",
+        "value": 1500,
+        "raw": "相關基本技能 1500"
+      },
+      {
+        "name": "內力",
+        "value": 5000,
+        "raw": "內力 5000"
+      }
+    ],
+    "sourceFile": "user-provided",
+    "rawExcerpt": "新增三大神級內功：九陰神功，等級上限 2000。每提升 10 級增加 1 點臂力。領悟條件：相關基本技能 1500 等級，內力 5000。三大神級高手（黃裳）持有真跡，擊敗後可隨機獲得。曾現身：蘭州、祁連山脈、白駝山。"
+  },
+  {
+    "id": "manual-custom-葵花魔功-1",
+    "name": "葵花魔功",
+    "obtain": "三大神級高手之一（童貫）持有真跡，擊敗後可隨機獲得。曾現身地點：蘭州、祁連山脈、白駝山。",
+    "learnRequirementsText": "學習要求\n• 內力：5000\n• 相關基本技能：1500",
+    "requirements": [
+      {
+        "name": "相關基本技能",
+        "value": 1500,
+        "raw": "相關基本技能 1500"
+      },
+      {
+        "name": "內力",
+        "value": 5000,
+        "raw": "內力 5000"
+      }
+    ],
+    "sourceFile": "user-provided",
+    "rawExcerpt": "新增三大神級內功：葵花魔功，等級上限 2000。每提升 10 級增加 1 點身法。領悟條件：相關基本技能 1500 等級，內力 5000。三大神級高手（童貫）持有真跡，擊敗後可隨機獲得。曾現身：蘭州、祁連山脈、白駝山。"
+  },
+  {
+    "id": "manual-update-4-txt-無極大成上冊-1",
+    "name": "無極大成上冊",
+    "obtain": "挑戰 副本 慈航靜齋 NPC [問天尼] 成功可獲得對應天書，以增加臂力。",
+    "learnRequirementsText": null,
+    "requirements": [],
+    "sourceFile": "update - 4.txt",
+    "rawExcerpt": "21 Jan 2025\n1. 挑戰 NPC [問天尼]及[天僧]成功將獲得相對應的<天書>，以增加「臂力」。\n2. <無極大成上冊>: 每 50 級增加 1 點[臂力]。"
+  },
+  {
+    "id": "manual-update-4-txt-無極大成下冊-2",
+    "name": "無極大成下冊",
+    "obtain": "挑戰  副本 慈航靜齋 NPC [天僧] 成功可獲得對應天書，以增加臂力。",
+    "learnRequirementsText": null,
+    "requirements": [],
+    "sourceFile": "update - 4.txt",
+    "rawExcerpt": "21 Jan 2025\n1. 挑戰 NPC [問天尼]及[天僧]成功將獲得相對應的<天書>，以增加「臂力」。\n3. <無極大成下冊>: 每 50 級增加 1 點[臂力]。"
   }
 ]

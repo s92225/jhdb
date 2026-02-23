@@ -1,0 +1,976 @@
+
+LockMouse
+
+Dim walkDelay, mapDelay
+walkDelay = 200
+mapDelay = 1000
+
+// Eat and drink
+SayString "Use 關東煮"
+Delay walkDelay
+KeyPress "Enter",1
+Delay walkDelay
+
+SayString "Use 藥酒"
+Delay walkDelay
+KeyPress "Enter",3
+Delay walkDelay
+
+SayString "Practice 論語 160"
+KeyPress "Enter",1
+
+SayString "YunGong 400"
+Delay walkDelay
+KeyPress "Enter",1
+Delay walkDelay
+
+IfColor 384, 329, "63EF63", 0 Then
+Delay walkDelay
+	SayString "Use 青草 4"
+	Delay walkDelay
+	KeyPress "Enter", 1
+	Delay walkDelay
+Else 
+	
+End If
+
+// start at mission room, walk to middle
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 624, 238
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+// ============================
+// COMPLETE QUEST (yi NPC)
+// ============================
+Dim npcTime
+
+Rem COMPLETE_QUEST_1
+TracePrint "Looking for yi NPC to complete quest..."
+npcTime = 0
+
+Rem FIND_YI_1
+FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\yi.bmp", 1, intX, intY
+If intX > 0 And intY > 0 Then
+    TracePrint "yi found at (" & intX & ", " & intY & ")"
+    MoveTo intX, intY + 10
+    RightClick 1
+    Delay walkDelay
+    IfColor 557, 506, "0000FF", 0 Then
+        // wrong NPC selected (overlap), deselect and retry
+        TracePrint "Wrong NPC selected, deselecting..."
+        MoveTo 736, 352
+        LeftClick 1
+        Delay 3000
+        Goto FIND_YI_1
+    Else
+        SayString "Ask 吳長風的頭顱"
+        Delay walkDelay
+        KeyPress "Enter",1
+        Delay walkDelay
+    End If
+Else
+    npcTime = npcTime + 1
+    If npcTime >= 15 Then
+        TracePrint "yi NPC not found after 15 retries, continuing..."
+    Else
+        Delay walkDelay
+        Goto FIND_YI_1
+    End If
+End If
+
+// ============================
+// TAKE QUEST (lin NPC)
+// ============================
+Rem TAKE_QUEST_1
+TracePrint "Looking for lin NPC to take quest..."
+npcTime = 0
+
+Rem FIND_LIN_1
+FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\lin.bmp", 1, intX, intY
+If intX > 0 And intY > 0 Then
+    TracePrint "lin found at (" & intX & ", " & intY & ")"
+    MoveTo intX, intY + 10
+    RightClick 1
+    Delay walkDelay
+    IfColor 557, 506, "0000FF", 0 Then
+        SayString "Ask 一品堂任務[400萬]"
+        Delay walkDelay
+        KeyPress "Enter",1
+        Delay walkDelay
+    Else
+        // wrong NPC selected (overlap), deselect and retry
+        TracePrint "Wrong NPC selected, deselecting..."
+        MoveTo 736, 352
+        LeftClick 1
+        Delay 3000
+        Goto FIND_LIN_1
+    End If
+Else
+    npcTime = npcTime + 1
+    If npcTime >= 15 Then
+        TracePrint "lin NPC not found after 15 retries, continuing..."
+    Else
+        Delay walkDelay
+        Goto FIND_LIN_1
+    End If
+End If
+
+// ============================
+// COMPLETE QUEST 2 (yi NPC again)
+// ============================
+Rem COMPLETE_QUEST_2
+TracePrint "Looking for yi NPC to complete quest (2nd)..."
+npcTime = 0
+
+Rem FIND_YI_2
+FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\yi.bmp", 1, intX, intY
+If intX > 0 And intY > 0 Then
+    TracePrint "yi found at (" & intX & ", " & intY & ")"
+    MoveTo intX, intY + 10
+    RightClick 1
+    Delay walkDelay
+    IfColor 557, 506, "0000FF", 0 Then
+        // wrong NPC selected (overlap), deselect and retry
+        TracePrint "Wrong NPC selected, deselecting..."
+        MoveTo 736, 352
+        LeftClick 1
+        Delay 3000
+        Goto FIND_YI_2
+    Else
+        SayString "Ask 吳長風的頭顱"
+        Delay walkDelay
+        KeyPress "Enter",1
+        Delay walkDelay
+    End If
+Else
+    npcTime = npcTime + 1
+    If npcTime >= 15 Then
+        TracePrint "yi NPC not found after 15 retries, continuing..."
+    Else
+        Delay walkDelay
+        Goto FIND_YI_2
+    End If
+End If
+
+// ============================
+// TAKE QUEST 2 (lin NPC again)
+// ============================
+Rem TAKE_QUEST_2
+TracePrint "Looking for lin NPC to take quest (2nd)..."
+npcTime = 0
+
+Rem FIND_LIN_2
+FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\lin.bmp", 1, intX, intY
+If intX > 0 And intY > 0 Then
+    TracePrint "lin found at (" & intX & ", " & intY & ")"
+    MoveTo intX, intY + 10
+    RightClick 1
+    Delay walkDelay
+    IfColor 557, 506, "0000FF", 0 Then
+        SayString "Ask 一品堂任務[400萬]"
+        Delay walkDelay
+        KeyPress "Enter",1
+        Delay walkDelay
+    Else
+        // wrong NPC selected (overlap), deselect and retry
+        TracePrint "Wrong NPC selected, deselecting..."
+        MoveTo 736, 352
+        LeftClick 1
+        Delay 3000
+        Goto FIND_LIN_2
+    End If
+Else
+    npcTime = npcTime + 1
+    If npcTime >= 15 Then
+        TracePrint "lin NPC not found after 15 retries, continuing..."
+    Else
+        Delay walkDelay
+        Goto FIND_LIN_2
+    End If
+End If
+
+// ============================
+// WALK OUT from mission room
+// ============================
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 865, 434
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 745, 362
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+//cross road
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 1017, 347
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 817, 328
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 773, 344
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+//濱河大街
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 1017, 304
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 935, 375
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 762, 359
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+//城堭廟廣場
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 882, 438
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 1006, 519
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 711, 390
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 740, 365
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+//蘭洲林蔭道
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 956, 515
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 974, 520
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 729, 400
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+//蘭洲南門
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 1005, 514
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 1007, 514
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 752, 426
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 737, 367
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+//蘭洲官道
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 851, 516
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 656, 519
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 735, 410
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// ============================
+// CART MAN 1 (Ask 荊州)
+// ============================
+//walk to middle and travel
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 569, 480
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+Dim cartTime
+Rem FIND_CART_1
+TracePrint "Looking for cart man (荊州)..."
+cartTime = 0
+
+Rem FIND_CART_1_LOOP
+FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\cart man.bmp", 1, intX, intY
+If intX > 0 And intY > 0 Then
+    TracePrint "Cart man found at (" & intX & ", " & intY & ")"
+    MoveTo intX, intY + 10
+    RightClick 1
+    Delay walkDelay
+    IfColor 545, 506, "0000FF", 0 Then
+        SayString "Ask 荊州"
+        Delay walkDelay
+        KeyPress "Enter",1
+        Delay walkDelay
+    Else
+        Delay walkDelay
+        Goto FIND_CART_1_LOOP
+    End If
+Else
+    cartTime = cartTime + 1
+    If cartTime >= 5 Then
+        TracePrint "Cart man not found after 5s, walking back to refresh..."
+        // walk out
+        KeyDown "Ctrl", 1
+        Delay walkDelay
+        MoveTo 879, 226
+        Delay walkDelay
+        LeftClick 1
+        Delay walkDelay
+        KeyUp "Ctrl", 1
+        Delay walkDelay
+        MoveTo 760, 331
+        Delay walkDelay
+        LeftClick 1
+        Delay mapDelay
+        // re-enter
+        MoveTo 742, 321
+        Delay walkDelay
+        LeftClick 1
+        Delay mapDelay
+        // walk to middle
+        KeyDown "Ctrl", 1
+        Delay walkDelay
+        MoveTo 569, 480
+        Delay walkDelay
+        LeftClick 1
+        Delay walkDelay
+        KeyUp "Ctrl", 1
+        Delay walkDelay
+        Goto FIND_CART_1
+    Else
+        Delay mapDelay
+        Goto FIND_CART_1_LOOP
+    End If
+End If
+Delay mapDelay
+
+// ============================
+// 荊州城中心
+// ============================
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 998, 516
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 976, 519
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 824, 479
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 750, 370
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+//荊州南大街
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 1000, 517
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 899, 505
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 748, 366
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+//荊州南門
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 1003, 518
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 998, 522
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 752, 419
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 744, 377
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+//大道
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 979, 521
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 909, 503
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 752, 361
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+//9click
+MoveTo 817, 649
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+
+//reenter map - 出
+MoveTo 739, 322
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+//9click
+MoveTo 817, 649
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+
+//入
+MoveTo 742, 321
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// ============================
+// KILL NPC (cyan FindColor)
+// ============================
+//walk to middle
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 947, 515
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+Rem FIND_NPC_KILL
+TracePrint "Looking for NPC to kill (cyan)..."
+
+FindColor 452, 175, 1027, 523, "FFFF00", intX, intY
+If intX > 0 And intY > 0 Then
+    TracePrint "NPC found at (" & intX & ", " & intY & ")"
+    MoveTo intX + 20, intY + 15
+    RightClick 1
+    Delay walkDelay
+
+    IfColor 545, 508, "0000FF", 0 Then
+        // NPC selected, not the right one
+        Delay walkDelay
+        Goto FIND_NPC_KILL
+    End If
+
+    SayString "kill"
+    Delay walkDelay
+    KeyPress "Enter", 1
+    Delay walkDelay
+
+    Rem COMBAT_LOOP
+    //hp check
+    IfColor 279, 329, "000000", 0 Then
+        IfColor 283, 333, "63EF63", 0 Then
+            IfColor 280, 328, "000000", 0 Then
+                Delay walkDelay
+                SayString "Use 藥酒 7"
+                Delay walkDelay
+                KeyPress "Enter", 1
+                Delay walkDelay
+            Else 
+            End If
+        Else
+        End If
+    Else
+    End If
+
+    FindColor 752,282,792,297,"FFFF00",intX,intY
+    If intX > 0 And intY > 0 Then
+        TracePrint "Kill complete"
+        Goto KILL_DONE
+    Else 
+        Goto COMBAT_LOOP
+    End if
+Else
+    TracePrint "NPC not found, retrying..."
+    Delay walkDelay
+    Goto FIND_NPC_KILL
+End If
+
+Rem KILL_DONE
+Delay mapDelay
+
+// ============================
+// EXIT kill room
+// ============================
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 577, 197
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 727, 334
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+//大道(回)
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 503, 179
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 639, 194
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 720, 338
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+//荊州南門(回)
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 551, 182
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 551, 176
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 679, 277
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 718, 341
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+//荊州南大街(回)
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 564, 183
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 563, 191
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 720, 339
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// ============================
+// CART MAN 2 (Ask 蘭州) - walk to middle first
+// ============================
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 564, 183
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+Rem FIND_CART_2
+TracePrint "Looking for cart man (蘭州)..."
+cartTime = 0
+
+Rem FIND_CART_2_LOOP
+FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\cart man.bmp", 1, intX, intY
+If intX > 0 And intY > 0 Then
+    TracePrint "Cart man found at (" & intX & ", " & intY & ")"
+    MoveTo intX, intY + 10
+    RightClick 1
+    Delay walkDelay
+    IfColor 545, 507, "0000FF", 0 Then
+        SayString "Ask 蘭州"
+        Delay walkDelay
+        KeyPress "Enter",1
+        Delay walkDelay
+    Else
+        Delay walkDelay
+        Goto FIND_CART_2_LOOP
+    End If
+Else
+    cartTime = cartTime + 1
+    If cartTime >= 5 Then
+        TracePrint "Cart man not found after 5s, walking back to refresh..."
+        // walk out
+        KeyDown "Ctrl", 1
+        Delay walkDelay
+        MoveTo 932, 498
+        Delay walkDelay
+        LeftClick 1
+        Delay walkDelay
+        KeyUp "Ctrl", 1
+        Delay walkDelay
+        MoveTo 756, 370
+        Delay walkDelay
+        LeftClick 1
+        Delay mapDelay
+        // re-enter
+        MoveTo 738, 325
+        Delay walkDelay
+        LeftClick 1
+        Delay mapDelay
+        // walk to middle
+        KeyDown "Ctrl", 1
+        Delay walkDelay
+        MoveTo 564, 183
+        Delay walkDelay
+        LeftClick 1
+        Delay walkDelay
+        KeyUp "Ctrl", 1
+        Delay walkDelay
+        Goto FIND_CART_2
+    Else
+        Delay mapDelay
+        Goto FIND_CART_2_LOOP
+    End If
+End If
+Delay mapDelay
+
+// ============================
+// WALK BACK to mission room
+// ============================
+//walk to 蘭州官道
+MoveTo 744, 321
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+// 蘭州官道(回)
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 769, 184
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 702, 177
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 736, 302
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+//蘭州南門(回)
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 517, 179
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 550, 175
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 693, 276
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+//蘭州林蔭道(回)
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 592, 183
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 527, 178
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 729, 308
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+//城(回)
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 624, 219
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 536, 180
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 735, 319
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+//濱河大街(回)
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 482, 263
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 537, 399
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 721, 363
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
+
+//濱河大街西(回)
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 459, 321
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 678, 357
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+MoveTo 721, 357
+Delay walkDelay
+LeftClick 1
+Delay mapDelay
