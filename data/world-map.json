@@ -1,0 +1,503 @@
+{
+  "description": "World map data extracted from 按鍵精靈 scripts. All coordinates are screen coordinates (1280x960 VM). Gate coords = the LeftClick that triggers map transition. Walk coords = Ctrl+Click teleport waypoints within the room.",
+  "areas": [
+    {
+      "id": "huashan",
+      "name": "華山",
+      "rooms": ["華山腳", "莎蘿平"]
+    },
+    {
+      "id": "mingjiaoArea",
+      "name": "明教",
+      "rooms": ["光明頂出口", "西驛道(一)", "西驛道(二)", "東村口", "明教", "拜火道", "拜火丘"]
+    },
+    {
+      "id": "lanzhou",
+      "name": "蘭州",
+      "rooms": ["一品堂(任務室)", "濱河大街西", "濱河大街", "城堭廟廣場", "蘭州林蔭道", "蘭州南門", "蘭州官道", "蘭州驛站"]
+    },
+    {
+      "id": "yumen",
+      "name": "玉門",
+      "rooms": ["敦煌大街", "玉門鎮", "北大街", "巫山小道"]
+    },
+    {
+      "id": "jingzhou",
+      "name": "荊州",
+      "rooms": ["荊州城中心", "荊州南大街", "荊州南門", "大道", "殺NPC地圖(荊州)"]
+    },
+    {
+      "id": "luoyang",
+      "name": "洛陽",
+      "rooms": ["洛陽"]
+    }
+  ],
+  "rooms": [
+    {
+      "id": "華山腳",
+      "area": "huashan",
+      "npcs": ["cart man"],
+      "walkPoints": [
+        {"label": "中間", "x": 543, "y": 264, "source": "簡單練功"},
+        {"label": "往門口方向", "x": 825, "y": 191, "source": "力戰六大派"},
+        {"label": "cart man區域", "x": 820, "y": 194, "source": "力戰六大派"},
+        {"label": "cart man區域(restart後)", "x": 943, "y": 418, "source": "力戰六大派"}
+      ]
+    },
+    {
+      "id": "莎蘿平",
+      "area": "huashan",
+      "npcs": ["江湖百曉生"],
+      "walkPoints": [
+        {"label": "百曉生區域", "x": 983, "y": 295, "source": "力戰六大派"},
+        {"label": "回華山腳方向", "x": 515, "y": 385, "source": "力戰六大派"}
+      ]
+    },
+    {
+      "id": "光明頂出口",
+      "area": "mingjiaoArea",
+      "npcs": ["quest NPC"],
+      "walkPoints": [
+        {"label": "往西驛道方向", "x": 460, "y": 316, "source": "力戰六大派"},
+        {"label": "門口區域", "x": 614, "y": 373, "source": "力戰六大派"},
+        {"label": "中間", "x": 942, "y": 517, "source": "力戰六大派"},
+        {"label": "往出口方向", "x": 583, "y": 193, "source": "力戰六大派"}
+      ]
+    },
+    {
+      "id": "西驛道(一)",
+      "area": "mingjiaoArea",
+      "npcs": ["kill target"],
+      "walkPoints": [
+        {"label": "中間", "x": 517, "y": 504, "source": "力戰六大派"},
+        {"label": "往room2方向", "x": 922, "y": 208, "source": "力戰六大派"}
+      ]
+    },
+    {
+      "id": "西驛道(二)",
+      "area": "mingjiaoArea",
+      "npcs": ["kill target"],
+      "walkPoints": [
+        {"label": "中間", "x": 946, "y": 192, "source": "力戰六大派"},
+        {"label": "往回走方向", "x": 526, "y": 489, "source": "力戰六大派"}
+      ]
+    },
+    {
+      "id": "東村口",
+      "area": "mingjiaoArea",
+      "npcs": [],
+      "walkPoints": []
+    },
+    {
+      "id": "明教",
+      "area": "mingjiaoArea",
+      "npcs": [],
+      "walkPoints": [
+        {"label": "往拜火道方向", "x": 530, "y": 184, "source": "力戰六大派"},
+        {"label": "往拜火道門口", "x": 591, "y": 208, "source": "力戰六大派"}
+      ]
+    },
+    {
+      "id": "拜火道",
+      "area": "mingjiaoArea",
+      "npcs": ["謝遜", "cart man"],
+      "walkPoints": [
+        {"label": "中間", "x": 535, "y": 192, "source": "力戰六大派"},
+        {"label": "往拜火丘方向", "x": 959, "y": 488, "source": "力戰六大派"},
+        {"label": "往回走方向", "x": 1005, "y": 515, "source": "力戰六大派"},
+        {"label": "cart man區域", "x": 879, "y": 201, "source": "力戰六大派"}
+      ]
+    },
+    {
+      "id": "拜火丘",
+      "area": "mingjiaoArea",
+      "npcs": ["bandit"],
+      "walkPoints": []
+    },
+    {
+      "id": "洛陽",
+      "area": "luoyang",
+      "npcs": ["cart man"],
+      "walkPoints": [
+        {"label": "往cart man方向1", "x": 964, "y": 182, "source": "力戰六大派"},
+        {"label": "往cart man方向2", "x": 885, "y": 203, "source": "力戰六大派"},
+        {"label": "cart man區域", "x": 910, "y": 191, "source": "力戰六大派"}
+      ]
+    },
+    {
+      "id": "一品堂(任務室)",
+      "area": "lanzhou",
+      "npcs": ["yi(義)", "lin(林)"],
+      "walkPoints": [
+        {"label": "中間", "x": 624, "y": 238, "source": "一品堂"},
+        {"label": "往出口方向", "x": 865, "y": 434, "source": "一品堂"}
+      ]
+    },
+    {
+      "id": "濱河大街西",
+      "area": "lanzhou",
+      "npcs": [],
+      "walkPoints": [
+        {"label": "去(往濱河大街)", "x": 1017, "y": 347, "source": "一品堂1000萬"},
+        {"label": "去(中繼)", "x": 817, "y": 328, "source": "一品堂1000萬"},
+        {"label": "回(往任務室)", "x": 459, "y": 321, "source": "一品堂1000萬"},
+        {"label": "回(中繼)", "x": 678, "y": 357, "source": "一品堂1000萬"}
+      ]
+    },
+    {
+      "id": "濱河大街",
+      "area": "lanzhou",
+      "npcs": [],
+      "walkPoints": [
+        {"label": "去(往城)", "x": 1017, "y": 304, "source": "一品堂1000萬"},
+        {"label": "去(中繼)", "x": 935, "y": 375, "source": "一品堂1000萬"},
+        {"label": "回(往濱河大街西)", "x": 482, "y": 263, "source": "一品堂1000萬"},
+        {"label": "回(中繼)", "x": 537, "y": 399, "source": "一品堂1000萬"}
+      ]
+    },
+    {
+      "id": "城堭廟廣場",
+      "area": "lanzhou",
+      "npcs": [],
+      "walkPoints": [
+        {"label": "去(往林蔭道)1", "x": 882, "y": 438, "source": "一品堂1000萬"},
+        {"label": "去(往林蔭道)2", "x": 1006, "y": 519, "source": "一品堂1000萬"},
+        {"label": "去(門口)", "x": 711, "y": 390, "source": "一品堂1000萬"},
+        {"label": "回(往濱河大街)1", "x": 624, "y": 219, "source": "一品堂1000萬"},
+        {"label": "回(往濱河大街)2", "x": 536, "y": 180, "source": "一品堂1000萬"}
+      ]
+    },
+    {
+      "id": "蘭州林蔭道",
+      "area": "lanzhou",
+      "npcs": [],
+      "walkPoints": [
+        {"label": "去(往南門)1", "x": 992, "y": 513, "source": "一品堂1000萬"},
+        {"label": "去(往南門)2", "x": 947, "y": 518, "source": "一品堂1000萬"},
+        {"label": "去(門口)", "x": 732, "y": 389, "source": "一品堂1000萬"},
+        {"label": "回(往城)1", "x": 592, "y": 183, "source": "一品堂1000萬"},
+        {"label": "回(往城)2", "x": 527, "y": 178, "source": "一品堂1000萬"}
+      ]
+    },
+    {
+      "id": "蘭州南門",
+      "area": "lanzhou",
+      "npcs": [],
+      "walkPoints": [
+        {"label": "去(往官道)1", "x": 1015, "y": 519, "source": "一品堂1000萬"},
+        {"label": "去(往官道)2", "x": 993, "y": 519, "source": "一品堂1000萬"},
+        {"label": "去(門口)", "x": 755, "y": 415, "source": "一品堂1000萬"},
+        {"label": "回(往林蔭道)1", "x": 517, "y": 179, "source": "一品堂1000萬"},
+        {"label": "回(往林蔭道)2", "x": 550, "y": 175, "source": "一品堂1000萬"}
+      ]
+    },
+    {
+      "id": "蘭州官道",
+      "area": "lanzhou",
+      "npcs": [],
+      "walkPoints": [
+        {"label": "去(往敦煌)1", "x": 851, "y": 516, "source": "一品堂1000萬"},
+        {"label": "去(往敦煌)2", "x": 656, "y": 519, "source": "一品堂1000萬"},
+        {"label": "回(往南門)1", "x": 769, "y": 184, "source": "一品堂1000萬"},
+        {"label": "回(往南門)2", "x": 702, "y": 177, "source": "一品堂1000萬"}
+      ]
+    },
+    {
+      "id": "蘭州驛站",
+      "area": "lanzhou",
+      "npcs": ["cart man"],
+      "walkPoints": []
+    },
+    {
+      "id": "敦煌大街",
+      "area": "yumen",
+      "npcs": ["cart man"],
+      "walkPoints": [
+        {"label": "去(往玉門)1", "x": 842, "y": 183, "source": "一品堂1000萬"},
+        {"label": "去(往玉門)2", "x": 997, "y": 193, "source": "一品堂1000萬"},
+        {"label": "cart man區域", "x": 569, "y": 480, "source": "一品堂1000萬"},
+        {"label": "回程cart man區域", "x": 506, "y": 482, "source": "一品堂1000萬"}
+      ]
+    },
+    {
+      "id": "玉門鎮",
+      "area": "yumen",
+      "npcs": [],
+      "walkPoints": [
+        {"label": "去(往北大街)1", "x": 866, "y": 179, "source": "一品堂1000萬"},
+        {"label": "去(往北大街)2", "x": 704, "y": 178, "source": "一品堂1000萬"},
+        {"label": "去(門口)", "x": 692, "y": 328, "source": "一品堂1000萬"},
+        {"label": "回(往敦煌)1", "x": 784, "y": 514, "source": "一品堂1000萬"},
+        {"label": "回(往敦煌)2", "x": 675, "y": 521, "source": "一品堂1000萬"}
+      ]
+    },
+    {
+      "id": "北大街",
+      "area": "yumen",
+      "npcs": [],
+      "walkPoints": [
+        {"label": "去(往巫山)1", "x": 535, "y": 194, "source": "一品堂1000萬"},
+        {"label": "去(往巫山)2", "x": 605, "y": 189, "source": "一品堂1000萬"},
+        {"label": "回(往玉門)1", "x": 970, "y": 514, "source": "一品堂1000萬"},
+        {"label": "回(往玉門)2", "x": 905, "y": 502, "source": "一品堂1000萬"}
+      ]
+    },
+    {
+      "id": "巫山小道",
+      "area": "yumen",
+      "npcs": ["kill target (bai)"],
+      "walkPoints": [
+        {"label": "中間", "x": 569, "y": 182, "source": "一品堂1000萬"},
+        {"label": "往出口方向", "x": 924, "y": 498, "source": "一品堂1000萬"},
+        {"label": "recover往北大街1", "x": 985, "y": 519, "source": "一品堂1000萬"},
+        {"label": "recover往北大街2", "x": 819, "y": 454, "source": "一品堂1000萬"}
+      ]
+    },
+    {
+      "id": "荊州城中心",
+      "area": "jingzhou",
+      "npcs": ["cart man"],
+      "walkPoints": [
+        {"label": "往南大街1", "x": 998, "y": 516, "source": "一品堂"},
+        {"label": "往南大街2", "x": 976, "y": 519, "source": "一品堂"},
+        {"label": "往南大街3", "x": 824, "y": 479, "source": "一品堂"},
+        {"label": "回程cart man區域", "x": 564, "y": 183, "source": "一品堂"}
+      ]
+    },
+    {
+      "id": "荊州南大街",
+      "area": "jingzhou",
+      "npcs": [],
+      "walkPoints": [
+        {"label": "去(往南門)1", "x": 1000, "y": 517, "source": "一品堂"},
+        {"label": "去(往南門)2", "x": 899, "y": 505, "source": "一品堂"},
+        {"label": "回(往城中心)1", "x": 564, "y": 183, "source": "一品堂"},
+        {"label": "回(往城中心)2", "x": 563, "y": 191, "source": "一品堂"}
+      ]
+    },
+    {
+      "id": "荊州南門",
+      "area": "jingzhou",
+      "npcs": [],
+      "walkPoints": [
+        {"label": "去(往大道)1", "x": 1003, "y": 518, "source": "一品堂"},
+        {"label": "去(往大道)2", "x": 998, "y": 522, "source": "一品堂"},
+        {"label": "去(門口)", "x": 752, "y": 419, "source": "一品堂"},
+        {"label": "回(往南大街)1", "x": 551, "y": 182, "source": "一品堂"},
+        {"label": "回(往南大街)2", "x": 551, "y": 176, "source": "一品堂"},
+        {"label": "回(門口)", "x": 679, "y": 277, "source": "一品堂"}
+      ]
+    },
+    {
+      "id": "大道",
+      "area": "jingzhou",
+      "npcs": [],
+      "walkPoints": [
+        {"label": "去(往殺NPC)1", "x": 979, "y": 521, "source": "一品堂"},
+        {"label": "去(往殺NPC)2", "x": 909, "y": 503, "source": "一品堂"},
+        {"label": "回(往南門)1", "x": 503, "y": 179, "source": "一品堂"},
+        {"label": "回(往南門)2", "x": 639, "y": 194, "source": "一品堂"}
+      ]
+    },
+    {
+      "id": "殺NPC地圖(荊州)",
+      "area": "jingzhou",
+      "npcs": ["kill target"],
+      "walkPoints": [
+        {"label": "中間", "x": 947, "y": 515, "source": "一品堂"},
+        {"label": "往出口方向", "x": 577, "y": 197, "source": "一品堂"}
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "華山腳", "to": "莎蘿平", "type": "gate",
+      "gateClick": {"x": 764, "y": 338},
+      "returnGateClick": {"x": 715, "y": 351},
+      "source": "力戰六大派"
+    },
+    {
+      "from": "莎蘿平", "to": "光明頂出口", "type": "quest_teleport",
+      "note": "Triggered by quest NPC dialogue, not a gate",
+      "source": "力戰六大派"
+    },
+    {
+      "from": "光明頂出口", "to": "西驛道(一)", "type": "gate",
+      "gateClick": {"x": 723, "y": 360},
+      "source": "力戰六大派"
+    },
+    {
+      "from": "西驛道(一)", "to": "西驛道(二)", "type": "gate",
+      "gateClick": {"x": 760, "y": 332},
+      "source": "力戰六大派"
+    },
+    {
+      "from": "西驛道(二)", "to": "光明頂出口", "type": "gate",
+      "gateClick": {"x": 722, "y": 363},
+      "source": "力戰六大派"
+    },
+    {
+      "from": "光明頂出口", "to": "東村口", "type": "gate",
+      "gateClick": {"x": 735, "y": 334},
+      "source": "力戰六大派"
+    },
+    {
+      "from": "東村口", "to": "華山腳", "type": "gate",
+      "gateClick": {"x": 744, "y": 315},
+      "source": "力戰六大派"
+    },
+    {
+      "from": "華山腳", "to": "洛陽", "type": "cart_man",
+      "dialogue": "Ask 洛陽",
+      "source": "力戰六大派"
+    },
+    {
+      "from": "洛陽", "to": "洛陽(2nd area)", "type": "gate",
+      "gateClick": {"x": 754, "y": 333},
+      "note": "洛陽 has 2 areas connected by a gate",
+      "source": "力戰六大派"
+    },
+    {
+      "from": "洛陽", "to": "明教", "type": "cart_man",
+      "dialogue": "Ask 明教",
+      "source": "力戰六大派"
+    },
+    {
+      "from": "明教", "to": "拜火道", "type": "gate",
+      "gateClick": {"x": 730, "y": 322},
+      "source": "力戰六大派"
+    },
+    {
+      "from": "拜火道", "to": "拜火丘", "type": "gate",
+      "gateClick": {"x": 758, "y": 364},
+      "source": "力戰六大派"
+    },
+    {
+      "from": "拜火丘", "to": "拜火道", "type": "gate",
+      "gateClick": {"x": 757, "y": 370},
+      "returnNote": "Same gate back",
+      "source": "力戰六大派"
+    },
+    {
+      "from": "拜火道", "to": "洛陽", "type": "cart_man",
+      "dialogue": "Ask 洛陽",
+      "source": "力戰六大派"
+    },
+    {
+      "from": "洛陽", "to": "華山腳", "type": "cart_man",
+      "dialogue": "Ask 華山",
+      "source": "力戰六大派"
+    },
+    {
+      "from": "一品堂(任務室)", "to": "濱河大街西", "type": "gate",
+      "gateClick": {"x": 745, "y": 362},
+      "returnGateClick": {"x": 721, "y": 357},
+      "source": "一品堂1000萬"
+    },
+    {
+      "from": "濱河大街西", "to": "濱河大街", "type": "gate",
+      "gateClick": {"x": 773, "y": 344},
+      "returnGateClick": {"x": 721, "y": 363},
+      "source": "一品堂1000萬"
+    },
+    {
+      "from": "濱河大街", "to": "城堭廟廣場", "type": "gate",
+      "gateClick": {"x": 762, "y": 359},
+      "returnGateClick": {"x": 735, "y": 319},
+      "source": "一品堂1000萬"
+    },
+    {
+      "from": "城堭廟廣場", "to": "蘭州林蔭道", "type": "gate",
+      "gateClick": {"x": 740, "y": 365},
+      "returnGateClick": {"x": 729, "y": 308},
+      "source": "一品堂1000萬"
+    },
+    {
+      "from": "蘭州林蔭道", "to": "蘭州南門", "type": "gate",
+      "gateClick": {"x": 730, "y": 364},
+      "returnGateClick": {"x": 693, "y": 276},
+      "source": "一品堂1000萬"
+    },
+    {
+      "from": "蘭州南門", "to": "蘭州官道", "type": "gate",
+      "gateClick": {"x": 738, "y": 369},
+      "returnGateClick": {"x": 736, "y": 302},
+      "source": "一品堂1000萬"
+    },
+    {
+      "from": "蘭州官道", "to": "敦煌大街", "type": "gate",
+      "gateClick": {"x": 735, "y": 410},
+      "note": "Also accessible via cart man from 蘭州驛站",
+      "source": "一品堂1000萬"
+    },
+    {
+      "from": "敦煌大街", "to": "蘭州驛站", "type": "cart_man",
+      "dialogue": "Ask 蘭州",
+      "note": "Return trip cart man",
+      "source": "一品堂1000萬"
+    },
+    {
+      "from": "蘭州驛站", "to": "蘭州官道", "type": "gate",
+      "gateClick": {"x": 744, "y": 321},
+      "source": "一品堂1000萬"
+    },
+    {
+      "from": "敦煌大街", "to": "玉門鎮", "type": "gate",
+      "gateClick": {"x": 764, "y": 340},
+      "returnGateClick": {"x": 742, "y": 399},
+      "source": "一品堂1000萬"
+    },
+    {
+      "from": "玉門鎮", "to": "北大街", "type": "gate",
+      "gateClick": {"x": 720, "y": 330},
+      "returnGateClick": {"x": 754, "y": 370},
+      "source": "一品堂1000萬"
+    },
+    {
+      "from": "北大街", "to": "巫山小道", "type": "gate",
+      "gateClick": {"x": 728, "y": 326},
+      "returnGateClick": {"x": 755, "y": 368},
+      "source": "一品堂1000萬"
+    },
+    {
+      "from": "敦煌大街", "to": "玉門鎮", "type": "cart_man",
+      "dialogue": "Ask 玉門",
+      "note": "Alternative: cart man teleport",
+      "source": "一品堂1000萬"
+    },
+    {
+      "from": "荊州城中心", "to": "荊州南大街", "type": "gate",
+      "gateClick": {"x": 750, "y": 370},
+      "returnGateClick": {"x": 720, "y": 339},
+      "source": "一品堂"
+    },
+    {
+      "from": "荊州南大街", "to": "荊州南門", "type": "gate",
+      "gateClick": {"x": 748, "y": 366},
+      "returnGateClick": {"x": 718, "y": 341},
+      "source": "一品堂"
+    },
+    {
+      "from": "荊州南門", "to": "大道", "type": "gate",
+      "gateClick": {"x": 744, "y": 377},
+      "returnGateClick": {"x": 720, "y": 338},
+      "source": "一品堂"
+    },
+    {
+      "from": "大道", "to": "殺NPC地圖(荊州)", "type": "gate",
+      "gateClick": {"x": 752, "y": 361},
+      "returnGateClick": {"x": 727, "y": 334},
+      "source": "一品堂"
+    },
+    {
+      "from": "蘭州官道", "to": "荊州城中心", "type": "cart_man",
+      "dialogue": "Ask 荊州",
+      "source": "一品堂"
+    },
+    {
+      "from": "荊州城中心", "to": "蘭州驛站", "type": "cart_man",
+      "dialogue": "Ask 蘭州",
+      "source": "一品堂"
+    }
+  ]
+}

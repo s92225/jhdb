@@ -8,6 +8,8 @@ const nav = [
   { href: '/masters', label: '師傅給物' },
   { href: '/attributes', label: '屬性獲得表' },
   { href: '/tools/dazuo', label: '打坐計算' },
+  { href: '/tools/script-writer', label: '腳本編輯' },
+  { href: '/tools/mission-builder', label: '任務路線' },
 ]
 
 export function SiteHeader() {
