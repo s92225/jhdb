@@ -38,12 +38,18 @@ type IntegratedQuest = {
   sourceFiles?: string[]
   summary?: string
 
-  // structured fields (best effort)
-  accept?: string[] // 接取方式
-  requirements?: string[] // 門檻/條件
-  rewards?: string[] // 獎勵
-  workflow?: string[] // 流程
-  notes?: string[] // 其他補充
+  // legacy / preferred fields
+  accept?: any // 接取方式 (string[] | {text}[] | string)
+  requirements?: any
+  rewards?: any
+  workflow?: any // 流程
+  notes?: any
+  // alternative schema fields
+  giver?: string // 任務 NPC
+  location?: string // 位置
+  steps?: any // workflow alt name
+  versionNotes?: Array<{ date?: string; file?: string; note?: string }>
+  sourceRefs?: Array<{ file?: string; excerpt?: string }>
   weapons?: WeaponsData // 神兵資料
 }
 
@@ -253,18 +259,25 @@ export default function QuestsPage() {
     )
   }
 
+  const list = Array.isArray(quests) ? quests : []
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
+      {/* Page header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-gray-900">任務流程</h1>
-        <p className="mt-2 text-sm text-gray-600">
-          整理版：把多個文件的描述整合成同一筆任務資料；缺資料顯示「未提及／—」。
+        <div className="flex flex-wrap items-baseline gap-3">
+          <h1 className="text-2xl font-semibold text-gray-900">任務流程</h1>
+          <Badge className="bg-slate-50 text-slate-700 ring-1 ring-inset ring-slate-200 border-none">
+            共 {list.length} 筆
+          </Badge>
+        </div>
+        <p className="mt-2 max-w-3xl text-sm text-gray-600">
+          多個更新文件中的任務資料整合呈現；每筆任務的{' '}
+          <span className="font-semibold text-gray-800">接取地點 / 門檻 / 獎勵 / 流程</span>{' '}
+          以視覺化卡片呈現，可展開「版本紀錄」與「原文出處」對照來源。
         </p>
 
         <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
-          <Badge className="bg-slate-50 text-slate-700 ring-1 ring-inset ring-slate-200 border-none">
-            共 {Array.isArray(quests) ? quests.length : 0} 筆
-          </Badge>
           <Link className="text-blue-600 hover:underline" href="/dungeons">
             → 看副本
           </Link>
@@ -274,112 +287,225 @@ export default function QuestsPage() {
         </div>
       </div>
 
-      <div className="space-y-4">
-        {Array.isArray(quests) && quests.length > 0 ? (
-          quests.map((q) => {
-            const category = (q.category || '').trim() || '未分類'
-            const accept = arr(q.accept)
-            const requirements = arr(q.requirements)
-            const rewards = arr(q.rewards)
-            const workflow = arr(q.workflow)
-            const notes = arr(q.notes)
-            const sources = Array.isArray(q.sourceFiles) ? q.sourceFiles.filter(Boolean) : []
-
-            return (
-              <div key={q.id} className="rounded-2xl border bg-white p-5">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <Badge className="bg-blue-50 text-blue-700 border-blue-100">{category}</Badge>
-                      <h2 className="truncate text-lg font-semibold text-gray-900">{q.name}</h2>
-                    </div>
-                    {q.summary ? <p className="mt-2 text-sm text-gray-700">{q.summary}</p> : null}
-                  </div>
-
-                  {sources.length > 0 ? (
-                    <div className="shrink-0 text-xs text-gray-500">
-                      來源：{sources.slice(0, 3).join('、')}
-                      {sources.length > 3 ? '…' : ''}
-                    </div>
-                  ) : (
-                    <div className="shrink-0 text-xs text-gray-400">來源：—</div>
-                  )}
-                </div>
-
-                <div className="mt-4 grid gap-4 md:grid-cols-2">
-                  <section className="rounded-xl bg-gray-50 p-4">
-                    <h3 className="text-sm font-semibold text-gray-900">接取方式</h3>
-                    {accept.length ? (
-                      <ul className="mt-2 list-disc list-inside space-y-1 text-sm text-gray-700">
-                        {accept.map((x, i) => (
-                          <li key={i}>{x}</li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="mt-2 text-sm text-gray-400">未提及</p>
-                    )}
-                  </section>
-
-                  <section className="rounded-xl bg-gray-50 p-4">
-                    <h3 className="text-sm font-semibold text-gray-900">門檻</h3>
-                    {requirements.length ? (
-                      <ul className="mt-2 list-disc list-inside space-y-1 text-sm text-gray-700">
-                        {requirements.map((x, i) => (
-                          <li key={i}>{x}</li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="mt-2 text-sm text-gray-400">未提及</p>
-                    )}
-                  </section>
-
-                  <section className="rounded-xl bg-gray-50 p-4">
-                    <h3 className="text-sm font-semibold text-gray-900">獎勵</h3>
-                    {rewards.length ? (
-                      <ul className="mt-2 list-disc list-inside space-y-1 text-sm text-gray-700">
-                        {rewards.map((x, i) => (
-                          <li key={i}>{x}</li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="mt-2 text-sm text-gray-400">未提及</p>
-                    )}
-                  </section>
-
-                  <section className="rounded-xl bg-gray-50 p-4">
-                    <h3 className="text-sm font-semibold text-gray-900">流程</h3>
-                    {workflow.length ? (
-                      <ol className="mt-2 list-decimal list-inside space-y-1 text-sm text-gray-700">
-                        {workflow.map((x, i) => (
-                          <li key={i}>{x}</li>
-                        ))}
-                      </ol>
-                    ) : (
-                      <p className="mt-2 text-sm text-gray-400">未提及</p>
-                    )}
-                  </section>
-                </div>
-
-                {notes.length ? (
-                  <div className="mt-4 rounded-xl border bg-white p-4">
-                    <div className="text-sm font-semibold text-gray-900">備註</div>
-                    <ul className="mt-2 list-disc list-inside space-y-1 text-sm text-gray-700">
-                      {notes.map((x, i) => (
-                        <li key={i}>{x}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
-
-                {q.weapons ? <WeaponsSection weapons={q.weapons} /> : null}
-              </div>
-            )
-          })
+      <div className="space-y-5">
+        {list.length > 0 ? (
+          list.map((q) => <QuestCard key={q.id} q={q} />)
         ) : (
-          <div className="rounded-2xl border bg-white p-6 text-sm text-gray-600">目前沒有任務資料。</div>
+          <div className="rounded-2xl border bg-white p-6 text-sm text-gray-600">
+            目前沒有任務資料。
+          </div>
         )}
       </div>
     </div>
+  )
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// QuestCard
+// ──────────────────────────────────────────────────────────────────────────
+
+function QuestCard({ q }: { q: IntegratedQuest }) {
+  const category = (q.category || '').trim() || '未分類'
+
+  // Schema A uses `accept` & `workflow`; schema B uses `giver`/`location` & `steps`.
+  // Synthesize `accept` from giver/location when missing.
+  const acceptRaw = q.accept ?? null
+  let accept = arr(acceptRaw)
+  if (!accept.length) {
+    const fallback: string[] = []
+    if (q.giver && q.giver.trim() && q.giver !== '—') fallback.push(`任務 NPC：${q.giver}`)
+    if (q.location && q.location.trim() && q.location !== '—')
+      fallback.push(`地點：${q.location}`)
+    accept = fallback
+  }
+
+  const requirements = arr(q.requirements)
+  const rewards = arr(q.rewards)
+  const workflow = arr(q.workflow ?? q.steps)
+  const notes = arr(q.notes)
+  const versionNotes = Array.isArray(q.versionNotes) ? q.versionNotes : []
+  const sourceRefs = Array.isArray(q.sourceRefs) ? q.sourceRefs : []
+
+  const sources = Array.isArray(q.sourceFiles)
+    ? q.sourceFiles.filter(Boolean)
+    : sourceRefs.map((s) => s.file).filter(Boolean) as string[]
+
+  return (
+    <article className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md">
+      {/* Header strip */}
+      <header className="border-b border-gray-100 bg-gradient-to-r from-slate-50 to-white px-5 py-4">
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge className="bg-blue-50 text-blue-700 border-blue-100">{category}</Badge>
+          {q.giver ? (
+            <span className="inline-flex items-center gap-1 rounded-full bg-purple-50 px-2.5 py-0.5 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-200">
+              <span aria-hidden>🧑</span> {q.giver}
+            </span>
+          ) : null}
+          {q.location ? (
+            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-200">
+              <span aria-hidden>📍</span> {q.location}
+            </span>
+          ) : null}
+          <h2 className="ml-1 text-lg font-semibold text-gray-900">{q.name}</h2>
+
+          {sources.length > 0 ? (
+            <span className="ml-auto text-xs text-gray-400">
+              來源：{sources.slice(0, 3).join('、')}
+              {sources.length > 3 ? '…' : ''}
+            </span>
+          ) : null}
+        </div>
+        {q.summary ? (
+          <p className="mt-2 text-sm leading-relaxed text-gray-700">{q.summary}</p>
+        ) : null}
+      </header>
+
+      <div className="p-5">
+        <div className="grid gap-4 md:grid-cols-2">
+          <Section
+            title="接取方式"
+            icon="🚩"
+            tone="indigo"
+            items={accept}
+            emptyHint="未提及"
+          />
+          <Section
+            title="門檻"
+            icon="🔒"
+            tone="rose"
+            items={requirements}
+            emptyHint="無門檻"
+          />
+          <Section
+            title="獎勵"
+            icon="🎁"
+            tone="amber"
+            items={rewards}
+            emptyHint="未提及"
+          />
+          <Section
+            title="流程"
+            icon="🧭"
+            tone="emerald"
+            items={workflow}
+            ordered
+            emptyHint="未提及"
+          />
+        </div>
+
+        {notes.length ? (
+          <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50/60 p-4">
+            <div className="text-sm font-semibold text-amber-900">備註</div>
+            <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-amber-900/90">
+              {notes.map((x, i) => (
+                <li key={i}>{x}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+
+        {/* Version notes timeline */}
+        {versionNotes.length ? (
+          <details className="mt-4 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+            <summary className="cursor-pointer select-none text-sm font-semibold text-gray-900">
+              版本紀錄（{versionNotes.length}）
+            </summary>
+            <ol className="mt-3 space-y-2 border-l-2 border-gray-200 pl-4 text-sm">
+              {versionNotes.map((v, i) => (
+                <li key={i} className="relative">
+                  <span className="absolute -left-[21px] top-1.5 inline-block h-2.5 w-2.5 rounded-full bg-blue-400 ring-2 ring-white" />
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500">
+                    {v.date ? <span className="font-mono">{v.date}</span> : null}
+                    {v.file ? (
+                      <span className="rounded bg-gray-200/70 px-1.5 py-0.5 text-[10px] text-gray-700">
+                        {v.file}
+                      </span>
+                    ) : null}
+                  </div>
+                  <div className="mt-0.5 text-sm text-gray-800">{v.note || '—'}</div>
+                </li>
+              ))}
+            </ol>
+          </details>
+        ) : null}
+
+        {/* Source refs */}
+        {sourceRefs.length ? (
+          <details className="mt-3 rounded-xl border border-gray-200 bg-white px-4 py-3">
+            <summary className="cursor-pointer select-none text-sm font-semibold text-gray-900">
+              原文出處（{sourceRefs.length}）
+            </summary>
+            <div className="mt-3 space-y-3">
+              {sourceRefs.map((s, i) => (
+                <div key={i} className="rounded-lg bg-gray-50 px-3 py-2">
+                  {s.file ? (
+                    <div className="text-[11px] font-mono text-gray-500">{s.file}</div>
+                  ) : null}
+                  <pre className="mt-1 whitespace-pre-wrap font-sans text-xs leading-relaxed text-gray-700">
+                    {s.excerpt || '—'}
+                  </pre>
+                </div>
+              ))}
+            </div>
+          </details>
+        ) : null}
+
+        {q.weapons ? <WeaponsSection weapons={q.weapons} /> : null}
+      </div>
+    </article>
+  )
+}
+
+// Pretty section with icon + colored accent
+type Tone = 'indigo' | 'rose' | 'amber' | 'emerald'
+const TONE: Record<Tone, { bg: string; ring: string; text: string }> = {
+  indigo: { bg: 'bg-indigo-50/70', ring: 'ring-indigo-200', text: 'text-indigo-900' },
+  rose: { bg: 'bg-rose-50/70', ring: 'ring-rose-200', text: 'text-rose-900' },
+  amber: { bg: 'bg-amber-50/70', ring: 'ring-amber-200', text: 'text-amber-900' },
+  emerald: { bg: 'bg-emerald-50/70', ring: 'ring-emerald-200', text: 'text-emerald-900' },
+}
+
+function Section({
+  title,
+  icon,
+  tone,
+  items,
+  ordered = false,
+  emptyHint,
+}: {
+  title: string
+  icon: string
+  tone: Tone
+  items: string[]
+  ordered?: boolean
+  emptyHint?: string
+}) {
+  const t = TONE[tone]
+  const ListTag = ordered ? 'ol' : 'ul'
+  return (
+    <section className={`rounded-xl ${t.bg} p-4 ring-1 ring-inset ${t.ring}`}>
+      <h3 className={`flex items-center gap-1.5 text-sm font-semibold ${t.text}`}>
+        <span aria-hidden>{icon}</span>
+        {title}
+      </h3>
+      {items.length ? (
+        <ListTag
+          className={[
+            'mt-2 space-y-1 text-sm text-gray-800',
+            ordered ? 'list-decimal' : 'list-disc',
+            'pl-5',
+          ].join(' ')}
+        >
+          {items.map((x, i) => (
+            <li key={i} className="leading-relaxed">
+              {x}
+            </li>
+          ))}
+        </ListTag>
+      ) : (
+        <p className="mt-2 text-sm italic text-gray-400">{emptyHint ?? '未提及'}</p>
+      )}
+    </section>
   )
 }
 

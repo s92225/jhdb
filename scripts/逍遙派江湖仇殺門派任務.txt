@@ -1,0 +1,1082 @@
+// 逍遙派江湖仇殺門派任務
+// Flow: start quest > kill target npc > turnin quest
+
+LockMouse
+Dim walkDelay, gateDelay
+walkDelay = 400
+gateDelay = 500
+Dim intX, intY
+
+// ============================
+// CYCLE & RESTART CONFIG
+// ============================
+Dim cycleCount, restartEvery
+cycleCount = 0
+restartEvery = 10  // Restart game every N cycles
+Dim loginID
+loginID = "A12345678"  // Your login ID
+
+// ============================
+// STUCK DETECTION CONFIG
+// ============================
+Dim stuckTimeout
+stuckTimeout = 60  // Seconds before considering stuck (configurable per map if needed)
+Dim currentMap
+currentMap = "unknown"
+Dim mapEntryTime
+mapEntryTime = Now()
+
+Sub Learning()
+    SayString "Use 青草 4"
+    Delay walkDelay
+    KeyPress "Enter", 1
+    Delay walkDelay
+    SayString "Use 關東煮 4"
+    Delay walkDelay
+    KeyPress "Enter", 1
+    Delay walkDelay
+    KeyPress "Delete", 1
+    Delay walkDelay
+    SayString "Practice " & learnSkill & " " & learnAmount
+    Delay walkDelay
+    KeyPress "Enter", 3
+    Delay walkDelay
+    KeyPress "Delete", 1
+End Sub
+
+// NineClick - click chat box to ensure game focus
+Sub NineClick()
+    MoveTo 930, 638
+    LeftClick 1
+    Delay 100
+End Sub
+
+// RestartGame - F7 stop, close window, wait error dialog, login
+Sub RestartGame()
+    TracePrint "=== RESTART GAME ==="
+    KeyPress "F7", 1
+    
+    Rem RG_CLOSE
+    MoveTo 1028, 153
+    Delay walkDelay
+    LeftClick 1
+    TracePrint "Game window closed"
+    
+    Do
+        FindColor 476, 266, 747, 359, "A56D39", intX, intY
+        FindColor 476, 266, 747, 359, "A56E3A", intX1, intY1
+        If intX > 0 And intY > 0 Then
+            MoveTo 595, 404
+            Delay walkDelay
+            LeftClick 1
+            Exit Do
+        ElseIf intX1 > 0 And intY1 > 0 Then
+            MoveTo 595, 404
+            Delay walkDelay
+            LeftClick 1
+            Exit Do
+        End If
+        Delay walkDelay
+    Loop
+    
+    Do
+        FindColor 586, 205, 744, 286, "215DE7", intX, intY
+        If intX > 0 And intY > 0 Then
+            MoveTo intX, intY
+            LeftClick 1
+            Exit Do
+        End If
+        Delay walkDelay
+    Loop
+    Delay walkDelay
+    
+    MoveTo 480, 359
+    Delay walkDelay
+    LeftClick 1
+    
+    Rem RG_LOGIN
+    Do
+        FindColor 293, 211, 684, 355, "CEFF63", intX, intY
+        If intX > 0 And intY > 0 Then
+            // Only type login ID if account field is empty (no green text)
+            FindColor 750, 530, 810, 550, "00FF00", intX, intY
+            If intX <= 0 Or intY <= 0 Then
+                SayString "A12345678"
+            End If
+            MoveTo 796, 679
+            Delay walkDelay
+            LeftClick 1
+            Delay gateDelay
+            Exit Do
+        End If
+        Delay walkDelay
+    Loop
+    
+    Dim loginTime
+    loginTime = now
+    Do
+        If DateDiff("s", loginTime, now) >= 30 Then
+            TracePrint "Login timeout, retrying..."
+            Goto RG_CLOSE
+            Exit Do
+        Else
+            FindColor 350, 203, 488, 287, "3979EF", intX, intY
+            If intX > 0 And intY > 0 Then
+                MoveTo 712, 517
+                Delay walkDelay
+                LeftClick 1
+                Delay walkDelay
+                MoveTo 720, 674
+                Delay walkDelay
+                LeftClick 1
+                Exit Do
+            End If
+        End If
+        Delay walkDelay
+    Loop
+    
+    Do
+        IfColor 263, 189, "8CAAC6", 0 Then
+            Delay walkDelay
+            Call NineClick()
+            Exit Do
+        End If
+        Delay walkDelay
+    Loop
+    
+    HWND = Plugin.Window.Foreground()
+    Dim camI
+    For camI = 1 To 20
+        Call Plugin.Bkgnd.KeyPress(HWND, 34)
+        Delay 100
+    Next
+    
+    Delay walkDelay
+    Call NineClick()
+    Call CheckCameraAngle()
+    TracePrint "=== RESTART COMPLETE ==="
+End Sub
+
+// ResetMapTimer — call when entering a new map section to reset the 60s watchdog
+Sub ResetMapTimer()
+    mapEntryTime = now
+    stuckDetected = 0
+End Sub
+
+// CheckStuck — if >60s on same map (except dongdajie), restart and set flag
+Sub CheckStuck()
+    Call DetectMap()
+    If mapResult = "dongdajie" Then
+        Exit Sub
+    End If
+    If DateDiff("s", mapEntryTime, now) >= 60 Then
+        TracePrint "STUCK >60s on map: " & mapResult & "! Restarting..."
+        stuckDetected = 1
+        
+        // Track consecutive restarts on same map
+        If mapResult = lastRestartMap Then
+            consecutiveRestarts = consecutiveRestarts + 1
+            If consecutiveRestarts >= 2 Then
+                TracePrint "Stuck at same map " & consecutiveRestarts & " times, waiting 20s before restart..."
+                Delay 20000
+            End If
+        Else
+            lastRestartMap = mapResult
+            consecutiveRestarts = 1
+        End If
+        
+        Call RestartGame()
+    End If
+End Sub
+
+// DetectCurrentMap — detect which map character is on by checking unique pixels
+Sub DetectCurrentMap()
+    currentMap = "unknown"
+    // 藥品庫 - check pixel (452,182) for golden 73BEF7
+    IfColor 452, 182, "73BEF7", 0 Then
+        currentMap = "藥品庫"
+        Exit Sub
+    End If
+    // Add more maps here as needed:
+    // IfColor xxx, xxx, "73BEF7", 0 Then
+    //     currentMap = "MapName"
+    //     Exit Sub
+    // End If
+End Sub
+
+// CheckCameraAngle — if camera at low angle (10AAFF at 708,240-746,250), fix with PageDown x20
+Sub CheckCameraAngle()
+    Dim hasBlueSky
+    hasBlueSky = 0
+    FindColor 708, 240, 746, 250, "10AAFF", intX, intY
+    If intX > 0 And intY > 0 Then
+        hasBlueSky = 1
+    End If
+    If hasBlueSky = 1 Then
+        TracePrint "Camera angle too low (blue sky detected), adjusting..."
+        HWND = Plugin.Window.Foreground()
+        Dim camFix
+        For camFix = 1 To 20
+            Call Plugin.Bkgnd.KeyPress(HWND, 34)
+            Delay 100
+        Next
+        TracePrint "Camera angle adjusted"
+    End If
+End Sub
+
+// ============================
+// SKILL LEARNING CONFIG
+// ============================
+Dim learnSkill, learnAmount
+learnSkill = "元始真法"  // Skill to learn (e.g. 基本內功, 基本軌身, 基本拳法, etc.)
+learnAmount = 700        // Amount of 潛力 to spend
+
+// Mouse unstick action - call after map transitions
+Sub Unstick()
+    MoveTo 1000, 561
+    LeftClick 1
+End Sub
+
+TracePrint "=== Script started ==="
+
+// ============================
+// MAIN LOOP
+// ============================
+Rem MAIN_LOOP
+cycleCount = cycleCount + 1
+TracePrint "=== CYCLE " & cycleCount & " ==="
+CheckCameraAngle()
+
+// ============================
+// 青草坪 - START QUEST
+// ============================
+Rem QUEST_START
+TracePrint "=== QUEST_START (青草坪) ==="
+KeyPress "Delete", 1
+Delay walkDelay
+Unstick
+
+// Walk to middle of the map
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 536, 453
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+// Find NPC and accept quest
+TracePrint "Looking for NPC to accept quest..."
+Dim qTime
+qTime = 0
+Dim wrongX, wrongY
+wrongX = 0
+wrongY = 0
+Dim useQuadrants
+useQuadrants = 0
+Dim foundNPC
+foundNPC = 0
+
+Rem FIND_NPC_QUEST
+Do
+    FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\sing.bmp", 1, intX, intY
+    If intX > 0 And intY > 0 Then
+        MoveTo intX + 20, intY + 15
+        RightClick 1
+        Delay walkDelay
+        IfColor 506, 506, "0000FF", 0 Then
+            TracePrint "NPC found, accepting quest..."
+            KeyPress "Delete", 1
+            Delay walkDelay
+            SayString "Ask 江湖仇殺 "
+            Delay walkDelay
+            KeyPress "Enter", 2
+            Delay walkDelay
+            KeyPress "Delete", 1
+            Delay walkDelay
+            SayString "Ask 獻頭顱 "
+            Delay walkDelay
+            KeyPress "Enter", 2
+            Delay walkDelay
+            KeyPress "Delete", 1
+            Delay walkDelay
+            RightClick 1
+            SayString "Ask 江湖仇殺 "
+            Delay walkDelay
+            KeyPress "Enter", 2
+            Delay walkDelay
+            KeyPress "Delete", 1
+            Delay walkDelay
+            Exit Do
+        Else
+            TracePrint "Wrong NPC selected, retrying..."
+            qTime = qTime + 1
+            Delay walkDelay
+            Goto FIND_NPC_QUEST
+        End If
+    Else
+        qTime = qTime + 1
+        Delay walkDelay
+        Goto FIND_NPC_QUEST
+    End If
+Loop
+
+// Walk out
+TracePrint "Walking out..."
+Delay gateDelay
+Unstick
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 917, 244
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+MoveTo 759, 337
+Delay walkDelay
+LeftClick 1
+Delay gateDelay
+Unstick
+
+// ============================
+// 林間小道
+// ============================
+TracePrint "=== 林間小道 ==="
+Delay walkDelay
+Unstick
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 1016, 402
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+MoveTo 760, 355
+Delay walkDelay
+LeftClick 1
+Delay gateDelay
+Unstick
+
+// ============================
+// 洛陽城中心 to 洛陽東街
+// ============================
+TracePrint "=== 洛陽城中心 ==="
+Delay walkDelay
+Unstick
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 1004, 200
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+MoveTo 847, 190
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+MoveTo 749, 326
+Delay walkDelay
+LeftClick 1
+Delay gateDelay
+Unstick
+
+// ============================
+// 洛陽東街 - find cartman to 星宿
+// ============================
+TracePrint "=== 洛陽東街 ==="
+Delay walkDelay
+Unstick
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 928, 193
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+Dim cTime2
+cTime2 = 0
+Rem FIND_CARTMAN_GO
+Do
+    FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\cart man.bmp", 1, intX, intY
+    If intX > 0 And intY > 0 Then
+        MoveTo intX + 20, intY + 15
+        RightClick 1
+        Delay walkDelay
+        IfColor 545, 507, "0000FF", 0 Then
+            TracePrint "Cartman found, asking 星宿..."
+            KeyPress "Delete", 1
+            Delay walkDelay
+            SayString "ask 星宿"
+            Delay walkDelay
+            KeyPress "Enter", 1
+            Delay gateDelay
+            Unstick
+            Exit Do
+        Else
+            cTime2 = cTime2 + 1
+            Delay walkDelay
+            Goto FIND_CARTMAN_GO
+        End If
+    Else
+        cTime2 = cTime2 + 1
+        Delay walkDelay
+        Goto FIND_CARTMAN_GO
+    End If
+Loop
+
+// ============================
+// 星宿海 - walk to 星宿門坊
+// ============================
+TracePrint "=== 星宿海 ==="
+Delay walkDelay
+Unstick
+MoveTo 737, 320
+Delay walkDelay
+LeftClick 1
+Delay gateDelay
+Unstick
+
+// ============================
+// 星宿門坊 - kill 阿紫
+// ============================
+TracePrint "=== 星宿門坊 ==="
+Delay walkDelay
+Unstick
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 541, 184
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+// Find 阿紫 with FindPic - keep searching until successful kill
+TracePrint "Looking for 阿紫..."
+Dim kTime1, killConfirmed1
+kTime1 = 0
+killConfirmed1 = 0
+Rem FIND_AZI
+Do While killConfirmed1 = 0
+    // Try FindPic first
+    FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\purple.bmp", 1, intX, intY
+    
+    If intX > 0 And intY > 0 Then
+        // Reset timer when NPC found
+        searchStart1 = Now()
+        MoveTo intX + 20, intY + 15
+        RightClick 1
+        Delay walkDelay
+        // Check if correct NPC selected (red text confirmation)
+        IfColor 531, 506, "0000FF", 0 Then
+            TracePrint "阿紫 selected, killing..."
+            KeyPress "Delete", 1
+            Delay walkDelay
+            SayString "kill"
+            Delay walkDelay
+            KeyPress "Enter", 1
+            Delay walkDelay
+            // Wait for kill confirmation (30s timeout)
+            Dim killStart1
+            killStart1 = Now()
+            Do
+                FindColor 492, 693, 674, 720, "000094", intX, intY
+                If intX > 0 And intY > 0 Then
+                    TracePrint "阿紫 killed!"
+                    killConfirmed1 = 1
+                    Exit Do
+                End If
+                If DateDiff("s", killStart1, Now()) >= 30 Then
+                    TracePrint "Kill confirmation timeout, retrying..."
+                    Exit Do
+                End If
+                Delay 200
+            Loop
+        Else
+            TracePrint "Wrong NPC selected, retrying..."
+        End If
+    Else
+        kTime1 = kTime1 + 1
+        Delay walkDelay
+    End If
+Loop
+
+// Exit 星宿門坊 to 練武場
+Delay gateDelay
+Unstick
+TracePrint "Exiting to 練武場..."
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 551, 217
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+MoveTo 720, 341
+Delay walkDelay
+LeftClick 1
+Delay gateDelay
+Unstick
+
+// ============================
+// 練武場 - pass through
+// ============================
+TracePrint "=== 練武場 ==="
+Delay walkDelay
+Unstick
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 569, 186
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+MoveTo 538, 182
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+MoveTo 712, 315
+Delay walkDelay
+LeftClick 1
+Delay gateDelay
+Unstick
+
+// ============================
+// 練武場2 - FindColor kill
+// ============================
+TracePrint "=== 練武場2 ==="
+Delay walkDelay
+Unstick
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 554, 206
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+// Exit to refresh map (星宿門坊 and back)
+TracePrint "Exiting to refresh map..."
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 518, 467
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+MoveTo 721, 359
+Delay walkDelay
+LeftClick 1
+Delay gateDelay
+Unstick
+
+// ============================
+// 星宿門坊 (refresh) - walk back to 練武場
+// ============================
+TracePrint "=== 星宿門坊 (refresh) ==="
+Delay walkDelay
+Unstick
+MoveTo 742, 330
+Delay walkDelay
+LeftClick 1
+Delay gateDelay
+Unstick
+
+// ============================
+// 練武場 (refresh) - walk to 藥品庫
+// ============================
+TracePrint "=== 練武場 (refresh) ==="
+Delay walkDelay
+Unstick
+MoveTo 741, 323
+Delay walkDelay
+LeftClick 1
+Delay gateDelay
+Unstick
+
+// ============================
+// 藥品庫 - FindPic tin.bmp kill
+// ============================
+TracePrint "=== 藥品庫 ==="
+Delay walkDelay
+Unstick
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 519, 485
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+// Find NPC with FindPic tin.bmp (stuck detection enabled)
+TracePrint "Looking for NPC in 藥品庫..."
+Dim kTime3, killConfirmed3
+kTime3 = 0
+killConfirmed3 = 0
+mapEntryTime = Now()  // Reset stuck timer for this map
+Rem FIND_TIN
+Do
+    // Check if stuck for over stuckTimeout seconds
+    If DateDiff("s", mapEntryTime, Now()) >= stuckTimeout Then
+        TracePrint "Stuck for " & stuckTimeout & "s, restarting..."
+        Call RestartGame()
+        Goto RESTART_RECOVERY
+    End If
+    
+    // Try FindPic first
+    FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\tin.bmp", 1, intX, intY
+    If intX <= 0 Or intY <= 0 Then
+        // If FindPic fails, try FindColor for 0000CE
+        FindColor 451, 208, 1034, 555, "0000CE", intX, intY
+    End If
+    
+    If intX > 0 And intY > 0 Then
+        MoveTo intX + 20, intY + 15
+        RightClick 1
+        Delay walkDelay
+        TracePrint "NPC selected in 藥品庫, killing..."
+        KeyPress "Delete", 1
+        Delay walkDelay
+        SayString "kill"
+        Delay walkDelay
+        KeyPress "Enter", 1
+        Delay walkDelay
+        Do
+            FindColor 760, 280, 786, 295, "FFFF00", intX, intY
+            If intX > 0 And intY > 0 Then
+                TracePrint "NPC killed in 藥品庫!"
+                killConfirmed3 = 1
+                Exit Do
+            End If
+            Delay 200
+        Loop
+        Exit Do
+    Else
+        kTime3 = kTime3 + 1
+        Delay walkDelay
+        Goto FIND_TIN
+    End If
+Loop
+
+// Exit 藥品庫 to 練武場2
+TracePrint "Exiting to 練武場2..."
+KeyDown "Ctrl", 1
+Delay walkDelay
+Unstick
+MoveTo 917, 212
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+MoveTo 762, 343
+Delay walkDelay
+LeftClick 1
+Delay gateDelay
+Unstick
+Goto RETURN_LWC2
+
+// Skip recovery section during normal flow
+Goto SKIP_RECOVERY
+
+// ============================
+// RESTART RECOVERY ROUTER
+// ============================
+Rem RESTART_RECOVERY
+TracePrint "=== Detecting map after restart ==="
+Call DetectCurrentMap()
+TracePrint "Current map: " & currentMap
+
+If currentMap = "藥品庫" Then
+    Goto RECOVERY_藥品庫
+// Add more maps here:
+// ElseIf currentMap = "練武場" Then
+//     Goto RECOVERY_練武場
+Else
+    TracePrint "Unknown map after restart, continuing to next cycle..."
+    Goto MAIN_LOOP
+End If
+
+// ============================
+// RECOVERY SECTIONS
+// ============================
+
+// Recovery from 藥品庫 - walk to 練武場 then continue
+Rem RECOVERY_藥品庫
+TracePrint "=== Recovery from 藥品庫, walk to 練武場 ==="
+Delay walkDelay
+Unstick
+MoveTo 741, 323
+Delay walkDelay
+LeftClick 1
+Delay gateDelay
+Unstick
+Goto RETURN_LWC2
+
+// Add more recovery sections here:
+// Rem RECOVERY_練武場
+// TracePrint "=== Recovery from 練武場 ==="
+// ... bridging actions ...
+// Goto SOME_LABEL
+
+Rem SKIP_RECOVERY
+
+// ============================
+// 練武場2 (return)
+Rem RETURN_LWC2 
+// ============================
+TracePrint "=== 練武場2 (return) ==="
+Delay walkDelay
+Unstick
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 1006, 271
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+MoveTo 890, 407
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+MoveTo 748, 363
+Delay walkDelay
+LeftClick 1
+Delay gateDelay
+Unstick
+
+// ============================
+// 練武場 (return) - walk to 星宿門坊
+// ============================
+TracePrint "=== 練武場 (return) ==="
+Delay walkDelay
+Unstick
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 1021, 513
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+MoveTo 935, 521
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+MoveTo 734, 377
+Delay walkDelay
+LeftClick 1
+Delay gateDelay
+Unstick
+
+// ============================
+// 星宿門坊 (return) - walk to 星宿海
+// ============================
+TracePrint "=== 星宿門坊 (return) ==="
+Delay walkDelay
+Unstick
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 1010, 521
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+MoveTo 920, 466
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+MoveTo 751, 366
+Delay walkDelay
+LeftClick 1
+Delay gateDelay
+Unstick
+
+// ============================
+// 星宿海 (return) - find cartman to 洛陽
+// ============================
+TracePrint "=== 星宿海 (return) ==="
+Delay walkDelay
+Unstick
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 948, 436
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+// Find cartman to go back to 洛陽
+TracePrint "Finding cartman to go back to 洛陽..."
+Dim cTime3
+cTime3 = 0
+Rem FIND_CARTMAN_BACK
+Do
+    FindPic 451, 208, 1034, 555, "C:\Program Files\按鍵精靈2014\screen\cart man.bmp", 1, intX, intY
+    If intX > 0 And intY > 0 Then
+        MoveTo intX + 20, intY + 15
+        RightClick 1
+        Delay walkDelay
+        IfColor 545, 507, "0000FF", 0 Then
+            TracePrint "Cartman found, asking 洛陽..."
+            KeyPress "Delete", 1
+            Delay walkDelay
+            SayString "ask 洛陽"
+            Delay walkDelay
+            KeyPress "Enter", 1
+            Delay gateDelay
+            Unstick
+            Exit Do
+        Else
+            cTime3 = cTime3 + 1
+            Delay walkDelay
+            Goto FIND_CARTMAN_BACK
+        End If
+    Else
+        cTime3 = cTime3 + 1
+        Delay walkDelay
+        Goto FIND_CARTMAN_BACK
+    End If
+Loop
+
+
+
+// ============================
+// 洛陽城中心 - walk to 洛陽東街
+// ============================
+TracePrint "=== 洛陽城中心 ==="
+Delay walkDelay
+Unstick
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 1004, 200
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 847, 190
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+MoveTo 749, 326
+Delay walkDelay
+LeftClick 1
+Delay gateDelay
+Unstick
+
+// ============================
+// 洛陽東街 (return) - walk to 洛陽東門
+// ============================
+TracePrint "=== 洛陽東街 (return) ==="
+Delay walkDelay
+Unstick
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 942, 193
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+MoveTo 912, 202
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+MoveTo 758, 320
+Delay walkDelay
+LeftClick 1
+Delay gateDelay
+Unstick
+
+// ============================
+// 洛陽東門 - walk to 官道
+// ============================
+TracePrint "=== 洛陽東門 ==="
+Delay walkDelay
+Unstick
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 922, 182
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+MoveTo 922, 182
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+MoveTo 831, 292
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+MoveTo 764, 337
+Delay walkDelay
+LeftClick 1
+Delay gateDelay
+Unstick
+
+// ============================
+// 官道 - walk to 白馬寺
+// ============================
+TracePrint "=== 官道 ==="
+Delay walkDelay
+Unstick
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 837, 184
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+MoveTo 761, 189
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+MoveTo 698, 303
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+MoveTo 722, 338
+Delay walkDelay
+LeftClick 1
+Delay gateDelay
+Unstick
+
+// ============================
+// 白馬寺 - walk to 文心樓
+// ============================
+TracePrint "=== 白馬寺 ==="
+Delay walkDelay
+Unstick
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 461, 303
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+MoveTo 688, 370
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+MoveTo 725, 362
+Delay walkDelay
+LeftClick 1
+Delay gateDelay
+Unstick
+
+// ============================
+// 文心樓 - find NPC and ask 逍遙派
+// ============================
+TracePrint "=== 文心樓 ==="
+Delay walkDelay
+Unstick
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 470, 380
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+
+// Find NPC with FindColor
+TracePrint "Looking for NPC in 文心樓..."
+Dim tTime1
+tTime1 = 0
+
+Rem FIND_NPC_WXL
+Do
+    FindColor 451, 208, 1034, 555, "FFFF00", intX, intY
+    If intX > 0 And intY > 0 Then
+        MoveTo intX + 20, intY + 15
+        RightClick 1
+        Delay walkDelay
+        IfColor 525, 509, "0000FF", 0 Then
+            TracePrint "NPC found in 文心樓, asking 逍遙派..."
+            KeyPress "Delete", 1
+            Delay walkDelay
+            SayString "ask 逍遙派"
+            Delay walkDelay
+            KeyPress "Enter", 1
+            Delay gateDelay
+            Unstick
+            Exit Do
+        Else
+            tTime1 = tTime1 + 1
+            Delay walkDelay
+            Goto FIND_NPC_WXL
+        End If
+    Else
+        tTime1 = tTime1 + 1
+        Delay walkDelay
+        Goto FIND_NPC_WXL
+    End If
+Loop
+
+// ============================
+// 林間小道 (return) - walk to 青草坪
+// ============================
+TracePrint "=== 林間小道 (return) ==="
+
+// Check if restart needed
+If cycleCount > 1 And (cycleCount - 1) Mod restartEvery = 0 Then
+    TracePrint "Reached " & restartEvery & " cycles, restarting game..."
+    Call RestartGame()
+End If
+
+
+Delay walkDelay
+Unstick
+Learning
+KeyDown "Ctrl", 1
+Delay walkDelay
+MoveTo 508, 277
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+MoveTo 584, 405
+Delay walkDelay
+LeftClick 1
+Delay walkDelay
+KeyUp "Ctrl", 1
+Delay walkDelay
+MoveTo 726, 354
+Delay walkDelay
+LeftClick 1
+Delay gateDelay
+Unstick
+
+// ============================
+// 青草坪 - TURN IN QUEST (already done at start)
+// ============================
+TracePrint "=== 青草坪 (turn in) ==="
+Delay walkDelay
+Unstick
+CheckCameraAngle()
+TracePrint "=== Cycle " & cycleCount & " completed ==="
+Goto MAIN_LOOP
+
+

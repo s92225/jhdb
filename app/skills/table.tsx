@@ -25,7 +25,7 @@ function tagClass(label: string) {
   if (key === '招架') return 'border-slate-200 bg-slate-50 text-slate-700'
   if (key === '輕功') return 'border-indigo-200 bg-indigo-50 text-indigo-700'
   if (key === '內功') return 'border-purple-200 bg-purple-50 text-purple-700'
-  return 'border-zinc-200 bg-zinc-50 text-zinc-700'
+  return 'border-hairline bg-surface-soft text-muted'
 }
 
 function calcAvgDamage(skill: Skill): number | null {
@@ -50,22 +50,39 @@ function norm(value: number | null, min: number, max: number) {
   return Math.min(1, Math.max(0, (value - min) / (max - min)))
 }
 
+function calcDotHpDamage(skill: Skill): number {
+  const effects = (skill as any).specialEffects ?? []
+  let totalDot = 0
+  for (const e of effects) {
+    if (e.type === '暗勁' || e.type === '毒性' || e.type === '寒毒') {
+      const chance = e.triggerChance ?? 0
+      const maxStacks = e.maxStacks ?? 0
+      const hpPerStack = e.hpPerStack ?? 0
+      totalDot += chance * maxStacks * hpPerStack
+    }
+  }
+  return totalDot
+}
+
 function getScoreRanges(skills: Skill[]) {
   const vals = {
     neishang: [] as number[],
     bishang: [] as number[],
     beishan: [] as number[],
     beizhao: [] as number[],
+    dotHp: [] as number[],
   }
   for (const s of skills) {
     const nei = n(s.averages?.neishang)
     const bi = n(s.averages?.bishang)
     const shan = n(s.averages?.beishan)
     const zhao = n(s.averages?.beizhao)
+    const dot = calcDotHpDamage(s)
     if (nei !== null) vals.neishang.push(nei)
     if (bi !== null) vals.bishang.push(bi)
     if (shan !== null) vals.beishan.push(shan)
     if (zhao !== null) vals.beizhao.push(zhao)
+    vals.dotHp.push(dot)
   }
   const range = (arr: number[]) => {
     if (!arr.length) return { min: 0, max: 0 }
@@ -76,6 +93,7 @@ function getScoreRanges(skills: Skill[]) {
     bishang: range(vals.bishang),
     beishan: range(vals.beishan),
     beizhao: range(vals.beizhao),
+    dotHp: range(vals.dotHp),
   }
 }
 
@@ -85,7 +103,11 @@ function calcScore(skill: Skill, ranges: ReturnType<typeof getScoreRanges>): num
   const shan = norm(n(skill.averages?.beishan), ranges.beishan.min, ranges.beishan.max)
   const zhao = norm(n(skill.averages?.beizhao), ranges.beizhao.min, ranges.beizhao.max)
   if (nei === null || bi === null || shan === null || zhao === null) return null
-  const raw = 0.25 * nei + 0.25 * bi + 0.25 * (1 - shan) + 0.25 * (1 - zhao)
+  
+  const dotHp = calcDotHpDamage(skill)
+  const dotNorm = norm(dotHp, ranges.dotHp.min, ranges.dotHp.max) ?? 0
+  
+  const raw = 0.20 * nei + 0.20 * bi + 0.20 * (1 - shan) + 0.20 * (1 - zhao) + 0.20 * dotNorm
   return Math.round(raw * 100)
 }
 
@@ -108,7 +130,7 @@ function scoreToGrade(score: number | null, thresholds: ScoreThresholds | null) 
 }
 
 const scoreTooltip =
-  '公式：0.25×內傷 + 0.25×臂傷 + 0.25×(1-被閃) + 0.25×(1-被招)（皆以資料集 min/max 正規化）\n等級：依分位數分級（S 前 16.7% / A 前 33.4% / B 前 50% / C 前 66.7% / D 前 83.4% / E 最後 16.7%）'
+  '公式：0.20×內傷 + 0.20×臂傷 + 0.20×(1-被閃) + 0.20×(1-被招) + 0.20×暗勁傷害（皆以資料集 min/max 正規化）\n暗勁傷害 = 觸發機率 × 疊加上限 × 每層氣血傷害\n等級：依分位數分級（S 前 16.7% / A 前 33.4% / B 前 50% / C 前 66.7% / D 前 83.4% / E 最後 16.7%）\n\n【閃避率加成】組合技能效果，戰鬥中配置指定輕功達等級要求時，獲得額外閃避率（30%~70%），敵方攻擊有該機率完全閃避。'
 
 function sourceTagClass(label: string) {
   const key = label.trim()
@@ -118,7 +140,7 @@ function sourceTagClass(label: string) {
   if (key === '明教') return 'border-rose-200 bg-rose-50 text-rose-700'
   if (key === '峨嵋') return 'border-purple-200 bg-purple-50 text-purple-700'
   if (key === '武館') return 'border-blue-200 bg-blue-50 text-blue-700'
-  return 'border-zinc-200 bg-zinc-50 text-zinc-700'
+  return 'border-hairline bg-surface-soft text-muted'
 }
 
 export function SkillTable({
@@ -131,12 +153,12 @@ export function SkillTable({
   const [q, setQ] = useState('')
   const [family, setFamily] = useState<string>(initialFamily) // 門派（含 公共武技/武館）
   const [tier, setTier] = useState<SkillTier | '全部'>('全部')
-  const [config, setConfig] = useState<SkillConfig | '全部' | '連擊進攻' | '兵器加成'>('全部')
+  const [configFilters, setConfigFilters] = useState<Set<string>>(new Set())
   const [sortKey, setSortKey] = useState<SortKey>('name')
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
   const [selected, setSelected] = useState<string[]>([])
 
-  const configs: Array<SkillConfig | '全部' | '連擊進攻' | '兵器加成'> = ['全部', '拳腳', '劍法', '刀法', '棍法', '短兵', '招架', '輕功', '內功', '連擊進攻', '兵器加成']
+  const configs: string[] = ['拳腳', '劍法', '刀法', '棍法', '短兵', '招架', '輕功', '內功', '連擊進攻', '兵器加成', '組合技能', '暗勁效果']
   const tiers: Array<SkillTier | '全部'> = ['全部', '第一階', '第二階', '第三階', '上古傳承無上神武']
 
   const familyOptions = useMemo(() => {
@@ -179,14 +201,25 @@ export function SkillTable({
       const rowTier = String((s as any).tier ?? (s as any).stage ?? '').trim()
 if (tier !== '全部' && rowTier !== tier) return false
 
-      if (config === '連擊進攻') {
-        if (!(s as any).specialEffects?.some((e: any) => e.type === '連擊進攻')) return false
-      } else if (config === '兵器加成') {
-        if (!(s as any).weaponBonus?.length) return false
-      } else if (config !== '全部' && !(s.configs ?? []).includes(config)) return false
+      if (configFilters.size > 0) {
+        const matchesConfig = Array.from(configFilters).every((cf) => {
+          if (cf === '連擊進攻') {
+            return (s as any).specialEffects?.some((e: any) => e.type === '連擊進攻')
+          } else if (cf === '兵器加成') {
+            return (s as any).weaponBonus?.length > 0
+          } else if (cf === '組合技能') {
+            return !!(s as any).comboSkill
+          } else if (cf === '暗勁效果') {
+            return (s as any).specialEffects?.some((e: any) => e.type === '暗勁' || e.type === '毒性' || e.type === '寒毒')
+          } else {
+            return (s.configs ?? []).includes(cf as SkillConfig)
+          }
+        })
+        if (!matchesConfig) return false
+      }
       return true
     })
-  }, [skills, q, family, tier, config])
+  }, [skills, q, family, tier, configFilters])
 
   const sorted = useMemo(() => {
     const dir = sortDir === 'asc' ? 1 : -1
@@ -239,24 +272,24 @@ if (tier !== '全部' && rowTier !== tier) return false
   return (
     <div className="grid gap-4 lg:grid-cols-[260px_minmax(0,1fr)]">
       <aside className="space-y-4">
-        <div className="rounded-2xl border bg-white p-4 shadow-sm">
-          <div className="text-sm font-semibold text-zinc-700">搜尋武技</div>
+        <div className="rounded-2xl border border-hairline bg-canvas p-4">
+          <div className="text-sm font-semibold text-ink">搜尋武技</div>
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="武技名 / 門派..."
-            className="mt-3 w-full rounded-xl border px-3 py-2 text-sm"
+            className="mt-3 w-full rounded-xl border border-hairline bg-canvas px-3 py-2 text-sm text-ink"
           />
         </div>
 
-        <div className="rounded-2xl border bg-white p-4 shadow-sm">
-          <div className="text-sm font-semibold text-zinc-700">門派篩選</div>
+        <div className="rounded-2xl border border-hairline bg-canvas p-4">
+          <div className="text-sm font-semibold text-ink">門派篩選</div>
           <div className="mt-3 grid grid-cols-2 gap-2">
             {familyOptions.map((v) => (
               <button
                 key={v}
                 onClick={() => setFamily(v)}
-                className={`rounded-xl border px-3 py-2 text-sm ${family === v ? 'border-blue-500 bg-blue-50 text-blue-700' : 'bg-white text-zinc-700'}`}
+                className={`rounded-xl border px-3 py-2 text-sm ${family === v ? 'border-rausch bg-rausch/5 text-rausch' : 'border-hairline bg-canvas text-bodytext hover:bg-surface-soft'}`}
               >
                 {v}
               </button>
@@ -264,39 +297,53 @@ if (tier !== '全部' && rowTier !== tier) return false
           </div>
         </div>
 
-        <div className="rounded-2xl border bg-white p-4 shadow-sm">
-          <div className="text-sm font-semibold text-zinc-700">類型配置</div>
-          <div className="mt-3 space-y-2 text-sm text-zinc-600">
-            {configs.filter((c) => c !== '全部').map((c) => (
-              <label key={c} className="flex items-center gap-2">
+        <div className="rounded-2xl border border-hairline bg-canvas p-4">
+          <div className="flex items-center justify-between">
+            <div className="text-sm font-semibold text-ink">類型配置</div>
+            {configFilters.size > 0 && (
+              <button
+                onClick={() => setConfigFilters(new Set())}
+                className="text-xs text-rausch hover:underline"
+              >
+                清除
+              </button>
+            )}
+          </div>
+          <div className="mt-1 text-xs text-muted-soft">可多選</div>
+          <div className="mt-3 space-y-2 text-sm text-bodytext">
+            {configs.map((c) => (
+              <label key={c} className="flex items-center gap-2 cursor-pointer">
                 <input
-                  type="radio"
-                  name="config"
-                  checked={config === c}
-                  onChange={() => setConfig(c)}
+                  type="checkbox"
+                  checked={configFilters.has(c)}
+                  onChange={() => {
+                    setConfigFilters((prev) => {
+                      const next = new Set(prev)
+                      if (next.has(c)) next.delete(c)
+                      else next.add(c)
+                      return next
+                    })
+                  }}
+                  className="rounded"
                 />
                 {c}
               </label>
             ))}
-            <label className="flex items-center gap-2">
-              <input type="radio" name="config" checked={config === '全部'} onChange={() => setConfig('全部')} />
-              全部
-            </label>
           </div>
         </div>
       </aside>
 
       <section className="space-y-4">
-        <div className="rounded-2xl border bg-white p-4 shadow-sm">
+        <div className="rounded-2xl border border-hairline bg-canvas p-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="text-sm text-zinc-600">共 {sorted.length} 筆</div>
+            <div className="text-sm text-muted">共 {sorted.length} 筆</div>
             <div className="flex flex-wrap items-center gap-2">
-              <select value={tier} onChange={(e) => setTier(e.target.value as any)} className="rounded-xl border px-3 py-2 text-sm">
+              <select value={tier} onChange={(e) => setTier(e.target.value as any)} className="rounded-xl border border-hairline bg-canvas px-3 py-2 text-sm text-ink">
                 {tiers.map((v) => (
                   <option key={v} value={v}>{v}</option>
                 ))}
               </select>
-              <select value={sortKey} onChange={(e) => setSortKey(e.target.value as SortKey)} className="rounded-xl border px-3 py-2 text-sm">
+              <select value={sortKey} onChange={(e) => setSortKey(e.target.value as SortKey)} className="rounded-xl border border-hairline bg-canvas px-3 py-2 text-sm text-ink">
                 <option value="name">排序：名稱</option>
                 <option value="family">排序：門派</option>
                 <option value="tier">排序：階級</option>
@@ -307,7 +354,7 @@ if (tier !== '全部' && rowTier !== tier) return false
                 <option value="score">排序：綜合評分</option>
               </select>
               <button
-                className="rounded-xl border bg-white px-3 py-2 text-sm"
+                className="rounded-xl border border-hairline bg-canvas px-3 py-2 text-sm text-ink"
                 onClick={() => setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'))}
                 title="切換升冪/降冪"
               >
@@ -318,11 +365,11 @@ if (tier !== '全部' && rowTier !== tier) return false
         </div>
 
         {sorted.length === 0 ? (
-          <div className="rounded-2xl border bg-white p-10 text-center text-zinc-700 shadow-sm">沒有資料（或篩選後為空）。</div>
+          <div className="rounded-2xl border border-hairline bg-canvas p-10 text-center text-bodytext">沒有資料（或篩選後為空）。</div>
         ) : (
           <div className="space-y-4">
             {sorted.map((s) => (
-              <div key={s.id} className="rounded-2xl border bg-white p-5 shadow-sm">
+              <div key={s.id} className="rounded-2xl border border-hairline bg-canvas p-5 transition-shadow hover:shadow-airbnb">
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
                     <input
@@ -338,25 +385,45 @@ if (tier !== '全部' && rowTier !== tier) return false
                           {show(s.sourceTag)}
                         </Badge>
                       </div>
-                      <Link href={`/skills/${encodeURIComponent(s.id)}`} className="text-[18px] font-semibold text-blue-700 hover:underline">
+                      <Link href={`/skills/${encodeURIComponent(s.id)}`} className="text-[18px] font-semibold text-rausch hover:underline">
                         {s.name}
                       </Link>
                       <div className="mt-2 flex flex-wrap gap-1.5">
                         {Array.isArray(s.configs) && s.configs.length > 0
                           ? s.configs.map((c) => <Badge key={c} className={tagClass(c)}>{c}</Badge>)
-                          : <span className="text-zinc-400">—</span>}
-                        {(s as any).specialEffects?.length > 0 && (
+                          : <span className="text-muted-soft">—</span>}
+                        {(s as any).specialEffects?.some((e: any) => e.type === '連擊進攻') && (
                           <Badge className="border-amber-300 bg-amber-50 text-amber-700">連擊進攻</Badge>
+                        )}
+                        {(s as any).specialEffects?.some((e: any) => e.type === '暗勁' || e.type === '毒性' || e.type === '寒毒') && (
+                          <Badge className="border-cyan-300 bg-cyan-50 text-cyan-700">暗勁效果</Badge>
                         )}
                         {(s as any).weaponBonus?.length > 0 && (
                           <Badge className="border-violet-300 bg-violet-50 text-violet-700">
                             兵器加成
                           </Badge>
                         )}
+                        {(s as any).comboSkill && (
+                          <Badge className="border-pink-300 bg-pink-50 text-pink-700">
+                            組合技能
+                          </Badge>
+                        )}
                       </div>
+                      {(s as any).comboSkill && (
+                        <div className="mt-2 rounded-lg bg-pink-50 px-3 py-2 text-xs text-pink-800">
+                          <span className="font-medium">組合效果：</span>
+                          配置「{(s as any).comboSkill.partner}」達 {(s as any).comboSkill.level} 級 → 閃避率 +{(s as any).comboSkill.bonus}%
+                        </div>
+                      )}
+                      {(s as any).specialEffects?.filter((e: any) => e.type === '暗勁' || e.type === '毒性' || e.type === '寒毒').map((e: any, i: number) => (
+                        <div key={i} className="mt-2 rounded-lg bg-cyan-50 px-3 py-2 text-xs text-cyan-800">
+                          <span className="font-medium">{e.type}效果：</span>
+                          {e.effectName} — {Math.round(e.triggerChance * 100)}% 機率疊加，上限 {e.maxStacks} 層，每層 {e.hpPerStack} 氣血 / {e.spiritPerStack} 精神
+                        </div>
+                      ))}
                     </div>
                   </div>
-                  <div className="text-right text-xs text-zinc-500">
+                  <div className="text-right text-xs text-muted">
                     <div>{show(s.tier)}</div>
                     <div className="mt-2 flex items-center justify-end gap-2">
                       <span
@@ -390,11 +457,11 @@ if (tier !== '全部' && rowTier !== tier) return false
         )}
 
         <div className="sticky bottom-4 z-10">
-          <div className="mx-auto flex max-w-xl items-center justify-between gap-4 rounded-full border bg-zinc-900 px-6 py-3 text-white shadow-lg">
+          <div className="mx-auto flex max-w-xl items-center justify-between gap-4 rounded-full bg-ink px-6 py-3 text-white shadow-lg">
             <div className="text-sm">{selected.length} 個項目已選取</div>
             <Link
               href={compareHref}
-              className="rounded-full bg-white px-4 py-2 text-sm text-zinc-900"
+              className="rounded-full bg-canvas px-4 py-2 text-sm text-ink"
               title={selected.length ? `比較 ${selected.length} 個武技` : '先勾選武技再比較'}
             >
               開始比較 →
@@ -421,11 +488,11 @@ function Attribute({
   const pct = Number.isFinite(numeric) ? Math.min(100, Math.round((numeric / max) * 100)) : 0
   return (
     <div className="w-full space-y-1">
-      <div className="flex items-center justify-between text-[13px] font-semibold text-zinc-700">
+      <div className="flex items-center justify-between text-[13px] font-semibold text-bodytext">
         <span>{label}</span>
-        <span className="tabular-nums text-zinc-800">{value}</span>
+        <span className="tabular-nums text-ink">{value}</span>
       </div>
-      <div className="h-2.5 w-full rounded-full bg-zinc-100">
+      <div className="h-2.5 w-full rounded-full bg-surface-soft">
         <div className={`h-2.5 rounded-full ${color}`} style={{ width: `${pct}%` }} />
       </div>
     </div>
@@ -449,12 +516,12 @@ function Metric({
   const pct = Number.isFinite(numeric) ? Math.min(100, Math.round((numeric / max) * 100)) : 0
   return (
     <div className="space-y-2">
-      <div className="flex items-center justify-between text-xs text-zinc-500">
+      <div className="flex items-center justify-between text-xs text-muted">
         <span className="inline-flex items-center gap-1">
           {label}
           {tooltip ? (
             <span
-              className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-zinc-200 text-[10px] text-zinc-500"
+              className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-hairline text-[10px] text-muted"
               title={tooltip}
               aria-label={`${label} 說明`}
             >
@@ -462,9 +529,9 @@ function Metric({
             </span>
           ) : null}
         </span>
-        <span className="text-zinc-700">{value}</span>
+        <span className="text-bodytext">{value}</span>
       </div>
-      <div className="h-2 rounded-full bg-zinc-100">
+      <div className="h-2 rounded-full bg-surface-soft">
         <div className={`h-2 rounded-full ${color}`} style={{ width: `${pct}%` }} />
       </div>
     </div>

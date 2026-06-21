@@ -1085,40 +1085,40 @@ export default function MissionBuilderPage() {
     <div className="flex flex-col gap-4">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight">任務路線產生器</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-ink">任務路線產生器</h1>
         <div className="flex items-center gap-3 text-sm">
           <label className="flex items-center gap-1.5">
             <input type="checkbox" checked={loopEnabled} onChange={(e) => setLoopEnabled(e.target.checked)} className="rounded" />
-            <span className="text-zinc-600">迴圈</span>
+            <span className="text-muted">迴圈</span>
           </label>
           <label className="flex items-center gap-1.5">
-            <span className="text-zinc-600">walkDelay</span>
-            <input type="number" className="w-16 rounded border px-2 py-1 text-center" value={walkDelay} onChange={(e) => setWalkDelay(Number(e.target.value))} />
+            <span className="text-muted">walkDelay</span>
+            <input type="number" className="w-16 rounded border border-hairline bg-canvas px-2 py-1 text-center text-ink" value={walkDelay} onChange={(e) => setWalkDelay(Number(e.target.value))} />
           </label>
           <label className="flex items-center gap-1.5">
-            <span className="text-zinc-600">mapDelay</span>
-            <input type="number" className="w-16 rounded border px-2 py-1 text-center" value={mapDelay} onChange={(e) => setMapDelay(Number(e.target.value))} />
+            <span className="text-muted">mapDelay</span>
+            <input type="number" className="w-16 rounded border border-hairline bg-canvas px-2 py-1 text-center text-ink" value={mapDelay} onChange={(e) => setMapDelay(Number(e.target.value))} />
           </label>
           <label className="flex items-center gap-1.5">
-            <span className="text-zinc-600">gateDelay</span>
-            <input type="number" className="w-16 rounded border px-2 py-1 text-center" value={gateDelay} onChange={(e) => setGateDelay(Number(e.target.value))} />
+            <span className="text-muted">gateDelay</span>
+            <input type="number" className="w-16 rounded border border-hairline bg-canvas px-2 py-1 text-center text-ink" value={gateDelay} onChange={(e) => setGateDelay(Number(e.target.value))} />
           </label>
         </div>
       </div>
 
       {/* Tab bar */}
-      <div className="flex gap-1 border-b">
+      <div className="flex gap-1 border-b border-hairline">
         {(['map', 'route', 'script'] as const).map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-              activeTab === tab ? 'border-blue-500 text-blue-600' : 'border-transparent text-zinc-500 hover:text-zinc-700'
+              activeTab === tab ? 'border-rausch text-rausch' : 'border-transparent text-muted hover:text-ink'
             }`}
           >
             {tab === 'map' ? '🗺️ 世界地圖' : tab === 'route' ? '📋 路線流程' : '📄 腳本輸出'}
             {tab === 'route' && route.length > 0 && (
-              <span className="ml-1.5 rounded-full bg-blue-100 text-blue-600 px-1.5 py-0.5 text-[10px]">{route.length}</span>
+              <span className="ml-1.5 rounded-full bg-rausch/10 text-rausch px-1.5 py-0.5 text-[10px]">{route.length}</span>
             )}
           </button>
         ))}
@@ -1129,12 +1129,12 @@ export default function MissionBuilderPage() {
         {/* Main panel */}
         <div className="flex-1 min-w-0">
           {activeTab === 'map' && (
-            <div className="rounded-2xl border bg-white shadow-sm overflow-hidden">
-              <div className="flex items-center justify-between border-b px-4 py-2">
-                <h2 className="font-semibold text-sm">
-                  世界地圖 <span className="font-normal text-zinc-400">— 點擊房間加入路線</span>
+            <div className="rounded-2xl border border-hairline bg-canvas overflow-hidden">
+              <div className="flex items-center justify-between border-b border-hairline px-4 py-2">
+                <h2 className="font-semibold text-sm text-ink">
+                  世界地圖 <span className="font-normal text-muted-soft">— 點擊房間加入路線</span>
                 </h2>
-                <div className="flex items-center gap-3 text-xs text-zinc-400">
+                <div className="flex items-center gap-3 text-xs text-muted-soft">
                   <span className="flex items-center gap-1"><span className="inline-block w-4 h-0.5 bg-white/40"></span> 門(Gate)</span>
                   <span className="flex items-center gap-1"><span className="inline-block w-4 h-0.5 bg-yellow-400/60" style={{ borderTop: '1px dashed' }}></span> 車伕(Cart)</span>
                 </div>
@@ -1153,9 +1153,9 @@ export default function MissionBuilderPage() {
           )}
 
           {activeTab === 'route' && (
-            <div className="rounded-2xl border bg-white shadow-sm overflow-hidden">
-              <div className="flex items-center justify-between border-b px-4 py-3">
-                <h2 className="font-semibold text-sm">路線流程</h2>
+            <div className="rounded-2xl border border-hairline bg-canvas overflow-hidden">
+              <div className="flex items-center justify-between border-b border-hairline px-4 py-3">
+                <h2 className="font-semibold text-sm text-ink">路線流程</h2>
                 <button
                   onClick={() => { setRoute([]); setSelectedStopIdx(-1) }}
                   className="text-xs text-red-500 hover:text-red-700"
@@ -1165,7 +1165,7 @@ export default function MissionBuilderPage() {
               </div>
               <div className="p-3 space-y-1 max-h-[calc(100vh-340px)] overflow-y-auto">
                 {route.length === 0 && (
-                  <div className="text-center text-sm text-zinc-400 py-12">
+                  <div className="text-center text-sm text-muted-soft py-12">
                     切換到「世界地圖」標籤，點擊房間來建立路線
                   </div>
                 )}
@@ -1192,7 +1192,7 @@ export default function MissionBuilderPage() {
                       <div
                         onClick={() => setSelectedStopIdx(i)}
                         className={`flex items-center gap-3 rounded-lg px-3 py-2 cursor-pointer transition-colors ${
-                          isSelected ? 'bg-blue-50 ring-1 ring-blue-300' : 'hover:bg-zinc-50'
+                          isSelected ? 'bg-rausch/5 ring-1 ring-rausch/30' : 'hover:bg-surface-soft'
                         }`}
                       >
                         {/* Step number */}
@@ -1205,8 +1205,8 @@ export default function MissionBuilderPage() {
 
                         {/* Room info */}
                         <div className="flex-1 min-w-0">
-                          <div className="text-sm font-medium truncate">{room.id}</div>
-                          <div className="text-[11px] text-zinc-400">
+                          <div className="text-sm font-medium truncate text-ink">{room.id}</div>
+                          <div className="text-[11px] text-muted-soft">
                             {stop.actions.map((a) => STOP_ACTION_LABELS[a.type]).join(', ')}
                           </div>
                         </div>
@@ -1214,7 +1214,7 @@ export default function MissionBuilderPage() {
                         {/* Remove */}
                         <button
                           onClick={(e) => { e.stopPropagation(); removeStop(i) }}
-                          className="text-zinc-300 hover:text-red-500 transition-colors"
+                          className="text-muted-soft hover:text-red-500 transition-colors"
                         >
                           ✕
                         </button>
@@ -1223,8 +1223,8 @@ export default function MissionBuilderPage() {
                       {/* Connection arrow */}
                       {connInfo && (
                         <div className="flex items-center gap-2 pl-6 py-0.5">
-                          <span className="text-zinc-300">↓</span>
-                          <span className="text-[10px] text-zinc-400">{connInfo}</span>
+                          <span className="text-muted-soft">↓</span>
+                          <span className="text-[10px] text-muted-soft">{connInfo}</span>
                         </div>
                       )}
                     </div>
@@ -1235,20 +1235,20 @@ export default function MissionBuilderPage() {
           )}
 
           {activeTab === 'script' && (
-            <div className="rounded-2xl border bg-white shadow-sm overflow-hidden flex flex-col" style={{ height: 'calc(100vh - 240px)' }}>
-              <div className="flex items-center justify-between border-b px-4 py-2">
-                <h2 className="font-semibold text-sm">腳本輸出</h2>
+            <div className="rounded-2xl border border-hairline bg-canvas overflow-hidden flex flex-col" style={{ height: 'calc(100vh - 240px)' }}>
+              <div className="flex items-center justify-between border-b border-hairline px-4 py-2">
+                <h2 className="font-semibold text-sm text-ink">腳本輸出</h2>
                 <button
                   onClick={handleCopy}
                   className={`rounded-lg px-3 py-1 text-xs font-medium transition-colors ${
-                    copied ? 'bg-green-100 text-green-700' : 'bg-zinc-900 text-white hover:bg-zinc-700'
+                    copied ? 'bg-green-100 text-green-700' : 'bg-ink text-canvas hover:bg-ink/80'
                   }`}
                 >
                   {copied ? '已複製!' : '複製腳本'}
                 </button>
               </div>
               <div className="flex-1 overflow-y-auto p-2">
-                <pre className="whitespace-pre-wrap break-all text-[11px] font-mono leading-relaxed text-zinc-700 bg-zinc-50 rounded-lg p-3 min-h-full select-all">
+                <pre className="whitespace-pre-wrap break-all text-[11px] font-mono leading-relaxed text-bodytext bg-surface-soft rounded-lg p-3 min-h-full select-all">
                   {script || '// 在世界地圖上點擊房間建立路線後，腳本會自動產生'}
                 </pre>
               </div>
@@ -1257,15 +1257,15 @@ export default function MissionBuilderPage() {
         </div>
 
         {/* Right sidebar: Stop action editor */}
-        <div className="rounded-2xl border bg-white shadow-sm overflow-hidden" style={{ width: 340, flexShrink: 0 }}>
-          <div className="border-b px-4 py-3">
-            <h2 className="font-semibold text-sm">
+        <div className="rounded-2xl border border-hairline bg-canvas overflow-hidden" style={{ width: 340, flexShrink: 0 }}>
+          <div className="border-b border-hairline px-4 py-3">
+            <h2 className="font-semibold text-sm text-ink">
               {selectedStop ? `停靠點 #${selectedStopIdx + 1}: ${selectedRoom?.id}` : '選擇停靠點'}
             </h2>
           </div>
 
           {!selectedStop && (
-            <div className="p-4 text-sm text-zinc-400 text-center">
+            <div className="p-4 text-sm text-muted-soft text-center">
               在路線流程中點擊一個停靠點來編輯動作
             </div>
           )}
@@ -1273,21 +1273,21 @@ export default function MissionBuilderPage() {
           {selectedStop && selectedRoom && (
             <div className="p-3 space-y-3 overflow-y-auto max-h-[calc(100vh-340px)]">
               {/* Room info */}
-              <div className="rounded-lg bg-zinc-50 p-2 text-xs">
-                <div className="font-medium">{selectedRoom.id}</div>
+              <div className="rounded-lg bg-surface-soft p-2 text-xs">
+                <div className="font-medium text-ink">{selectedRoom.id}</div>
                 {selectedRoom.npcs.length > 0 && (
-                  <div className="text-zinc-500 mt-0.5">NPC: {selectedRoom.npcs.join(', ')}</div>
+                  <div className="text-muted mt-0.5">NPC: {selectedRoom.npcs.join(', ')}</div>
                 )}
                 {selectedRoom.walkPoints.length > 0 && (
-                  <div className="text-zinc-400 mt-0.5">{selectedRoom.walkPoints.length} 個走路點</div>
+                  <div className="text-muted-soft mt-0.5">{selectedRoom.walkPoints.length} 個走路點</div>
                 )}
               </div>
 
               {/* Actions */}
               {selectedStop.actions.map((action, ai) => (
-                <div key={ai} className="rounded-lg border p-2 space-y-2">
+                <div key={ai} className="rounded-lg border border-hairline p-2 space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-medium text-zinc-500">動作 {ai + 1}</span>
+                    <span className="text-[11px] font-medium text-muted">動作 {ai + 1}</span>
                     {selectedStop.actions.length > 1 && (
                       <button
                         onClick={() => removeActionFromStop(selectedStopIdx, ai)}
@@ -1300,7 +1300,7 @@ export default function MissionBuilderPage() {
 
                   {/* Action type */}
                   <select
-                    className="w-full rounded border px-2 py-1 text-xs"
+                    className="w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                     value={action.type}
                     onChange={(e) => updateStopAction(selectedStopIdx, ai, { type: e.target.value as StopActionType })}
                   >
@@ -1314,21 +1314,21 @@ export default function MissionBuilderPage() {
                     <>
                       <input
                         type="text"
-                        className="w-full rounded border px-2 py-1 text-xs"
+                        className="w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                         placeholder="NPC名稱 (如 lin)"
                         value={action.npcName || ''}
                         onChange={(e) => updateStopAction(selectedStopIdx, ai, { npcName: e.target.value })}
                       />
                       <input
                         type="text"
-                        className="w-full rounded border px-2 py-1 text-xs"
+                        className="w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                         placeholder="對話指令 (如 Ask 一品堂任務[1000萬])"
                         value={action.questDialogue || ''}
                         onChange={(e) => updateStopAction(selectedStopIdx, ai, { questDialogue: e.target.value })}
                       />
                       <input
                         type="text"
-                        className="w-full rounded border px-2 py-1 text-xs"
+                        className="w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                         placeholder="FindPic路徑 (如 C:\...\lin.bmp)"
                         value={action.findPicPath || ''}
                         onChange={(e) => updateStopAction(selectedStopIdx, ai, { findPicPath: e.target.value })}
@@ -1340,14 +1340,14 @@ export default function MissionBuilderPage() {
                     <>
                       <input
                         type="text"
-                        className="w-full rounded border px-2 py-1 text-xs"
+                        className="w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                         placeholder="kill指令 (預設: kill)"
                         value={action.killDialogue || ''}
                         onChange={(e) => updateStopAction(selectedStopIdx, ai, { killDialogue: e.target.value })}
                       />
                       <input
                         type="text"
-                        className="w-full rounded border px-2 py-1 text-xs"
+                        className="w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                         placeholder="FindPic路徑 (如 C:\...\bai.bmp)"
                         value={action.findPicPath || ''}
                         onChange={(e) => updateStopAction(selectedStopIdx, ai, { findPicPath: e.target.value })}
@@ -1362,9 +1362,9 @@ export default function MissionBuilderPage() {
                         NPC不在 → 走出到相鄰房間 → 走回來(重生) → 殺掉 → 離開
                       </div>
                       <label className="block">
-                        <span className="text-[11px] text-zinc-500">重生房間 (走出去再走回來)</span>
+                        <span className="text-[11px] text-muted">重生房間 (走出去再走回來)</span>
                         <select
-                          className="mt-0.5 w-full rounded border px-2 py-1 text-xs"
+                          className="mt-0.5 w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                           value={action.refreshRoomId || ''}
                           onChange={(e) => updateStopAction(selectedStopIdx, ai, { refreshRoomId: e.target.value })}
                         >
@@ -1376,14 +1376,14 @@ export default function MissionBuilderPage() {
                       </label>
                       <input
                         type="text"
-                        className="w-full rounded border px-2 py-1 text-xs"
+                        className="w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                         placeholder="kill指令 (預設: kill)"
                         value={action.killDialogue || ''}
                         onChange={(e) => updateStopAction(selectedStopIdx, ai, { killDialogue: e.target.value })}
                       />
                       <input
                         type="text"
-                        className="w-full rounded border px-2 py-1 text-xs"
+                        className="w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                         placeholder="FindPic路徑 (如 C:\...\bai.bmp)"
                         value={action.findPicPath || ''}
                         onChange={(e) => updateStopAction(selectedStopIdx, ai, { findPicPath: e.target.value })}
@@ -1395,14 +1395,14 @@ export default function MissionBuilderPage() {
                     <>
                       <input
                         type="text"
-                        className="w-full rounded border px-2 py-1 text-xs"
+                        className="w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                         placeholder="目的地指令 (如 Ask 玉門)"
                         value={action.cartDestination || ''}
                         onChange={(e) => updateStopAction(selectedStopIdx, ai, { cartDestination: e.target.value })}
                       />
                       <input
                         type="text"
-                        className="w-full rounded border px-2 py-1 text-xs"
+                        className="w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                         placeholder="FindPic路徑 (預設: cart man.bmp)"
                         value={action.findPicPath || ''}
                         onChange={(e) => updateStopAction(selectedStopIdx, ai, { findPicPath: e.target.value })}
@@ -1412,7 +1412,7 @@ export default function MissionBuilderPage() {
 
                   {action.type === 'eat_drink' && (
                     <textarea
-                      className="w-full rounded border px-2 py-1 text-xs font-mono"
+                      className="w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs font-mono text-ink"
                       rows={4}
                       placeholder={"Use 關東煮 10\nUse 藥酒 3\nUse 青草 4"}
                       value={(action.items || []).join('\n')}
@@ -1423,7 +1423,7 @@ export default function MissionBuilderPage() {
                   {action.type === 'practice' && (
                     <input
                       type="text"
-                      className="w-full rounded border px-2 py-1 text-xs"
+                      className="w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                       placeholder="Practice 道德經 1600"
                       value={action.practiceCmd || ''}
                       onChange={(e) => updateStopAction(selectedStopIdx, ai, { practiceCmd: e.target.value })}
@@ -1432,7 +1432,7 @@ export default function MissionBuilderPage() {
 
                   {action.type === 'custom' && (
                     <textarea
-                      className="w-full rounded border px-2 py-1 text-xs font-mono"
+                      className="w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs font-mono text-ink"
                       rows={4}
                       placeholder={"指令1\n指令2\n..."}
                       value={(action.customCmds || []).join('\n')}
@@ -1444,7 +1444,7 @@ export default function MissionBuilderPage() {
 
               <button
                 onClick={() => addActionToStop(selectedStopIdx)}
-                className="w-full rounded-lg border border-dashed border-zinc-300 py-1.5 text-xs text-zinc-500 hover:bg-zinc-50 transition-colors"
+                className="w-full rounded-lg border border-dashed border-hairline py-1.5 text-xs text-muted hover:bg-surface-soft transition-colors"
               >
                 + 新增動作
               </button>

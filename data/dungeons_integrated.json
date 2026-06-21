@@ -419,34 +419,34 @@
       "name": "淨念禪宗",
       "positioning": {
         "type": "高等挑戰副本",
-        "stage": "1000萬經驗且參透生門死關",
-        "features": "難度較高，需特定前置條件"
+        "stage": "1000 萬戰鬥經驗以上",
+        "features": "影子太監得天僧點撥後棍法傷害與命中率大幅提升，需特定前置條件"
       },
       "entry": {
-        "location": "長安",
-        "npc": "說書人",
-        "method": "解謎進入",
-        "needsItem": true,
+        "location": "—",
+        "npc": "—",
+        "method": "死切用地圖（非解謎進入）",
+        "needsItem": false,
         "kickOutOnFailure": false
       },
       "recommendedStrength": {
         "stage": "高手",
-        "config": "1000 萬戰鬥經驗"
+        "config": "戰鬥經驗 ≥ 1000 萬，且已參透「生門死關」"
       },
       "workflow": [
         "無資料"
       ],
       "bosses": [
-        "無資料"
+        "影子太監（受天僧點撥後棍法傷害／命中大幅提升）"
       ],
       "mechanics": [
-        "無資料"
+        "進入採用「死切用地圖」機制，不同於其他副本的解謎入場"
       ],
       "loot": [
         "無資料"
       ],
       "resetPolicy": "無資料",
-      "notes": ""
+      "notes": "update - 4.txt (2025-03-07)：現在起，淨念禪宗必須達到 1000 萬戰鬥經驗及已參透「生門死關」之人士方能進入。"
     },
     {
       "id": "dungeon-慈航靜齋",

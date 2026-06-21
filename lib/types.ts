@@ -54,11 +54,28 @@ export interface ComboAttack {
   description: string
 }
 
+/** 暗勁/毒性效果：命中敵手有機率疊加層數，發作時每層扣減氣血與精神 */
+export interface DotEffect {
+  type: '暗勁' | '毒性' | '寒毒'
+  /** 效果名稱，如「太極真氣」「金剛伏魔」 */
+  effectName: string
+  /** 命中觸發機率（0–1），例如 0.30 = 30% */
+  triggerChance: number
+  /** 疊加上限層數 */
+  maxStacks: number
+  /** 發作時每層扣減氣血 */
+  hpPerStack: number
+  /** 發作時每層扣減精神 */
+  spiritPerStack: number
+  /** 給 UI 顯示的完整說明 */
+  description: string
+}
+
 /**
  * 技能特殊效果（discriminated union）。
  * 日後新增其他效果時，只需加入新的 interface 並擴充此 union。
  */
-export type SkillSpecialEffect = ComboAttack
+export type SkillSpecialEffect = ComboAttack | DotEffect
 
 export interface SkillWeaponBonus {
   weaponName: string
@@ -140,6 +157,7 @@ export interface UpdateNote {
   date?: string | null
   title?: string | null
   content: string
+  sourceFile?: string | null
   rawSource?: string | null
 }
 

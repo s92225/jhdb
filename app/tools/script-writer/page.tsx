@@ -657,31 +657,31 @@ export default function ScriptWriterPage() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight">按鍵精靈腳本編輯器</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-ink">按鍵精靈腳本編輯器</h1>
         <div className="flex items-center gap-3 text-sm">
           <label className="flex items-center gap-1.5">
-            <span className="text-zinc-600">walkDelay</span>
+            <span className="text-muted">walkDelay</span>
             <input
               type="number"
-              className="w-16 rounded border px-2 py-1 text-center"
+              className="w-16 rounded border border-hairline bg-canvas px-2 py-1 text-center text-ink"
               value={walkDelay}
               onChange={(e) => setWalkDelay(Number(e.target.value))}
             />
           </label>
           <label className="flex items-center gap-1.5">
-            <span className="text-zinc-600">mapDelay</span>
+            <span className="text-muted">mapDelay</span>
             <input
               type="number"
-              className="w-16 rounded border px-2 py-1 text-center"
+              className="w-16 rounded border border-hairline bg-canvas px-2 py-1 text-center text-ink"
               value={mapDelay}
               onChange={(e) => setMapDelay(Number(e.target.value))}
             />
           </label>
           <label className="flex items-center gap-1.5">
-            <span className="text-zinc-600">gateDelay</span>
+            <span className="text-muted">gateDelay</span>
             <input
               type="number"
-              className="w-16 rounded border px-2 py-1 text-center"
+              className="w-16 rounded border border-hairline bg-canvas px-2 py-1 text-center text-ink"
               value={gateDelay}
               onChange={(e) => setGateDelay(Number(e.target.value))}
             />
@@ -691,11 +691,11 @@ export default function ScriptWriterPage() {
 
       <div className="flex gap-4" style={{ minHeight: 'calc(100vh - 200px)' }}>
         {/* ======== LEFT SIDEBAR: Step List ======== */}
-        <div className="flex flex-col rounded-2xl border bg-white shadow-sm" style={{ width: 320, flexShrink: 0 }}>
-          <div className="border-b px-4 py-3">
+        <div className="flex flex-col rounded-2xl border border-hairline bg-canvas" style={{ width: 320, flexShrink: 0 }}>
+          <div className="border-b border-hairline px-4 py-3">
             <div className="flex items-center justify-between">
-              <h2 className="font-semibold text-sm">步驟列表</h2>
-              <span className="text-xs text-zinc-400">{steps.length} 步</span>
+              <h2 className="font-semibold text-sm text-ink">步驟列表</h2>
+              <span className="text-xs text-muted-soft">{steps.length} 步</span>
             </div>
             {/* Add step buttons */}
             <div className="mt-2 flex flex-wrap gap-1">
@@ -703,7 +703,7 @@ export default function ScriptWriterPage() {
                 <button
                   key={t}
                   onClick={() => addStep(t)}
-                  className="rounded px-1.5 py-0.5 text-[11px] border hover:bg-zinc-50 transition-colors"
+                  className="rounded px-1.5 py-0.5 text-[11px] border border-hairline hover:bg-surface-soft transition-colors text-ink"
                   style={{ borderColor: STEP_TYPE_COLORS[t], color: STEP_TYPE_COLORS[t] }}
                 >
                   + {STEP_TYPE_LABELS[t]}
@@ -715,7 +715,7 @@ export default function ScriptWriterPage() {
           {/* Step list */}
           <div className="flex-1 overflow-y-auto p-2 space-y-1">
             {steps.length === 0 && (
-              <div className="text-center text-sm text-zinc-400 py-8">
+              <div className="text-center text-sm text-muted-soft py-8">
                 點擊上方按鈕新增步驟<br />或選擇右側模板
               </div>
             )}
@@ -730,14 +730,14 @@ export default function ScriptWriterPage() {
                 onClick={() => setSelectedIdx(i)}
                 className={`group flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs cursor-pointer transition-colors ${
                   i === selectedIdx
-                    ? 'bg-blue-50 ring-1 ring-blue-300'
+                    ? 'bg-rausch/5 ring-1 ring-rausch/30'
                     : dragOverIdx === i
-                    ? 'bg-zinc-100'
-                    : 'hover:bg-zinc-50'
+                    ? 'bg-surface-soft'
+                    : 'hover:bg-surface-soft'
                 }`}
               >
                 {/* Drag handle */}
-                <span className="cursor-grab text-zinc-300 hover:text-zinc-500 select-none" title="拖曳排序">⠿</span>
+                <span className="cursor-grab text-muted-soft hover:text-muted select-none" title="拖曳排序">⠿</span>
                 {/* Color dot */}
                 <span
                   className="inline-block h-2.5 w-2.5 rounded-full flex-shrink-0"
@@ -745,39 +745,39 @@ export default function ScriptWriterPage() {
                 />
                 {/* Step info */}
                 <span className="flex-1 truncate">
-                  <span className="font-medium">{i + 1}.</span>{' '}
-                  <span className="text-zinc-600">{STEP_TYPE_LABELS[s.type]}</span>
+                  <span className="font-medium text-ink">{i + 1}.</span>{' '}
+                  <span className="text-muted">{STEP_TYPE_LABELS[s.type]}</span>
                   {HAS_COORDS.includes(s.type) && (s.x > 0 || s.y > 0) && (
-                    <span className="text-zinc-400 ml-1">({s.x},{s.y})</span>
+                    <span className="text-muted-soft ml-1">({s.x},{s.y})</span>
                   )}
                   {s.type === 'say' && s.text && (
-                    <span className="text-zinc-400 ml-1">&quot;{s.text}&quot;</span>
+                    <span className="text-muted-soft ml-1">&quot;{s.text}&quot;</span>
                   )}
                   {s.type === 'label' && s.text && (
-                    <span className="text-zinc-400 ml-1">{s.text}</span>
+                    <span className="text-muted-soft ml-1">{s.text}</span>
                   )}
                   {s.type === 'goto' && s.text && (
-                    <span className="text-zinc-400 ml-1">→ {s.text}</span>
+                    <span className="text-muted-soft ml-1">→ {s.text}</span>
                   )}
                   {s.type === 'delay' && (
-                    <span className="text-zinc-400 ml-1">{s.delayMs}ms</span>
+                    <span className="text-muted-soft ml-1">{s.delayMs}ms</span>
                   )}
                   {s.type === 'sub' && s.text && (
-                    <span className="text-zinc-400 ml-1">{s.text}()</span>
+                    <span className="text-muted-soft ml-1">{s.text}()</span>
                   )}
                   {s.comment && (
-                    <span className="text-zinc-300 ml-1">// {s.comment}</span>
+                    <span className="text-muted-soft ml-1">// {s.comment}</span>
                   )}
                 </span>
                 {/* Actions */}
                 <button
                   onClick={(e) => { e.stopPropagation(); duplicateStep(i) }}
-                  className="opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-blue-500 transition-opacity"
+                  className="opacity-0 group-hover:opacity-100 text-muted-soft hover:text-rausch transition-opacity"
                   title="複製"
                 >⧉</button>
                 <button
                   onClick={(e) => { e.stopPropagation(); removeStep(i) }}
-                  className="opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-red-500 transition-opacity"
+                  className="opacity-0 group-hover:opacity-100 text-muted-soft hover:text-red-500 transition-opacity"
                   title="刪除"
                 >✕</button>
               </div>
@@ -786,16 +786,16 @@ export default function ScriptWriterPage() {
 
           {/* Selected step editor */}
           {sel && (
-            <div className="border-t p-3 space-y-2 bg-zinc-50">
-              <div className="text-xs font-semibold text-zinc-500">
+            <div className="border-t border-hairline p-3 space-y-2 bg-surface-soft">
+              <div className="text-xs font-semibold text-muted">
                 編輯步驟 #{selectedIdx + 1}: {STEP_TYPE_LABELS[sel.type]}
               </div>
 
               {/* Type selector */}
               <label className="block">
-                <span className="text-[11px] text-zinc-500">類型</span>
+                <span className="text-[11px] text-muted">類型</span>
                 <select
-                  className="mt-0.5 block w-full rounded border px-2 py-1 text-xs"
+                  className="mt-0.5 block w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                   value={sel.type}
                   onChange={(e) => updateStep(selectedIdx, { type: e.target.value as StepType })}
                 >
@@ -809,19 +809,19 @@ export default function ScriptWriterPage() {
               {HAS_COORDS.includes(sel.type) && (
                 <div className="flex gap-2">
                   <label className="flex-1">
-                    <span className="text-[11px] text-zinc-500">X</span>
+                    <span className="text-[11px] text-muted">X</span>
                     <input
                       type="number"
-                      className="mt-0.5 block w-full rounded border px-2 py-1 text-xs"
+                      className="mt-0.5 block w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                       value={sel.x}
                       onChange={(e) => updateStep(selectedIdx, { x: Number(e.target.value) })}
                     />
                   </label>
                   <label className="flex-1">
-                    <span className="text-[11px] text-zinc-500">Y</span>
+                    <span className="text-[11px] text-muted">Y</span>
                     <input
                       type="number"
-                      className="mt-0.5 block w-full rounded border px-2 py-1 text-xs"
+                      className="mt-0.5 block w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                       value={sel.y}
                       onChange={(e) => updateStep(selectedIdx, { y: Number(e.target.value) })}
                     />
@@ -833,19 +833,19 @@ export default function ScriptWriterPage() {
               {sel.type === 'findcolor' && (
                 <div className="flex gap-2">
                   <label className="flex-1">
-                    <span className="text-[11px] text-zinc-500">X2</span>
+                    <span className="text-[11px] text-muted">X2</span>
                     <input
                       type="number"
-                      className="mt-0.5 block w-full rounded border px-2 py-1 text-xs"
+                      className="mt-0.5 block w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                       value={sel.x2}
                       onChange={(e) => updateStep(selectedIdx, { x2: Number(e.target.value) })}
                     />
                   </label>
                   <label className="flex-1">
-                    <span className="text-[11px] text-zinc-500">Y2</span>
+                    <span className="text-[11px] text-muted">Y2</span>
                     <input
                       type="number"
-                      className="mt-0.5 block w-full rounded border px-2 py-1 text-xs"
+                      className="mt-0.5 block w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                       value={sel.y2}
                       onChange={(e) => updateStep(selectedIdx, { y2: Number(e.target.value) })}
                     />
@@ -856,16 +856,16 @@ export default function ScriptWriterPage() {
               {/* Color */}
               {(sel.type === 'findcolor' || sel.type === 'ifcolor') && (
                 <label className="block">
-                  <span className="text-[11px] text-zinc-500">顏色 (BGR格式, 如 0000FF=紅, FFFF00=青)</span>
+                  <span className="text-[11px] text-muted">顏色 (BGR格式, 如 0000FF=紅, FFFF00=青)</span>
                   <div className="flex items-center gap-2 mt-0.5">
                     <input
                       type="text"
-                      className="block flex-1 rounded border px-2 py-1 text-xs font-mono"
+                      className="block flex-1 rounded border border-hairline bg-canvas px-2 py-1 text-xs font-mono text-ink"
                       value={sel.color}
                       onChange={(e) => updateStep(selectedIdx, { color: e.target.value.replace('#', '') })}
                     />
                     <span
-                      className="inline-block h-6 w-6 rounded border"
+                      className="inline-block h-6 w-6 rounded border border-hairline"
                       style={{ backgroundColor: `#${bgrToRgb(sel.color)}` }}
                     />
                   </div>
@@ -875,12 +875,12 @@ export default function ScriptWriterPage() {
               {/* Text field */}
               {['say', 'sub', 'label', 'goto', 'keypress'].includes(sel.type) && (
                 <label className="block">
-                  <span className="text-[11px] text-zinc-500">
+                  <span className="text-[11px] text-muted">
                     {sel.type === 'say' ? '文字' : sel.type === 'sub' ? '子程序名稱' : sel.type === 'label' ? '標記名稱' : sel.type === 'goto' ? '跳轉目標' : '按鍵名稱'}
                   </span>
                   <input
                     type="text"
-                    className="mt-0.5 block w-full rounded border px-2 py-1 text-xs"
+                    className="mt-0.5 block w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                     value={sel.text}
                     onChange={(e) => updateStep(selectedIdx, { text: e.target.value })}
                   />
@@ -890,10 +890,10 @@ export default function ScriptWriterPage() {
               {/* Loop condition */}
               {sel.type === 'loop_start' && (
                 <label className="block">
-                  <span className="text-[11px] text-zinc-500">條件 (留空=Do...Loop)</span>
+                  <span className="text-[11px] text-muted">條件 (留空=Do...Loop)</span>
                   <input
                     type="text"
-                    className="mt-0.5 block w-full rounded border px-2 py-1 text-xs"
+                    className="mt-0.5 block w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                     placeholder="e.g. killCount < 6"
                     value={sel.text}
                     onChange={(e) => updateStep(selectedIdx, { text: e.target.value })}
@@ -904,10 +904,10 @@ export default function ScriptWriterPage() {
               {/* KeyPress count */}
               {sel.type === 'keypress' && (
                 <label className="block">
-                  <span className="text-[11px] text-zinc-500">次數</span>
+                  <span className="text-[11px] text-muted">次數</span>
                   <input
                     type="number"
-                    className="mt-0.5 block w-full rounded border px-2 py-1 text-xs"
+                    className="mt-0.5 block w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                     value={sel.keyCount}
                     min={1}
                     onChange={(e) => updateStep(selectedIdx, { keyCount: Number(e.target.value) })}
@@ -918,10 +918,10 @@ export default function ScriptWriterPage() {
               {/* Delay */}
               {sel.type === 'delay' && (
                 <label className="block">
-                  <span className="text-[11px] text-zinc-500">延遲 (ms)</span>
+                  <span className="text-[11px] text-muted">延遲 (ms)</span>
                   <input
                     type="number"
-                    className="mt-0.5 block w-full rounded border px-2 py-1 text-xs"
+                    className="mt-0.5 block w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                     value={sel.delayMs}
                     onChange={(e) => updateStep(selectedIdx, { delayMs: Number(e.target.value) })}
                   />
@@ -930,10 +930,10 @@ export default function ScriptWriterPage() {
 
               {/* Comment */}
               <label className="block">
-                <span className="text-[11px] text-zinc-500">備註</span>
+                <span className="text-[11px] text-muted">備註</span>
                 <input
                   type="text"
-                  className="mt-0.5 block w-full rounded border px-2 py-1 text-xs"
+                  className="mt-0.5 block w-full rounded border border-hairline bg-canvas px-2 py-1 text-xs text-ink"
                   value={sel.comment}
                   onChange={(e) => updateStep(selectedIdx, { comment: e.target.value })}
                   placeholder="選填"
@@ -944,9 +944,9 @@ export default function ScriptWriterPage() {
         </div>
 
         {/* ======== CENTER: Canvas (fixed size) ======== */}
-        <div className="flex-shrink-0 flex flex-col rounded-2xl border bg-white shadow-sm overflow-hidden" style={{ width: CANVAS_W * 0.5 + 16 }}>
-          <div className="flex items-center justify-between border-b px-4 py-2">
-            <h2 className="font-semibold text-sm">遊戲畫面預覽 <span className="font-normal text-zinc-400">({CANVAS_W}×{CANVAS_H})</span></h2>
+        <div className="flex-shrink-0 flex flex-col rounded-2xl border border-hairline bg-canvas overflow-hidden" style={{ width: CANVAS_W * 0.5 + 16 }}>
+          <div className="flex items-center justify-between border-b border-hairline px-4 py-2">
+            <h2 className="font-semibold text-sm text-ink">遊戲畫面預覽 <span className="font-normal text-muted-soft">({CANVAS_W}×{CANVAS_H})</span></h2>
             <div className="flex items-center gap-3 text-xs">
               <label className="flex items-center gap-1 cursor-pointer">
                 <input
@@ -955,12 +955,12 @@ export default function ScriptWriterPage() {
                   onChange={(e) => setShowGrid(e.target.checked)}
                   className="rounded"
                 />
-                <span className="text-zinc-500">格線</span>
+                <span className="text-muted">格線</span>
               </label>
-              <span className="text-zinc-400">點擊設座標 | 拖曳移動</span>
+              <span className="text-muted-soft">點擊設座標 | 拖曳移動</span>
             </div>
           </div>
-          <div ref={containerRef} className="relative bg-zinc-900 p-2">
+          <div ref={containerRef} className="relative bg-ink p-2">
             <canvas
               ref={canvasRef}
               className="cursor-crosshair rounded"
@@ -974,16 +974,16 @@ export default function ScriptWriterPage() {
         </div>
 
         {/* ======== RIGHT SIDEBAR: Script Output & Templates ======== */}
-        <div className="flex flex-col flex-1 min-w-0 rounded-2xl border bg-white shadow-sm">
+        <div className="flex flex-col flex-1 min-w-0 rounded-2xl border border-hairline bg-canvas">
           {/* Templates */}
-          <div className="border-b px-4 py-3">
-            <h2 className="font-semibold text-sm mb-2">模板</h2>
+          <div className="border-b border-hairline px-4 py-3">
+            <h2 className="font-semibold text-sm text-ink mb-2">模板</h2>
             <div className="flex flex-wrap gap-1.5">
               {TEMPLATES.map((t) => (
                 <button
                   key={t.name}
                   onClick={() => loadTemplate(t)}
-                  className="rounded-lg border px-2.5 py-1 text-xs hover:bg-zinc-50 transition-colors"
+                  className="rounded-lg border border-hairline bg-canvas px-2.5 py-1 text-xs text-bodytext hover:bg-surface-soft transition-colors"
                   title={t.description}
                 >
                   {t.name}
@@ -993,21 +993,21 @@ export default function ScriptWriterPage() {
           </div>
 
           {/* Script output */}
-          <div className="flex items-center justify-between border-b px-4 py-2">
-            <h2 className="font-semibold text-sm">腳本輸出</h2>
+          <div className="flex items-center justify-between border-b border-hairline px-4 py-2">
+            <h2 className="font-semibold text-sm text-ink">腳本輸出</h2>
             <button
               onClick={handleCopy}
               className={`rounded-lg px-3 py-1 text-xs font-medium transition-colors ${
                 copied
                   ? 'bg-green-100 text-green-700'
-                  : 'bg-zinc-900 text-white hover:bg-zinc-700'
+                  : 'bg-ink text-canvas hover:bg-ink/80'
               }`}
             >
               {copied ? '已複製!' : '複製腳本'}
             </button>
           </div>
           <div className="flex-1 overflow-y-auto p-2">
-            <pre className="whitespace-pre-wrap break-all text-[11px] font-mono leading-relaxed text-zinc-700 bg-zinc-50 rounded-lg p-3 min-h-full select-all">
+            <pre className="whitespace-pre-wrap break-all text-[11px] font-mono leading-relaxed text-bodytext bg-surface-soft rounded-lg p-3 min-h-full select-all">
               {script || '// 新增步驟後，腳本會自動產生在這裡'}
             </pre>
           </div>

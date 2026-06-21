@@ -258,20 +258,20 @@ export default function AttributesPage() {
   return (
     <div className="mx-auto max-w-6xl space-y-6 px-4 py-8">
       <header className="space-y-2">
-        <h1 className="text-2xl font-semibold">屬性獲得概覽表</h1>
-        <p className="text-sm text-zinc-600">
+        <h1 className="text-2xl font-semibold text-ink">屬性獲得概覽表</h1>
+        <p className="text-sm text-muted">
           資料來源：Google 試算表「屬性獲得概覽表」。若表格更新，可再同步此頁。
         </p>
         <div>
-          <Badge className="bg-zinc-100 text-zinc-700 border-none">共 {rows.length} 筆</Badge>
+          <Badge className="border border-hairline bg-surface-soft text-bodytext">共 {rows.length} 筆</Badge>
         </div>
       </header>
 
-      <div className="overflow-hidden rounded-2xl border bg-white shadow-sm">
+      <div className="overflow-hidden rounded-2xl border border-hairline bg-canvas">
         <div className="overflow-x-auto">
           <table className="min-w-full border-separate border-spacing-0 text-sm">
             <thead>
-              <tr className="bg-zinc-50 text-left text-xs text-zinc-500">
+              <tr className="bg-surface-soft text-left text-xs text-muted">
                 <th className="px-4 py-3">項目</th>
                 <th className="px-4 py-3">備註欄 (一)</th>
                 <th className="px-4 py-3">備註欄 (二)</th>
@@ -285,18 +285,18 @@ export default function AttributesPage() {
               {rows.map((row) => {
                 const href = getItemHref(row.item)
                 return (
-                  <tr key={row.item} className="border-t">
-                    <td className="px-4 py-3 font-medium text-zinc-900">
+                  <tr key={row.item} className="border-t border-hairline-soft">
+                    <td className="px-4 py-3 font-medium text-ink">
                       {href ? (
-                        <Link href={href} className="text-blue-600 hover:underline">
+                        <Link href={href} className="text-rausch hover:underline">
                           {row.item}
                         </Link>
                       ) : (
                         row.item
                       )}
                     </td>
-                  <td className="px-4 py-3 whitespace-pre-line text-zinc-700">{row.note1}</td>
-                  <td className="px-4 py-3 whitespace-pre-line text-zinc-700">{row.note2}</td>
+                  <td className="px-4 py-3 whitespace-pre-line text-bodytext">{row.note1}</td>
+                  <td className="px-4 py-3 whitespace-pre-line text-bodytext">{row.note2}</td>
                   <td className="px-4 py-3 text-right tabular-nums">{row.strength || '—'}</td>
                   <td className="px-4 py-3 text-right tabular-nums">{row.intellect || '—'}</td>
                   <td className="px-4 py-3 text-right tabular-nums">{row.constitution || '—'}</td>
@@ -304,9 +304,9 @@ export default function AttributesPage() {
                   </tr>
                 )
               })}
-              <tr className="border-t bg-zinc-50 text-sm font-semibold">
+              <tr className="border-t border-hairline bg-surface-soft text-sm font-semibold">
                 <td className="px-4 py-3" colSpan={2}></td>
-                <td className="px-4 py-3 text-zinc-600">{totalRow.note2}</td>
+                <td className="px-4 py-3 text-muted">{totalRow.note2}</td>
                 <td className="px-4 py-3 text-right tabular-nums">{totalRow.strength}</td>
                 <td className="px-4 py-3 text-right tabular-nums">{totalRow.intellect}</td>
                 <td className="px-4 py-3 text-right tabular-nums">{totalRow.constitution}</td>
@@ -317,7 +317,7 @@ export default function AttributesPage() {
         </div>
       </div>
 
-      <p className="text-xs text-zinc-500">註釋：轉生疊加數據不計算在內。</p>
+      <p className="text-xs text-muted">註釋：轉生疊加數據不計算在內。</p>
     </div>
   )
 }

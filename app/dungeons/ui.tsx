@@ -126,9 +126,9 @@ function Badge({
 function TextBlock({ title, text }: { title: string; text?: string | null }) {
   const t = safeStr(text).trim()
   return (
-    <div className="rounded-lg bg-slate-50 p-3">
-      <div className="text-xs font-medium text-slate-600">{title}</div>
-      <div className="mt-1 whitespace-pre-wrap text-sm text-slate-900">{t || '—'}</div>
+    <div className="rounded-lg bg-surface-soft p-3">
+      <div className="text-xs font-medium text-muted">{title}</div>
+      <div className="mt-1 whitespace-pre-wrap text-sm text-ink">{t || '—'}</div>
     </div>
   )
 }
@@ -181,7 +181,7 @@ export function DungeonCard({
   const [open, setOpen] = useState<boolean>(!!defaultExpanded)
 
   return (
-    <div className="rounded-xl border bg-white shadow-sm">
+    <div className="rounded-2xl border border-hairline bg-canvas transition-shadow hover:shadow-airbnb">
       <button
         type="button"
         className="flex w-full items-start justify-between gap-3 px-5 py-4 text-left"
@@ -189,7 +189,7 @@ export function DungeonCard({
       >
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <div className="truncate text-lg font-semibold text-slate-900" title={name}>
+            <div className="truncate text-lg font-semibold text-ink" title={name}>
               {name}
             </div>
 
@@ -220,14 +220,14 @@ export function DungeonCard({
                 ))}
               </div>
             ) : (
-              <Badge className="bg-slate-50 text-slate-600 ring-slate-200">門檻：—</Badge>
+              <Badge className="bg-surface-soft text-muted ring-hairline">門檻：—</Badge>
             )}
           </div>
 
-          <div className="mt-1 text-sm text-slate-600">{open ? '點擊收合' : '點擊展開'}</div>
+          <div className="mt-1 text-sm text-muted">{open ? '點擊收合' : '點擊展開'}</div>
         </div>
 
-        <div className="shrink-0 text-xs text-slate-500">
+        <div className="shrink-0 text-xs text-muted-soft">
           {source ? <span>來源：{source}</span> : <span>&nbsp;</span>}
         </div>
       </button>
@@ -241,21 +241,21 @@ export function DungeonCard({
           </div>
 
           {/* 第二層：門檻摘要（分類、排序） */}
-          <div className="mt-3 rounded-lg bg-slate-50 p-3">
-            <div className="text-xs font-medium text-slate-600">門檻（摘要）</div>
+          <div className="mt-3 rounded-lg bg-surface-soft p-3">
+            <div className="text-xs font-medium text-muted">門檻（摘要）</div>
 
             {buckets.length === 0 ? (
-              <div className="mt-2 text-sm text-slate-900">—</div>
+              <div className="mt-2 text-sm text-ink">—</div>
             ) : (
               <div className="mt-2 space-y-3">
                 {buckets.map((b) => (
-                  <div key={b.key} className="rounded-lg bg-white p-3 ring-1 ring-slate-200">
+                  <div key={b.key} className="rounded-lg bg-canvas p-3 ring-1 ring-hairline">
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
                         <Badge className={b.colorClass}>{b.title}</Badge>
-                        <span className="text-xs text-slate-500">{b.items.length} 項</span>
+                        <span className="text-xs text-muted-soft">{b.items.length} 項</span>
                       </div>
-                      <div className="text-xs text-slate-500">
+                      <div className="text-xs text-muted-soft">
                         {(() => {
                           const nums = b.items.map((x) => x.value).filter((x) => typeof x === 'number') as number[]
                           if (!nums.length) return null
@@ -264,7 +264,7 @@ export function DungeonCard({
                       </div>
                     </div>
 
-                    <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-900">
+                    <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink">
                       {b.items.map((it, idx) => (
                         <li key={idx} className="whitespace-pre-wrap">
                           {it.text}
@@ -284,7 +284,7 @@ export function DungeonCard({
 
           {/* 原文片段：預設收合 */}
           <details className="mt-3">
-            <summary className="cursor-pointer select-none text-sm text-slate-600 hover:text-slate-900">
+            <summary className="cursor-pointer select-none text-sm text-muted hover:text-ink">
               顯示原文片段（追溯用）
             </summary>
             <div className="mt-2 whitespace-pre-wrap rounded-lg bg-slate-950 p-3 text-xs text-slate-100">

@@ -146,6 +146,26 @@ export default async function SkillDetailPage({
                     </div>
                   </div>
                 )}
+                {(e.type === '暗勁' || e.type === '毒性' || e.type === '寒毒') && (
+                  <div className="mt-3 grid gap-3 sm:grid-cols-4">
+                    <div className="rounded-lg border border-amber-100 px-3 py-2">
+                      <div className="text-xs text-slate-500">效果名稱</div>
+                      <div className="mt-1 text-sm font-semibold text-slate-800">{(e as any).effectName}</div>
+                    </div>
+                    <div className="rounded-lg border border-amber-100 px-3 py-2">
+                      <div className="text-xs text-slate-500">觸發機率</div>
+                      <div className="mt-1 text-sm font-semibold text-slate-800">{Math.round((e as any).triggerChance * 100)}%</div>
+                    </div>
+                    <div className="rounded-lg border border-amber-100 px-3 py-2">
+                      <div className="text-xs text-slate-500">疊加上限</div>
+                      <div className="mt-1 text-sm font-semibold text-slate-800">{(e as any).maxStacks} 層</div>
+                    </div>
+                    <div className="rounded-lg border border-amber-100 px-3 py-2">
+                      <div className="text-xs text-slate-500">每層傷害</div>
+                      <div className="mt-1 text-sm font-semibold text-slate-800">{(e as any).hpPerStack} 氣血 / {(e as any).spiritPerStack} 精神</div>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>

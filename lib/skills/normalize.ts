@@ -36,6 +36,13 @@ export type SkillWeaponBonus = {
   description: string
 }
 
+export type ComboSkill = {
+  partner: string        // 配對輕功名稱
+  partnerType: string    // 配對類型（基本輕功）
+  level: number          // 等級要求
+  bonus: number          // 閃避率加成百分比
+}
+
 export type UISkill = {
   id: string
   name: string
@@ -58,6 +65,7 @@ export type UISkill = {
   } | null
   specialEffects?: SkillSpecialEffect[] | null
   weaponBonus?: SkillWeaponBonus[] | null
+  comboSkill?: ComboSkill | null
   rawSource?: string | null
 }
 
@@ -84,24 +92,25 @@ const COMBO_ATTACK_SKILLS = new Set([
 ])
 
 // ---- 兵器專屬威力加成 ----
+// 裝備對應神兵時，使用該武技每一招傷害均提升 50%（固定值）。
 const WEAPON_BONUS_MAP: Record<string, SkillWeaponBonus> = {
   '血刀刀法': {
     weaponName: '血刀',
     bonusPercentMin: 50,
-    bonusPercentMax: 100,
-    description: '裝備「血刀」時使用「血刀刀法」，每一招傷害均提升 50%-100%',
+    bonusPercentMax: 50,
+    description: '裝備「血刀」時使用「血刀刀法」，每一招傷害均提升 50%',
   },
   '玄鐵劍法': {
     weaponName: '真．玄鐵神劍',
     bonusPercentMin: 50,
-    bonusPercentMax: 100,
-    description: '裝備「真．玄鐵神劍」時使用「玄鐵劍法」，每一招傷害均提升 50%-100%',
+    bonusPercentMax: 50,
+    description: '裝備「真．玄鐵神劍」時使用「玄鐵劍法」，每一招傷害均提升 50%',
   },
   '日月輪法': {
     weaponName: '五輪歸一',
     bonusPercentMin: 50,
-    bonusPercentMax: 100,
-    description: '裝備「五輪歸一」時使用「日月輪法」，每一招傷害均提升 50%-100%',
+    bonusPercentMax: 50,
+    description: '裝備「五輪歸一」時使用「日月輪法」，每一招傷害均提升 50%',
   },
 }
 
@@ -259,15 +268,26 @@ export function normalizeSkill(raw: any): UISkill {
         : null
 
   // ---- 特殊效果 ----
-  const specialEffects: SkillSpecialEffect[] = []
+  const specialEffects: any[] = []
+  
+  // 從 raw data 讀取 specialEffects（暗勁/毒性/寒毒等）
+  if (Array.isArray(raw?.specialEffects)) {
+    for (const e of raw.specialEffects) {
+      specialEffects.push(e)
+    }
+  }
+  
+  // 連擊進攻（硬編碼）
+  // 攻擊時有 10% 機率發動，於當回合連續出招兩次；每招傷害為原本的 50%（以維持戰鬥平衡）。
   if (COMBO_ATTACK_SKILLS.has(name)) {
     specialEffects.push({
       type: '連擊進攻',
-      triggerChance: 0.33,
+      triggerChance: 0.10,
       hitCount: 2,
       damageMultiplierMin: 0.5,
-      damageMultiplierMax: 1.0,
-      description: '攻擊時有約 33% 機率發動，於當回合連續出招兩次。發動時，每招傷害為原本的 50%-100%。',
+      damageMultiplierMax: 0.5,
+      description:
+        '攻擊時有 10% 機率發動，於當回合連續出招兩次。發動時，每招傷害為原本的 50%（以維持戰鬥平衡）。',
     })
   }
 
@@ -275,6 +295,14 @@ export function normalizeSkill(raw: any): UISkill {
   if (WEAPON_BONUS_MAP[name]) {
     weaponBonus.push(WEAPON_BONUS_MAP[name])
   }
+
+  // ---- 組合技能 ----
+  const comboSkill: ComboSkill | null = raw?.comboSkill ? {
+    partner: String(raw.comboSkill.partner ?? ''),
+    partnerType: String(raw.comboSkill.partnerType ?? ''),
+    level: toNumberOrNull(raw.comboSkill.level) ?? 0,
+    bonus: toNumberOrNull(raw.comboSkill.bonus) ?? 0,
+  } : null
 
   return {
     id,
@@ -288,6 +316,7 @@ export function normalizeSkill(raw: any): UISkill {
     averages: normalizeAverages(raw),
     specialEffects: specialEffects.length ? specialEffects : null,
     weaponBonus: weaponBonus.length ? weaponBonus : null,
+    comboSkill,
     rawSource,
   }
 }

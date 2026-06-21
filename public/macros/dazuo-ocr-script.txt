@@ -1,0 +1,1039 @@
+﻿' ============================================================
+' SMART DAZUO SCRIPT - OCR FULL VERSION
+' RED OCR FALLBACK
+' NO POST-BREAKTHROUGH WAIT
+' AFTER EACH DAZUO: USE 藥酒 5
+' MAX QI - 1 RULE
+' CURRENT QI MUST BE > DAZUO QI
+' 按鍵精靈 / 按精 VBScript style
+'
+' 手動輸入：
+' - 是否轉生
+' - 內功等級
+'
+' OCR 自動讀取：
+' - 目前內力
+' - Max 內力
+' - 目前氣
+' - Max 氣
+'
+' OCR：
+' - 正常色 OCR 失敗時，自動 fallback 紅色 OCR
+'
+' 核心：
+' - DaZuo 中內力也會自然 tick，所以不額外等回復
+' - 每次 DaZuo 完成後固定 USE 藥酒 5
+' - 氣不能變成 0，所以 currentQi 必須 > DaZuo 氣量
+' - 單次 DaZuo 最多 Max 氣 - 1，並取 5 的整數倍
+'
+' OCR 依賴：
+' - C:\dm\dm.dll
+' - C:\dm\mud_num.txt
+' ============================================================
+
+
+' ============================================================
+' 輸入 Function
+' ============================================================
+
+Function AskNumber(promptText, defaultValue)
+    v = InputBox(promptText, "智能打坐設定", CStr(defaultValue))
+
+    If Trim(v) = "" Then
+        AskNumber = CLng(defaultValue)
+    ElseIf IsNumeric(v) Then
+        AskNumber = CLng(v)
+    Else
+        MsgBox "輸入不是數字，將使用預設值：" & defaultValue
+        AskNumber = CLng(defaultValue)
+    End If
+End Function
+
+
+' ============================================================
+' 數學 Function
+' ============================================================
+
+Function CeilDiv(a, b)
+    If a <= 0 Then
+        CeilDiv = 0
+    Else
+        CeilDiv = Int((a + b - 1) / b)
+    End If
+End Function
+
+
+Function CeilToStep(value, stepSize)
+    CeilToStep = CeilDiv(value, stepSize) * stepSize
+End Function
+
+
+Function FloorToStep(value, stepSize)
+    FloorToStep = Int(value / stepSize) * stepSize
+End Function
+
+
+Function MinValue(a, b)
+    If a < b Then
+        MinValue = a
+    Else
+        MinValue = b
+    End If
+End Function
+
+
+Function GetMaxDazuoQi()
+    limitQi = maxQi - 1
+
+    If limitQi < qiStep Then
+        GetMaxDazuoQi = 0
+        Exit Function
+    End If
+
+    GetMaxDazuoQi = FloorToStep(limitQi, qiStep)
+End Function
+
+
+Function GetNeiLiRecoverAmount(ngLevel, nlLevel)
+    GetNeiLiRecoverAmount = Int(ngLevel / 2) + Int(nlLevel / 20) + 2
+End Function
+
+
+Function GetDazuoSeconds(qiAmount)
+    If isReborn = 1 Then
+        GetDazuoSeconds = 2.18 + 0.0781 * qiAmount
+    Else
+        GetDazuoSeconds = 7.02 + 0.1275 * qiAmount
+    End If
+End Function
+
+
+Function SecondsSinceTimer(startSec)
+    nowSec = Timer
+
+    If startSec < 0 Then
+        SecondsSinceTimer = 999999
+    ElseIf nowSec >= startSec Then
+        SecondsSinceTimer = nowSec - startSec
+    Else
+        SecondsSinceTimer = (86400 - startSec) + nowSec
+    End If
+End Function
+
+
+Function SecondsSinceDateTime(startDateTime)
+    SecondsSinceDateTime = DateDiff("s", startDateTime, Now)
+End Function
+
+
+Sub SafeDelaySeconds(sec)
+    totalMs = CLng(sec * 1000)
+
+    Do While totalMs > 60000
+        Delay 60000
+        totalMs = totalMs - 60000
+    Loop
+
+    If totalMs > 0 Then
+        Delay totalMs
+    End If
+End Sub
+
+
+Sub SendGameCommand(cmd, enterTimes)
+    SayString cmd
+    Delay inputDelay
+    KeyPress "Enter", enterTimes
+    Delay inputDelay
+End Sub
+
+
+' ============================================================
+' Log Function
+' ============================================================
+
+Function Pad2(n)
+    If CLng(n) < 10 Then
+        Pad2 = "0" & CStr(n)
+    Else
+        Pad2 = CStr(n)
+    End If
+End Function
+
+
+Function NowStamp()
+    NowStamp = Year(Now) & "-" & Pad2(Month(Now)) & "-" & Pad2(Day(Now)) & _
+               " " & Pad2(Hour(Now)) & ":" & Pad2(Minute(Now)) & ":" & Pad2(Second(Now))
+End Function
+
+
+Function DurationText(sec)
+    s = CLng(Int(sec + 0.5))
+
+    h = Int(s / 3600)
+    m = Int((s Mod 3600) / 60)
+    r = s Mod 60
+
+    DurationText = CStr(h) & "h " & Pad2(m) & "m " & Pad2(r) & "s"
+End Function
+
+
+Sub LogMsg(msg)
+    TracePrint "[" & NowStamp() & "] " & msg
+End Sub
+
+
+Sub LogNeiLiStatus(labelText)
+    LogMsg labelText & " | 目前內力: " & currentNeiLi & " / " & maxNeiLi & _
+           " | 內功等級: " & neiGongLevel & _
+           " | 內力等級: " & neiLiLevel
+End Sub
+
+
+Sub LogSummary()
+    totalElapsedSec = SecondsSinceDateTime(scriptStartDateTime)
+    totalMaxGain = maxNeiLi - scriptStartMaxNeiLi
+
+    LogMsg "========== 目前總結 =========="
+    LogMsg "已完成輪數: " & doneTimes
+    LogMsg "開始 Max 內力: " & scriptStartMaxNeiLi
+    LogMsg "目前 Max 內力: " & maxNeiLi
+    LogMsg "目前內力等級: " & neiLiLevel
+    LogMsg "本次 Script 總 Max 內力增加: +" & totalMaxGain
+    LogMsg "累積實際 DaZuo 時間: " & DurationText(totalActiveDazuoSec)
+    LogMsg "累積 DaZuo 消耗氣量: " & totalQiUsed
+    LogMsg "累積 DaZuo 直接增加內力: " & totalDirectDazuoNeiLiGain
+    LogMsg "累積 DaZuo 期間自然回復內力: " & totalRecoverDuringDazuoGain
+    LogMsg "累積使用藥酒數量: " & totalYaoJiuUsed
+    LogMsg "藥酒因 Max 氣上限溢出浪費氣量: " & totalWastedQiFromYaoJiu
+    LogMsg "目前 OCR / 估算氣: " & currentQi & " / " & maxQi
+    LogMsg "單次 DaZuo 可用上限: " & GetMaxDazuoQi()
+    LogMsg "Script 總運行時間: " & DurationText(totalElapsedSec)
+    LogMsg "=============================="
+End Sub
+
+
+' ============================================================
+' OCR INIT
+' ============================================================
+
+Sub InitOCR()
+
+    Call Plugin.RegDll.Reg("C:\dm\dm.dll")
+
+    Set dm = CreateObject("dm.dmsoft")
+    dm.SetPath "C:\dm"
+
+    LogMsg "大漠版本: " & dm.Ver()
+
+    retDict = dm.SetDict(0, "mud_num.txt")
+    dm.UseDict 0
+
+    LogMsg "SetDict ret: " & retDict
+
+    If retDict <> 1 Then
+        MsgBox "字庫載入失敗，請確認 C:\dm\mud_num.txt 是否存在。"
+        EndScript
+    End If
+
+    MsgBox "請將滑鼠移到 X-MudClient 遊戲視窗入面，然後按確定。"
+
+    hwnd = dm.GetMousePointWindow()
+
+    If hwnd = 0 Then
+        MsgBox "無法取得 X-MudClient 視窗。"
+        EndScript
+    End If
+
+    LogMsg "取得視窗 hwnd: " & hwnd
+    LogMsg "視窗標題: " & dm.GetWindowTitle(hwnd)
+    LogMsg "視窗類別: " & dm.GetWindowClass(hwnd)
+
+End Sub
+
+
+Function OnlyDigits(s)
+    result = ""
+
+    For i = 1 To Len(s)
+        ch = Mid(s, i, 1)
+
+        If ch >= "0" And ch <= "9" Then
+            result = result & ch
+        End If
+    Next
+
+    OnlyDigits = result
+End Function
+
+
+Function OCRToNumber(s)
+    cleanText = OnlyDigits(s)
+
+    If cleanText = "" Then
+        OCRToNumber = -1
+    ElseIf IsNumeric(cleanText) Then
+        OCRToNumber = CLng(cleanText)
+    Else
+        OCRToNumber = -1
+    End If
+End Function
+
+
+Function OcrWithFallback(x1, y1, x2, y2, normalColor, redColor, simValue)
+
+    normalText = dm.Ocr(x1, y1, x2, y2, normalColor, simValue)
+    normalNum = OCRToNumber(normalText)
+
+    If normalNum >= 0 Then
+        OcrWithFallback = normalText
+        Exit Function
+    End If
+
+    LogMsg "正常色 OCR 失敗，嘗試紅色 OCR。"
+
+    redText = dm.Ocr(x1, y1, x2, y2, redColor, simValue)
+    OcrWithFallback = redText
+
+End Function
+
+
+Sub ReadStatsFromScreen()
+
+    screenReadSuccess = 0
+
+    ret = dm.GetWindowRect(hwnd, winX1, winY1, winX2, winY2)
+
+    If ret <> 1 Then
+        LogMsg "OCR 失敗：無法取得視窗位置。"
+        Exit Sub
+    End If
+
+    ' 正常色
+    normalNeiLiColor = "5ac7ff-303030|45c7ff-303030|40cfff-303030"
+    normalQiColor = "00ff00-303030|63ef63-303030|40ff40-303030|00cc00-303030"
+
+    ' 紅色 fallback
+    redNumColor = "ff0000-303030|ff3333-303030|ff5555-303030|cc0000-303030"
+
+    If debugCapture = 1 Then
+        dm.Capture winX1 + 24, winY1 + 110, winX1 + 130, winY1 + 133, "neili.bmp"
+        dm.Capture winX1 + 24, winY1 + 145, winX1 + 130, winY1 + 169, "qi.bmp"
+    End If
+
+    rawNeiLiCurrent = OcrWithFallback(winX1 + 28, winY1 + 111, winX1 + 66,  winY1 + 132, normalNeiLiColor, redNumColor, ocrSimilarity)
+
+    ' Max 內力：你確認用 +68 至 +120
+    rawNeiLiMax = dm.Ocr(winX1 + 68, winY1 + 111, winX1 + 120, winY1 + 132, normalNeiLiColor, ocrSimilarity)
+
+    If OCRToNumber(rawNeiLiMax) < 0 Then
+        LogMsg "正常色 Max 內力 OCR 失敗，嘗試紅色 OCR。"
+        rawNeiLiMax = dm.Ocr(winX1 + 68, winY1 + 111, winX1 + 120, winY1 + 132, redNumColor, ocrSimilarity)
+    End If
+
+    rawQiCurrent = OcrWithFallback(winX1 + 25, winY1 + 146, winX1 + 66,  winY1 + 168, normalQiColor, redNumColor, ocrSimilarity)
+
+    ' Max 氣：已確認 +68 至 +126 正確
+    rawQiMax = OcrWithFallback(winX1 + 68, winY1 + 146, winX1 + 126, winY1 + 168, normalQiColor, redNumColor, ocrSimilarity)
+
+    readCurrentNeiLi = OCRToNumber(rawNeiLiCurrent)
+    readMaxNeiLi = OCRToNumber(rawNeiLiMax)
+
+    readCurrentQi = OCRToNumber(rawQiCurrent)
+    readMaxQi = OCRToNumber(rawQiMax)
+
+    LogMsg "OCR raw 目前內力: " & rawNeiLiCurrent
+    LogMsg "OCR raw Max 內力: " & rawNeiLiMax
+    LogMsg "OCR raw 目前氣: " & rawQiCurrent
+    LogMsg "OCR raw Max 氣: " & rawQiMax
+
+    LogMsg "OCR parsed 目前內力: " & readCurrentNeiLi
+    LogMsg "OCR parsed Max 內力: " & readMaxNeiLi
+    LogMsg "OCR parsed 目前氣: " & readCurrentQi
+    LogMsg "OCR parsed Max 氣: " & readMaxQi
+
+    If readCurrentNeiLi < 0 Then
+        LogMsg "OCR 失敗：目前內力無效。"
+        Exit Sub
+    End If
+
+    If readMaxNeiLi <= 0 Then
+        LogMsg "OCR 失敗：Max 內力無效。"
+        Exit Sub
+    End If
+
+    If readCurrentQi < 0 Then
+        LogMsg "OCR 失敗：目前氣無效。"
+        Exit Sub
+    End If
+
+    If readMaxQi <= 0 Then
+        LogMsg "OCR 失敗：Max 氣無效。"
+        Exit Sub
+    End If
+
+    If readCurrentQi > readMaxQi Then
+        LogMsg "OCR 失敗：目前氣大於 Max 氣，不合理。"
+        Exit Sub
+    End If
+
+    ' 防止 Max 內力少讀位數，例如 5531 被讀成 531
+    If readCurrentNeiLi > readMaxNeiLi * 3 Then
+        LogMsg "OCR 失敗：Max 內力可能讀少位數。"
+        LogMsg "目前內力: " & readCurrentNeiLi
+        LogMsg "Max 內力: " & readMaxNeiLi
+        Exit Sub
+    End If
+
+    currentNeiLi = readCurrentNeiLi
+    maxNeiLi = readMaxNeiLi
+
+    currentQi = readCurrentQi
+    maxQi = readMaxQi
+
+    neiLiLevel = maxNeiLi
+
+    screenReadSuccess = 1
+
+    LogMsg "畫面數值更新成功。"
+    LogMsg "內力: " & currentNeiLi & " / " & maxNeiLi
+    LogMsg "氣: " & currentQi & " / " & maxQi
+    LogMsg "單次 DaZuo 可用上限: " & GetMaxDazuoQi()
+    LogMsg "內力等級 = Max 內力: " & neiLiLevel
+
+End Sub
+
+
+Sub RefreshStatsOrUseEstimate()
+
+    ReadStatsFromScreen
+
+    If screenReadSuccess = 1 Then
+        LogMsg "使用 OCR 畫面數值。"
+    Else
+        LogMsg "警告：OCR 讀取失敗，使用內部估算值。"
+        LogMsg "估算內力: " & currentNeiLi & " / " & maxNeiLi
+        LogMsg "估算氣: " & currentQi & " / " & maxQi
+        LogMsg "估算單次 DaZuo 可用上限: " & GetMaxDazuoQi()
+    End If
+
+End Sub
+
+
+' ============================================================
+' DaZuo 期間自然回復計算
+' ============================================================
+
+Function GetRecoverTicksDuringDazuoCapped(qiAmount, recoverAmount)
+
+    daSec = GetDazuoSeconds(qiAmount)
+
+    possibleTicks = Int(daSec / recoverTickSec) - dazuoRecoverTickSafetyLoss
+
+    If possibleTicks < 0 Then
+        possibleTicks = 0
+    End If
+
+    If currentNeiLi >= maxNeiLi Then
+        GetRecoverTicksDuringDazuoCapped = 0
+        Exit Function
+    End If
+
+    needToReachMax = maxNeiLi - currentNeiLi
+
+    If needToReachMax < 1 Then
+        GetRecoverTicksDuringDazuoCapped = 0
+        Exit Function
+    End If
+
+    ticksUntilAtLeastMax = CeilDiv(needToReachMax, recoverAmount)
+
+    GetRecoverTicksDuringDazuoCapped = MinValue(possibleTicks, ticksUntilAtLeastMax)
+
+End Function
+
+
+Function GetRecoverDuringDazuoCapped(qiAmount, recoverAmount)
+    ticks = GetRecoverTicksDuringDazuoCapped(qiAmount, recoverAmount)
+    GetRecoverDuringDazuoCapped = ticks * recoverAmount
+End Function
+
+
+Function GetExpectedAfterDazuo(qiAmount, recoverAmount)
+    directGain = Int(qiAmount / qiPerNeiLi)
+    recoverDuring = GetRecoverDuringDazuoCapped(qiAmount, recoverAmount)
+
+    GetExpectedAfterDazuo = currentNeiLi + directGain + recoverDuring
+End Function
+
+
+Function CanBreakWithQi(qiAmount, recoverAmount, requiredTotal)
+    expectedTotal = GetExpectedAfterDazuo(qiAmount, recoverAmount)
+
+    If expectedTotal >= requiredTotal Then
+        CanBreakWithQi = True
+    Else
+        CanBreakWithQi = False
+    End If
+End Function
+
+
+Function CalculateBestQiNeeded(recoverAmount, requiredTotal)
+
+    rawNeedWithoutRecovery = requiredTotal - currentNeiLi
+
+    If rawNeedWithoutRecovery < 1 Then
+        rawNeedWithoutRecovery = 1
+    End If
+
+    highQi = CeilToStep(rawNeedWithoutRecovery * qiPerNeiLi, qiStep)
+
+    If highQi < qiStep Then
+        highQi = qiStep
+    End If
+
+    lowUnit = 1
+    highUnit = CeilDiv(highQi, qiStep)
+
+    Do While lowUnit < highUnit
+
+        midUnit = Int((lowUnit + highUnit) / 2)
+
+        If midUnit < 1 Then
+            midUnit = 1
+        End If
+
+        midQi = midUnit * qiStep
+
+        If CanBreakWithQi(midQi, recoverAmount, requiredTotal) Then
+            highUnit = midUnit
+        Else
+            lowUnit = midUnit + 1
+        End If
+
+    Loop
+
+    CalculateBestQiNeeded = lowUnit * qiStep
+
+End Function
+
+
+' ============================================================
+' 物品 Function
+' ============================================================
+
+Sub UseGuanDongZhuIfReady()
+
+    elapsedFromLastDazuo = SecondsSinceTimer(lastDazuoSec)
+
+    If elapsedFromLastDazuo >= guanDongZhuCooldownSec Then
+
+        LogMsg "使用關東煮。距離上次 DaZuo 指令秒數: " & CLng(elapsedFromLastDazuo)
+
+        SendGameCommand cmdGuanDongZhu, guanDongZhuEnterTimes
+
+        lastGuanDongZhuSec = Timer
+
+    Else
+
+        LogMsg "略過關東煮。距離上次 DaZuo 只有 " & CLng(elapsedFromLastDazuo) & " 秒。"
+
+    End If
+
+End Sub
+
+
+Sub UseYaoJiuFixed(countValue, reasonText)
+
+    If countValue <= 0 Then
+        Exit Sub
+    End If
+
+    LogMsg reasonText
+    LogMsg "準備一次過使用藥酒數量: " & countValue
+
+    SendGameCommand cmdYaoJiu & " " & countValue, yaoJiuEnterTimes
+
+    beforeQi = currentQi
+    rawQiAfterYaoJiu = currentQi + countValue * yaoJiuRecoverQi
+
+    If rawQiAfterYaoJiu > maxQi Then
+        wastedQi = rawQiAfterYaoJiu - maxQi
+        currentQi = maxQi
+    Else
+        wastedQi = 0
+        currentQi = rawQiAfterYaoJiu
+    End If
+
+    totalYaoJiuUsed = totalYaoJiuUsed + countValue
+    totalWastedQiFromYaoJiu = totalWastedQiFromYaoJiu + wastedQi
+
+    LogMsg "已使用藥酒: " & countValue
+    LogMsg "使用前估算氣: " & beforeQi & " / " & maxQi
+    LogMsg "理論補氣後: " & rawQiAfterYaoJiu
+    LogMsg "實際估算補氣後: " & currentQi & " / " & maxQi
+    LogMsg "因 Max 氣上限浪費氣量: " & wastedQi
+
+End Sub
+
+
+Sub UseYaoJiuAfterDazuo()
+    UseYaoJiuFixed afterDazuoYaoJiuCount, "DaZuo 完成後固定飲藥酒。"
+End Sub
+
+
+Sub EnsureEnoughQi(qiNeeded)
+
+    maxDazuoQi = GetMaxDazuoQi()
+
+    If maxDazuoQi < 1 Then
+        LogMsg "錯誤：Max 氣太低，不能 DaZuo。"
+        LogMsg "Max 氣: " & maxQi
+        EndScript
+    End If
+
+    If qiNeeded > maxDazuoQi Then
+        LogMsg "警告：本段 DaZuo 氣量超過可用上限。"
+        LogMsg "需要氣: " & qiNeeded
+        LogMsg "Max 氣: " & maxQi
+        LogMsg "單次 DaZuo 最多: " & maxDazuoQi & "，因為不可 DaZuo 全部氣。"
+        LogMsg "理論上主 Loop 應該已分段，正常不應出現此情況。"
+    End If
+
+    ' 氣不能變成 0，所以 currentQi 必須 > qiNeeded
+    If currentQi > qiNeeded Then
+        LogMsg "氣足夠: " & currentQi & " / " & maxQi & "，本段需要: " & qiNeeded
+        Exit Sub
+    End If
+
+    qiShort = (qiNeeded + 1) - currentQi
+
+    If qiShort < 1 Then
+        qiShort = 1
+    End If
+
+    yaoJiuCount = CeilDiv(qiShort, yaoJiuRecoverQi)
+
+    LogMsg "氣不足，或 DaZuo 後會令氣變成 0。"
+    LogMsg "目前氣: " & currentQi & " / " & maxQi
+    LogMsg "本段需要氣: " & qiNeeded
+    LogMsg "最低安全氣量必須大於: " & qiNeeded
+    LogMsg "安全差額: " & qiShort
+    LogMsg "需要一次過使用藥酒數量: " & yaoJiuCount
+
+    UseYaoJiuFixed yaoJiuCount, "DaZuo 前氣不足或會歸 0，自動補藥酒。"
+
+    If currentQi <= qiNeeded Then
+        LogMsg "錯誤：補藥酒後仍然不夠安全 DaZuo。"
+        LogMsg "目前氣: " & currentQi & " / " & maxQi
+        LogMsg "本段 DaZuo 氣量: " & qiNeeded
+        LogMsg "為避免氣變成 0，Script 停止。"
+        EndScript
+    End If
+
+End Sub
+
+
+' ============================================================
+' 中文彈窗輸入區
+' ============================================================
+
+MsgBox "智能打坐 OCR 版設定開始。" & vbCrLf & _
+       "本版只需要手動輸入：是否轉生、內功等級。" & vbCrLf & _
+       "內力和氣會由 OCR 自動讀取。" & vbCrLf & _
+       "支援紅色數字 OCR fallback。" & vbCrLf & _
+       "單次 DaZuo 不會用盡全部氣。" & vbCrLf & _
+       "DaZuo 後氣不能變成 0。" & vbCrLf & _
+       "突破後不額外等待，因為 DaZuo 中內力也會 tick。" & vbCrLf & _
+       "每次 DaZuo 完成後會固定 USE 藥酒 5。"
+
+isReborn = AskNumber("是否轉生？" & vbCrLf & _
+                     "1 = 轉生角色" & vbCrLf & _
+                     "0 = 未轉生角色", 1)
+
+neiGongLevel = AskNumber("內功等級是多少？" & vbCrLf & _
+                         "用於計算每 tick 內力自然回復量。", 700)
+
+
+' ============================================================
+' 固定設定
+' ============================================================
+
+qiPerNeiLi = 5
+qiStep = 5
+
+breakNeedExtra = 1
+safetyNeiLi = 0
+
+targetMaxNeiLi = 9999
+
+recoverTickSec = 15
+
+dazuoRecoverTickSafetyLoss = 1
+
+safetyDelaySec = 3
+
+ocrSimilarity = 0.9
+
+debugCapture = 0
+
+
+' ============================================================
+' 物品設定
+' ============================================================
+
+cmdYaoJiu = "USE 藥酒"
+yaoJiuRecoverQi = 600
+yaoJiuEnterTimes = 1
+
+afterDazuoYaoJiuCount = 5
+
+cmdGuanDongZhu = "USE 關東煮"
+guanDongZhuCooldownSec = 60
+guanDongZhuEnterTimes = 5
+guanDongZhuRecoverQi = 0
+
+
+' ============================================================
+' 輸入設定
+' ============================================================
+
+inputDelay = 250
+needClickFocus = 0
+
+
+' ============================================================
+' 總計數器
+' ============================================================
+
+scriptStartDateTime = Now
+scriptStartMaxNeiLi = 0
+
+totalActiveDazuoSec = 0
+totalQiUsed = 0
+totalYaoJiuUsed = 0
+totalWastedQiFromYaoJiu = 0
+totalDirectDazuoNeiLiGain = 0
+totalRecoverDuringDazuoGain = 0
+
+
+' ============================================================
+' OCR 初始化
+' ============================================================
+
+InitOCR
+
+RefreshStatsOrUseEstimate
+
+If screenReadSuccess <> 1 Then
+    MsgBox "啟動時 OCR 失敗，請先修正 OCR。"
+    EndScript
+End If
+
+scriptStartMaxNeiLi = maxNeiLi
+
+
+' ============================================================
+' 主 Loop
+' ============================================================
+
+lastDazuoSec = -1
+lastGuanDongZhuSec = -1
+doneTimes = 0
+
+neiLiLevel = maxNeiLi
+recoverAmount = GetNeiLiRecoverAmount(neiGongLevel, neiLiLevel)
+
+LogMsg "=== 智能打坐 OCR 版開始 ==="
+LogMsg "開始內力: " & currentNeiLi & " / " & maxNeiLi
+LogMsg "開始氣: " & currentQi & " / " & maxQi
+LogMsg "單次 DaZuo 可用上限: " & GetMaxDazuoQi()
+LogMsg "開始內功等級: " & neiGongLevel
+LogMsg "開始內力等級: " & neiLiLevel
+LogMsg "每 tick 內力回復量: " & recoverAmount
+LogMsg "是否轉生: " & isReborn
+LogMsg "目標 Max 內力: " & targetMaxNeiLi
+LogMsg "自然回復 tick 秒數: " & recoverTickSec
+LogMsg "OCR similarity: " & ocrSimilarity
+LogMsg "突破後不額外等待"
+LogMsg "每次 DaZuo 完成後固定藥酒數量: " & afterDazuoYaoJiuCount
+LogMsg "氣不能變成 0，必須 currentQi > DaZuo 氣量"
+LogMsg "紅色 OCR fallback 已啟用"
+LogMsg "======================="
+
+
+Do While maxNeiLi < targetMaxNeiLi
+
+    RefreshStatsOrUseEstimate
+
+    roundStartDateTime = Now
+    roundStartMaxNeiLi = maxNeiLi
+    roundStartQi = currentQi
+    roundStartYaoJiuUsed = totalYaoJiuUsed
+
+    neiLiLevel = maxNeiLi
+    recoverAmount = GetNeiLiRecoverAmount(neiGongLevel, neiLiLevel)
+
+    If recoverAmount <= 0 Then
+        recoverAmount = 1
+    End If
+
+    requiredTotal = maxNeiLi * 2 + breakNeedExtra + safetyNeiLi
+
+    roundDazuoCount = 0
+    roundQiUsedByDazuo = 0
+    roundActiveDazuoSec = 0
+    roundRecoverDuringDazuo = 0
+    roundDirectDazuoGain = 0
+    breakthroughConfirmed = 0
+    fallbackBreakthrough = 0
+
+    LogMsg "----------------------------------------"
+    LogMsg "第 " & (doneTimes + 1) & " 輪開始"
+    LogNeiLiStatus "DaZuo 計算前"
+    LogMsg "目前氣: " & currentQi & " / " & maxQi
+    LogMsg "單次 DaZuo 可用上限: " & GetMaxDazuoQi()
+    LogMsg "突破最低所需內力總值: " & requiredTotal
+    LogMsg "本輪每 tick 內力回復量: " & recoverAmount
+
+    Do While currentNeiLi < requiredTotal
+
+        roundDazuoCount = roundDazuoCount + 1
+
+        neiLiLevel = maxNeiLi
+        recoverAmount = GetNeiLiRecoverAmount(neiGongLevel, neiLiLevel)
+
+        If recoverAmount <= 0 Then
+            recoverAmount = 1
+        End If
+
+        maxDazuoQi = GetMaxDazuoQi()
+
+        If maxDazuoQi < 1 Then
+            LogMsg "錯誤：Max 氣太低，不能 DaZuo。"
+            LogMsg "Max 氣: " & maxQi
+            EndScript
+        End If
+
+        idealQiNeeded = CalculateBestQiNeeded(recoverAmount, requiredTotal)
+
+        If idealQiNeeded > maxDazuoQi Then
+
+            chunkQi = maxDazuoQi
+
+            LogMsg "本輪所需 DaZuo 氣量超過單次可用上限，需要分段 DaZuo。"
+            LogMsg "理想一次 DaZuo 氣量: " & idealQiNeeded
+            LogMsg "Max 氣: " & maxQi
+            LogMsg "不可 DaZuo 全部氣，所以單次最多: " & maxDazuoQi
+            LogMsg "本段 DaZuo 氣量: " & chunkQi
+
+        Else
+
+            chunkQi = idealQiNeeded
+
+        End If
+
+        If chunkQi < 1 Then
+            chunkQi = 1
+        End If
+
+        directGain = Int(chunkQi / qiPerNeiLi)
+        dazuoRecoverTicks = GetRecoverTicksDuringDazuoCapped(chunkQi, recoverAmount)
+        recoverDuringDazuo = dazuoRecoverTicks * recoverAmount
+        expectedAfterThisChunk = currentNeiLi + directGain + recoverDuringDazuo
+
+        dazuoSec = GetDazuoSeconds(chunkQi)
+
+        LogMsg "---------- 本輪第 " & roundDazuoCount & " 次 DaZuo ----------"
+        LogMsg "目前內力: " & currentNeiLi & " / " & maxNeiLi
+        LogMsg "突破點: > " & (maxNeiLi * 2)
+        LogMsg "Max 氣: " & maxQi
+        LogMsg "單次 DaZuo 可用上限: " & maxDazuoQi
+        LogMsg "本段 DaZuo 氣量: " & chunkQi
+        LogMsg "本段 DaZuo 直接增加內力: " & directGain
+        LogMsg "本段 DaZuo 期間自然回復 tick 數: " & dazuoRecoverTicks
+        LogMsg "本段 DaZuo 期間自然回復內力: " & recoverDuringDazuo
+        LogMsg "預計本段 DaZuo 後內力: " & expectedAfterThisChunk & " / " & maxNeiLi
+        LogMsg "本段 DaZuo 時間: " & DurationText(dazuoSec)
+
+        If currentNeiLi >= maxNeiLi Then
+            LogMsg "本段開始時內力已經 >= Max，所以 DaZuo 期間不計自然回復。"
+        End If
+
+        UseGuanDongZhuIfReady
+
+        EnsureEnoughQi chunkQi
+
+        ' 最後安全檢查：氣不能變成 0
+        If currentQi <= chunkQi Then
+            LogMsg "安全阻擋：目前氣不足以執行本段 DaZuo。"
+            LogMsg "目前氣: " & currentQi & " / " & maxQi
+            LogMsg "本段 DaZuo 氣量: " & chunkQi
+            LogMsg "如果繼續會令氣變成 0，所以停止。"
+            EndScript
+        End If
+
+        LogMsg "發送指令: DaZuo " & chunkQi
+
+        lastDazuoSec = Timer
+
+        SendGameCommand "DaZuo " & chunkQi, 5
+
+        currentQi = currentQi - chunkQi
+
+        If currentQi < 0 Then
+            currentQi = 0
+        End If
+
+        totalQiUsed = totalQiUsed + chunkQi
+        totalActiveDazuoSec = totalActiveDazuoSec + dazuoSec
+        totalDirectDazuoNeiLiGain = totalDirectDazuoNeiLiGain + directGain
+        totalRecoverDuringDazuoGain = totalRecoverDuringDazuoGain + recoverDuringDazuo
+
+        roundQiUsedByDazuo = roundQiUsedByDazuo + chunkQi
+        roundActiveDazuoSec = roundActiveDazuoSec + dazuoSec
+        roundRecoverDuringDazuo = roundRecoverDuringDazuo + recoverDuringDazuo
+        roundDirectDazuoGain = roundDirectDazuoGain + directGain
+
+        LogMsg "DaZuo 後估算目前氣: " & currentQi & " / " & maxQi
+        LogMsg "等待本段 DaZuo 完成..."
+
+        SafeDelaySeconds dazuoSec + safetyDelaySec
+
+        ' 每次 DaZuo 完成後：
+        ' 1. 固定飲 藥酒 x 5
+        ' 2. 再 OCR 更新畫面數值
+
+        UseYaoJiuAfterDazuo
+
+        RefreshStatsOrUseEstimate
+
+        If screenReadSuccess = 1 Then
+
+            If maxNeiLi > roundStartMaxNeiLi Then
+
+                breakthroughConfirmed = 1
+                LogMsg "OCR 確認突破成功。"
+                LogMsg "舊 Max 內力: " & roundStartMaxNeiLi
+                LogMsg "新 Max 內力: " & maxNeiLi
+                Exit Do
+
+            ElseIf currentNeiLi >= requiredTotal Then
+
+                LogMsg "OCR 顯示已達突破門檻，但 Max 尚未更新。等待 2 秒後重讀。"
+                SafeDelaySeconds 2
+
+                RefreshStatsOrUseEstimate
+
+                If screenReadSuccess = 1 Then
+                    If maxNeiLi > roundStartMaxNeiLi Then
+                        breakthroughConfirmed = 1
+                        LogMsg "再次 OCR 後確認突破成功。"
+                        LogMsg "新 Max 內力: " & maxNeiLi
+                        Exit Do
+                    End If
+                End If
+
+                fallbackBreakthrough = 1
+                LogMsg "仍未能 OCR 確認 Max 更新，使用估算突破。"
+                Exit Do
+
+            Else
+
+                LogMsg "OCR 顯示尚未突破，繼續下一段 DaZuo。"
+                LogMsg "目前 OCR 內力: " & currentNeiLi & " / " & maxNeiLi
+
+            End If
+
+        Else
+
+            currentNeiLi = currentNeiLi + directGain + recoverDuringDazuo
+
+            LogMsg "OCR 失敗，使用估算內力: " & currentNeiLi & " / " & maxNeiLi
+
+            If currentNeiLi >= requiredTotal Then
+                fallbackBreakthrough = 1
+                LogMsg "估算已達突破條件。"
+                Exit Do
+            End If
+
+        End If
+
+    Loop
+
+
+    If breakthroughConfirmed = 1 Then
+
+        gainedMax = maxNeiLi - roundStartMaxNeiLi
+
+        If gainedMax < 1 Then
+            gainedMax = 1
+        End If
+
+        doneTimes = doneTimes + gainedMax
+        neiLiLevel = maxNeiLi
+
+        LogMsg "使用 OCR 確認後的突破數值。"
+        LogMsg "目前內力: " & currentNeiLi & " / " & maxNeiLi
+        LogMsg "本輪 Max 內力增加: +" & gainedMax
+
+    Else
+
+        maxNeiLi = roundStartMaxNeiLi + 1
+        neiLiLevel = maxNeiLi
+        currentNeiLi = 0
+        doneTimes = doneTimes + 1
+
+        LogMsg "OCR 未確認，使用估算突破。"
+        LogMsg "估算新 Max 內力: " & maxNeiLi
+        LogMsg "估算目前內力歸 0。"
+
+    End If
+
+
+    recoverAmount = GetNeiLiRecoverAmount(neiGongLevel, neiLiLevel)
+
+    If recoverAmount <= 0 Then
+        recoverAmount = 1
+    End If
+
+    LogMsg "突破後 Max 內力: " & maxNeiLi
+    LogMsg "突破後內力等級: " & neiLiLevel
+    LogMsg "突破後每 tick 內力回復量: " & recoverAmount
+    LogMsg "本輪 DaZuo 次數: " & roundDazuoCount
+    LogMsg "本輪 DaZuo 總消耗氣: " & roundQiUsedByDazuo
+    LogMsg "本輪 DaZuo 總時間: " & DurationText(roundActiveDazuoSec)
+    LogMsg "本輪 DaZuo 直接增加內力: " & roundDirectDazuoGain
+    LogMsg "本輪 DaZuo 期間自然回復內力: " & roundRecoverDuringDazuo
+    LogMsg "不額外等待突破後內力回復，直接進入下一輪。"
+
+    roundElapsedSec = SecondsSinceDateTime(roundStartDateTime)
+    roundYaoJiuUsed = totalYaoJiuUsed - roundStartYaoJiuUsed
+    roundQiNetChange = currentQi - roundStartQi
+
+    LogMsg "第 " & doneTimes & " 輪結束"
+    LogMsg "本輪總耗時: " & DurationText(roundElapsedSec)
+    LogMsg "本輪 DaZuo 次數: " & roundDazuoCount
+    LogMsg "本輪 DaZuo 消耗氣: " & roundQiUsedByDazuo
+    LogMsg "本輪使用藥酒數量: " & roundYaoJiuUsed
+    LogMsg "本輪氣量淨變化: " & roundQiNetChange
+    LogMsg "目前氣: " & currentQi & " / " & maxQi
+    LogMsg "單次 DaZuo 可用上限: " & GetMaxDazuoQi()
+
+    LogSummary
+
+Loop
+
+
+LogMsg "=== 智能打坐 OCR 版完成 ==="
+LogSummary
+
+MsgBox "智能打坐完成。" & vbCrLf & _
+       "最終內力: " & currentNeiLi & " / " & maxNeiLi & vbCrLf & _
+       "最終內力等級: " & neiLiLevel & vbCrLf & _
+       "最終氣: " & currentQi & " / " & maxQi & vbCrLf & _
+       "單次 DaZuo 可用上限: " & GetMaxDazuoQi() & vbCrLf & _
+       "本次 Script 總 Max 內力增加: +" & (maxNeiLi - scriptStartMaxNeiLi) & vbCrLf & _
+       "累積 DaZuo 時間: " & DurationText(totalActiveDazuoSec) & vbCrLf & _
+       "累積使用藥酒數量: " & totalYaoJiuUsed & vbCrLf & _
+       "藥酒浪費氣量: " & totalWastedQiFromYaoJiu

@@ -36,9 +36,9 @@ function KV({
   value?: string | null | undefined
 }) {
   return (
-    <div className="rounded-xl bg-slate-50 p-3">
-      <div className="text-xs font-medium text-slate-600">{label}</div>
-      <div className="mt-1 whitespace-pre-wrap text-sm text-slate-900">
+    <div className="rounded-xl bg-surface-soft p-3">
+      <div className="text-xs font-medium text-muted">{label}</div>
+      <div className="mt-1 whitespace-pre-wrap text-sm text-ink">
         {value && String(value).trim() ? value : '—'}
       </div>
     </div>
@@ -68,29 +68,29 @@ export function ManualCard({
   const anchorId = manual?.id ? `manual-${String(manual.id)}` : undefined
 
   return (
-    <div id={anchorId} className="rounded-2xl border bg-white p-5 shadow-sm">
+    <div id={anchorId} className="rounded-2xl border border-hairline bg-canvas p-5 transition-shadow hover:shadow-airbnb">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             {skillHref ? (
               <Link
                 href={skillHref}
-                className="text-lg font-semibold text-slate-900 hover:underline"
+                className="text-lg font-semibold text-ink hover:underline"
               >
                 {name}
               </Link>
             ) : (
-              <div className="text-lg font-semibold text-slate-900">{name}</div>
+              <div className="text-lg font-semibold text-ink">{name}</div>
             )}
 
             {source ? (
-              <Badge className="bg-slate-50 text-slate-700 ring-slate-200">
+              <Badge className="bg-surface-soft text-muted ring-hairline">
                 來源：{source}
               </Badge>
             ) : null}
           </div>
 
-          <div className="mt-1 text-sm text-slate-600">
+          <div className="mt-1 text-sm text-muted">
             整理版：優先顯示門檻與取得線索，來源可展開追溯。
           </div>
         </div>
@@ -98,7 +98,7 @@ export function ManualCard({
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="shrink-0 rounded-xl border px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+          className="shrink-0 rounded-xl border border-hairline px-3 py-2 text-sm font-medium text-bodytext hover:bg-surface-soft"
         >
           {open ? '收起' : '展開'}
         </button>
@@ -109,20 +109,20 @@ export function ManualCard({
         <KV label="學習要求（原文）" value={reqRawText} />
       </div>
 
-      <div className="mt-3 rounded-xl bg-slate-50 p-3">
-        <div className="text-xs font-medium text-slate-600">學習門檻（摘要）</div>
-        <div className="mt-1 whitespace-pre-wrap text-sm text-slate-900">
+      <div className="mt-3 rounded-xl bg-surface-soft p-3">
+        <div className="text-xs font-medium text-muted">學習門檻（摘要）</div>
+        <div className="mt-1 whitespace-pre-wrap text-sm text-ink">
           {reqSummary ? reqSummary : '—'}
         </div>
       </div>
 
       {open ? (
         <div className="mt-3">
-          <details className="rounded-xl border bg-white p-3">
-            <summary className="cursor-pointer text-sm font-medium text-slate-700">
+          <details className="rounded-xl border border-hairline bg-canvas p-3">
+            <summary className="cursor-pointer text-sm font-medium text-bodytext">
               顯示原文片段（追溯用）
             </summary>
-            <div className="mt-2 whitespace-pre-wrap text-xs text-slate-700">
+            <div className="mt-2 whitespace-pre-wrap text-xs text-bodytext">
               {rawExcerpt ? rawExcerpt : '（無）'}
             </div>
           </details>
