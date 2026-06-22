@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { getAllMasters } from '@/lib/data'
 import type { Master, MasterSkill } from '@/lib/types'
 import { Badge } from '@/app/components/Badge'
+import { CategoryTabs, type CategorizedItem } from '@/app/components/CategoryTabs'
 
 export const metadata: Metadata = {
   title: '師傅所在地與給物條件｜人在江湖資料庫',
@@ -94,19 +95,18 @@ export default function MastersPage() {
         </div>
       </header>
 
-      {sects.map((sect) => {
-        const sectMasters = masters.filter((m) => m.sect === sect)
-        return (
-          <section key={sect}>
-            <h2 className="mb-3 text-lg font-bold text-ink">{sect}</h2>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {sectMasters.map((m) => (
-                <MasterCard key={m.id} master={m} />
-              ))}
-            </div>
-          </section>
-        )
-      })}
+      <CategoryTabs
+        searchPlaceholder="搜尋師傅、技能、地點…"
+        items={masters.map((m) => {
+          const it: CategorizedItem = {
+            id: m.id,
+            category: m.sect || '其他',
+            searchText: [m.name, m.location, m.sect, ...m.skills.map((s) => s.name)].filter(Boolean).join(' '),
+            node: <MasterCard master={m} />,
+          }
+          return it
+        })}
+      />
 
       <p className="text-xs text-muted-soft">
         資料來源：師傅所在地與給物條件.pdf

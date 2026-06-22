@@ -2,6 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { SiteHeader } from './components/SiteHeader'
+import { SiteFooter } from './components/SiteFooter'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -23,21 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="mx-auto w-full max-w-content flex-1 px-4 py-8 sm:px-6 lg:px-8">
             {children}
           </main>
-          <footer className="border-t border-hairline bg-canvas">
-            <div className="mx-auto max-w-content px-4 py-10 sm:px-6 lg:px-8">
-              <div className="flex flex-col gap-2">
-                <span className="text-base font-semibold text-ink">人在江湖資料庫</span>
-                <p className="text-sm text-muted">
-                  武技、任務、秘笈與副本資訊整理成可篩選、可比較的資料庫。
-                </p>
-              </div>
-              <div className="mt-6 border-t border-hairline-soft pt-6 text-[13px] text-muted">
-                <span>© 2026 人在江湖資料庫</span>
-                <span className="mx-2">·</span>
-                <span>資料來源：寒江湖。本網站可能有誤，請以遊戲內為準。</span>
-              </div>
-            </div>
-          </footer>
+          <SiteFooter />
         </div>
       </body>
     </html>

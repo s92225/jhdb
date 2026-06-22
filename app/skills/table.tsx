@@ -28,6 +28,25 @@ function tagClass(label: string) {
   return 'border-hairline bg-surface-soft text-muted'
 }
 
+function getNeiliReq(skill: Skill): number | null {
+  const reqs = (skill as any).requirements
+  if (!Array.isArray(reqs)) return null
+  for (const r of reqs) {
+    if (r && typeof r === 'object' && (r.name === '內力' || r.name === 'neili')) {
+      const v = Number(r.value)
+      if (Number.isFinite(v)) return v
+    }
+  }
+  return null
+}
+
+function getAvgTotalDamage(skill: Skill): number | null {
+  const nei = n(skill.averages?.neishang)
+  const bi = n(skill.averages?.bishang)
+  if (nei === null && bi === null) return null
+  return (nei ?? 0) + (bi ?? 0)
+}
+
 function calcAvgDamage(skill: Skill): number | null {
   const moves = Array.isArray(skill.moves) ? skill.moves : []
   if (moves.length === 0) return null
@@ -154,6 +173,23 @@ export function SkillTable({
   const [family, setFamily] = useState<string>(initialFamily) // 門派（含 公共武技/武館）
   const [tier, setTier] = useState<SkillTier | '全部'>('全部')
   const [configFilters, setConfigFilters] = useState<Set<string>>(new Set())
+
+  // Range filter bounds derived from the dataset
+  const neiliBounds = useMemo(() => {
+    const vals = skills.map(getNeiliReq).filter((v): v is number => v !== null)
+    if (!vals.length) return { min: 0, max: 0 }
+    return { min: Math.min(...vals), max: Math.max(...vals) }
+  }, [skills])
+  const avgDmgBounds = useMemo(() => {
+    const vals = skills.map(getAvgTotalDamage).filter((v): v is number => v !== null)
+    if (!vals.length) return { min: 0, max: 0 }
+    return { min: Math.floor(Math.min(...vals)), max: Math.ceil(Math.max(...vals)) }
+  }, [skills])
+
+  const [neiliEnabled, setNeiliEnabled] = useState(false)
+  const [neiliMaxCap, setNeiliMaxCap] = useState<number>(neiliBounds.max)
+  const [avgDmgEnabled, setAvgDmgEnabled] = useState(false)
+  const [avgDmgMinCap, setAvgDmgMinCap] = useState<number>(avgDmgBounds.min)
   const [sortKey, setSortKey] = useState<SortKey>('name')
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
   const [selected, setSelected] = useState<string[]>([])
@@ -217,9 +253,18 @@ if (tier !== '全部' && rowTier !== tier) return false
         })
         if (!matchesConfig) return false
       }
+      if (neiliEnabled) {
+        const need = getNeiliReq(s)
+        // If we don't know the requirement, treat as failing the cap (conservative).
+        if (need === null || need > neiliMaxCap) return false
+      }
+      if (avgDmgEnabled) {
+        const avg = getAvgTotalDamage(s)
+        if (avg === null || avg < avgDmgMinCap) return false
+      }
       return true
     })
-  }, [skills, q, family, tier, configFilters])
+  }, [skills, q, family, tier, configFilters, neiliEnabled, neiliMaxCap, avgDmgEnabled, avgDmgMinCap])
 
   const sorted = useMemo(() => {
     const dir = sortDir === 'asc' ? 1 : -1
@@ -329,6 +374,84 @@ if (tier !== '全部' && rowTier !== tier) return false
                 {c}
               </label>
             ))}
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-hairline bg-canvas p-4">
+          <div className="flex items-center justify-between">
+            <div className="text-sm font-semibold text-ink">內力需求上限</div>
+            <label className="flex items-center gap-2 text-xs text-muted">
+              <input
+                type="checkbox"
+                checked={neiliEnabled}
+                onChange={(e) => {
+                  setNeiliEnabled(e.target.checked)
+                  if (e.target.checked) setNeiliMaxCap(neiliBounds.max)
+                }}
+              />
+              啟用
+            </label>
+          </div>
+          <p className="mt-1 text-xs text-muted-soft">
+            僅顯示「內力需求 ≤ 指定值」的武技
+          </p>
+          <div className="mt-3 flex items-center gap-3">
+            <input
+              type="range"
+              min={neiliBounds.min}
+              max={neiliBounds.max}
+              step={50}
+              value={neiliMaxCap}
+              disabled={!neiliEnabled}
+              onChange={(e) => setNeiliMaxCap(Number(e.target.value))}
+              className="w-full accent-rausch disabled:opacity-50"
+            />
+            <span className="w-14 shrink-0 text-right text-sm font-semibold tabular-nums text-ink">
+              {neiliMaxCap}
+            </span>
+          </div>
+          <div className="mt-1 flex justify-between text-[10px] tabular-nums text-muted-soft">
+            <span>{neiliBounds.min}</span>
+            <span>{neiliBounds.max}</span>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-hairline bg-canvas p-4">
+          <div className="flex items-center justify-between">
+            <div className="text-sm font-semibold text-ink">平均傷害下限</div>
+            <label className="flex items-center gap-2 text-xs text-muted">
+              <input
+                type="checkbox"
+                checked={avgDmgEnabled}
+                onChange={(e) => {
+                  setAvgDmgEnabled(e.target.checked)
+                  if (e.target.checked) setAvgDmgMinCap(avgDmgBounds.min)
+                }}
+              />
+              啟用
+            </label>
+          </div>
+          <p className="mt-1 text-xs text-muted-soft">
+            僅顯示「平均內傷 + 平均臂傷 ≥ 指定值」的武技
+          </p>
+          <div className="mt-3 flex items-center gap-3">
+            <input
+              type="range"
+              min={avgDmgBounds.min}
+              max={avgDmgBounds.max}
+              step={10}
+              value={avgDmgMinCap}
+              disabled={!avgDmgEnabled}
+              onChange={(e) => setAvgDmgMinCap(Number(e.target.value))}
+              className="w-full accent-rausch disabled:opacity-50"
+            />
+            <span className="w-14 shrink-0 text-right text-sm font-semibold tabular-nums text-ink">
+              {avgDmgMinCap}
+            </span>
+          </div>
+          <div className="mt-1 flex justify-between text-[10px] tabular-nums text-muted-soft">
+            <span>{avgDmgBounds.min}</span>
+            <span>{avgDmgBounds.max}</span>
           </div>
         </div>
       </aside>

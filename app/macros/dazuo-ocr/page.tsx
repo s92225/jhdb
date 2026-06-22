@@ -281,7 +281,7 @@ export default function DazuoOcrTutorialPage() {
         <Checklist items={[
           <>在桌面按右鍵，選擇 <Strong>內容</Strong>。</>,
           <>進入 <Strong>主題</Strong> 分頁。</>,
-          <>主題選擇 <Strong>Windows XP（已修改）</Strong>。</>,
+          <>主題選擇 <Strong>Windows 傳統配色</Strong>。</>,
           <>進入 <Strong>設定值</Strong> 分頁。</>,
           <>螢幕解析度設定為 <Strong>1280 × 960</Strong>。</>,
           <>色彩品質設定為 <Strong>最高（32 位元）</Strong>。</>,

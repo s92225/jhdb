@@ -3,6 +3,7 @@ import path from "path";
 import Link from "next/link";
 import EmptyState from "@/app/components/EmptyState";
 import { Badge } from "@/app/components/Badge";
+import { CategoryTabs, type CategorizedItem } from "@/app/components/CategoryTabs";
 
 
 
@@ -118,8 +119,9 @@ export default async function DungeonsPage() {
       </div>
 
       {Array.isArray(dungeons) && dungeons.length > 0 ? (
-        <div className="space-y-4">
-          {dungeons.map((d, idx) => {
+        <CategoryTabs
+          searchPlaceholder="搜尋副本名稱、入口、機制…"
+          items={dungeons.map((d, idx) => {
             const pos = d.positioning ?? {};
             const entry = d.entry ?? {};
             const strength = d.recommendedStrength ?? {};
@@ -128,12 +130,14 @@ export default async function DungeonsPage() {
             const mechanics = Array.isArray(d.mechanics) ? d.mechanics : [];
             const loot = Array.isArray(d.loot) ? d.loot : [];
 
-            return (
+            const item: CategorizedItem = {
+              id: d.id || `${d.name}-${idx}`,
+              category: nonEmpty(pos.stage) ? pos.stage! : (nonEmpty(pos.type) ? pos.type! : '未分類'),
+              searchText: [d.name, pos.type, pos.stage, pos.features, entry.location, entry.npc, entry.method, ...(bosses || []), ...(mechanics || []), ...(workflow || []), d.notes].filter(Boolean).join(' '),
+              node: (
               <details
                 id={d.id ? String(d.id) : undefined}
-                key={d.id || `${d.name}-${idx}`}
                 className="rounded-xl border bg-white shadow-sm"
-                open={idx < 2}
               >
                 <summary className="cursor-pointer list-none px-5 py-4">
                   <div className="flex items-start justify-between gap-3">
@@ -286,9 +290,11 @@ export default async function DungeonsPage() {
                   </div>
                 </div>
               </details>
-            );
+              ),
+            };
+            return item;
           })}
-        </div>
+        />
       ) : (
         <EmptyState
           title="目前沒有副本資料"

@@ -766,7 +766,7 @@ export default function ScriptWriterPage() {
                     <span className="text-muted-soft ml-1">{s.text}()</span>
                   )}
                   {s.comment && (
-                    <span className="text-muted-soft ml-1">// {s.comment}</span>
+                    <span className="text-muted-soft ml-1">{'// '}{s.comment}</span>
                   )}
                 </span>
                 {/* Actions */}

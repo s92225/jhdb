@@ -3,6 +3,8 @@ import fs from 'fs'
 import path from 'path'
 import Link from 'next/link'
 import Badge from '@/app/components/Badge'
+import { CategoryTabs, type CategorizedItem } from '@/app/components/CategoryTabs'
+import { DamoMaze } from '@/app/components/DamoMaze'
 
 type WeaponItem = {
   name: string
@@ -259,7 +261,25 @@ export default function QuestsPage() {
     )
   }
 
-  const list = Array.isArray(quests) ? quests : []
+  // Filter out 神兵 entry (moved to /weapons page) to avoid duplication.
+  const list = (Array.isArray(quests) ? quests : []).filter(
+    (q) => q.id !== 'quest-神兵取得流程' && !q.weapons,
+  )
+
+  const items: CategorizedItem[] = list.map((q) => ({
+    id: q.id,
+    category: (q.category || '').trim() || '未分類',
+    searchText: [
+      q.name,
+      q.summary,
+      q.giver,
+      q.location,
+      ...(Array.isArray(q.workflow) ? (q.workflow as any[]).map((x) => stringifyItem(x) ?? '') : []),
+    ]
+      .filter(Boolean)
+      .join(' '),
+    node: <QuestCard q={q} />,
+  }))
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
@@ -272,29 +292,33 @@ export default function QuestsPage() {
           </Badge>
         </div>
         <p className="mt-2 max-w-3xl text-sm text-gray-600">
-          多個更新文件中的任務資料整合呈現；每筆任務的{' '}
-          <span className="font-semibold text-gray-800">接取地點 / 門檻 / 獎勵 / 流程</span>{' '}
-          以視覺化卡片呈現，可展開「版本紀錄」與「原文出處」對照來源。
+          多個更新文件中的任務資料整合呈現；以分類頁籤切換、可搜尋名稱／敘述／流程。
         </p>
 
-        <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
+        <div className="mt-3 flex flex-wrap items-center gap-3 text-sm">
           <Link className="text-blue-600 hover:underline" href="/dungeons">
             → 看副本
           </Link>
           <Link className="text-blue-600 hover:underline" href="/skills">
             → 看武技
           </Link>
+          <Link className="text-blue-600 hover:underline" href="/weapons">
+            → 神兵取得流程
+          </Link>
+          <a className="text-blue-600 hover:underline" href="#dungeon-damo-maze">
+            ↓ 大漠迷宮（轉生）
+          </a>
         </div>
       </div>
 
-      <div className="space-y-5">
-        {list.length > 0 ? (
-          list.map((q) => <QuestCard key={q.id} q={q} />)
-        ) : (
-          <div className="rounded-2xl border bg-white p-6 text-sm text-gray-600">
-            目前沒有任務資料。
-          </div>
-        )}
+      <CategoryTabs
+        items={items}
+        searchPlaceholder="搜尋任務名稱、流程…"
+        orderedCategories={['新手', '新手進階', '新手/蒙古', '門派', '城市', '練功', '練功/多階段']}
+      />
+
+      <div className="mt-12 border-t border-hairline pt-10">
+        <DamoMaze />
       </div>
     </div>
   )
