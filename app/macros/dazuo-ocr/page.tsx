@@ -177,10 +177,9 @@ function Note({ variant = 'info', children }: { variant?: 'info' | 'ok'; childre
 
 function Checklist({ items, start = 1 }: { items: React.ReactNode[]; start?: number }) {
   return (
-    <ol className="space-y-2" style={{ listStyleType: 'decimal', paddingLeft: '1.5em' }}>
+    <ol className="space-y-2" style={{ listStyleType: 'decimal', paddingLeft: '1.5em' }} start={start}>
       {items.map((item, i) => (
-        <li key={i} className="text-sm leading-relaxed text-bodytext">
-          <span className="font-semibold text-rausch">{start + i}.</span>{' '}
+        <li key={i} className="text-sm leading-relaxed text-bodytext marker:font-semibold marker:text-rausch">
           {item}
         </li>
       ))}
