@@ -29,13 +29,10 @@ function tagClass(label: string) {
 }
 
 function getNeiliReq(skill: Skill): number | null {
-  const reqs = (skill as any).requirements
-  if (!Array.isArray(reqs)) return null
-  for (const r of reqs) {
-    if (r && typeof r === 'object' && (r.name === '內力' || r.name === 'neili')) {
-      const v = Number(r.value)
-      if (Number.isFinite(v)) return v
-    }
+  const req = (skill as any).requirement
+  if (req && typeof req === 'object') {
+    const v = Number(req.neili)
+    if (Number.isFinite(v)) return v
   }
   return null
 }

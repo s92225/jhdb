@@ -30,3 +30,4 @@ Thumbs.db
 
 # Scripts with credentials
 scripts/蒙古萬夫長_v2.txt
+.env*.local

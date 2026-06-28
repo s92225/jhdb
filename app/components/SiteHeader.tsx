@@ -59,7 +59,7 @@ export function SiteHeader() {
           <span aria-hidden className="text-xl">⚔️</span>
           <span>人在江湖</span>
         </Link>
-        <nav className="-mx-2 flex flex-1 items-center gap-1 overflow-x-auto px-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <nav className="-mx-2 flex min-w-0 flex-1 items-center gap-1 overflow-x-auto px-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {PRIMARY_NAV.map((item) => {
             const active = isActive(pathname, item.href)
             return (
@@ -77,11 +77,18 @@ export function SiteHeader() {
               </Link>
             )
           })}
+        </nav>
 
-          <div className="relative" ref={ref}>
+        <div
+          className="relative shrink-0"
+          ref={ref}
+          onMouseEnter={() => setOpen(true)}
+          onMouseLeave={() => setOpen(false)}
+        >
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
+              onFocus={() => setOpen(true)}
               aria-haspopup="menu"
               aria-expanded={open}
               className={[
@@ -103,7 +110,7 @@ export function SiteHeader() {
             {open ? (
               <div
                 role="menu"
-                className="absolute right-0 mt-2 w-56 overflow-hidden rounded-xl border border-hairline bg-canvas shadow-airbnb"
+                className="absolute right-0 top-full w-56 overflow-hidden rounded-xl border border-hairline bg-canvas shadow-airbnb"
               >
                 <ul className="py-1">
                   {OTHER_NAV.map((item) => {
@@ -127,9 +134,8 @@ export function SiteHeader() {
                   })}
                 </ul>
               </div>
-            ) : null}
-          </div>
-        </nav>
+          ) : null}
+        </div>
       </div>
     </header>
   )

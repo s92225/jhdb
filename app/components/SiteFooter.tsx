@@ -1,6 +1,8 @@
 import Link from 'next/link'
 
-const FOOTER_LINKS: Array<{ heading: string; links: Array<{ href: string; label: string }> }> = [
+type FooterLink = { href: string; label: string; children?: FooterLink[] }
+
+const FOOTER_LINKS: Array<{ heading: string; links: FooterLink[] }> = [
   {
     heading: '主要資訊',
     links: [
@@ -26,8 +28,11 @@ const FOOTER_LINKS: Array<{ heading: string; links: Array<{ href: string; label:
     heading: '工具與教學',
     links: [
       { href: '/tools/dazuo', label: '打坐計算' },
-      { href: '/macros', label: '按精教程' },
-      { href: '/macros/dazuo-ocr', label: 'DaZuo OCR' },
+      {
+        href: '/macros',
+        label: '按精教程',
+        children: [{ href: '/macros/dazuo-ocr', label: 'DaZuo OCR' }],
+      },
     ],
   },
 ]
@@ -52,6 +57,17 @@ export function SiteFooter() {
                     <Link href={l.href} className="hover:text-ink">
                       {l.label}
                     </Link>
+                    {l.children && l.children.length > 0 ? (
+                      <ul className="mt-1.5 ml-4 flex flex-col gap-1.5 border-l border-hairline pl-3">
+                        {l.children.map((c) => (
+                          <li key={c.href}>
+                            <Link href={c.href} className="hover:text-ink">
+                              {c.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
                   </li>
                 ))}
               </ul>
