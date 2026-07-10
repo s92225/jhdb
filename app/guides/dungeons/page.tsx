@@ -112,7 +112,7 @@ export default async function DungeonsPage() {
           <Badge className="bg-slate-50 text-slate-700 ring-1 ring-inset ring-slate-200 border-none">
             共 {Array.isArray(dungeons) ? dungeons.length : 0} 筆
           </Badge>
-          <Link className="text-blue-600 hover:underline" href="/quests">
+          <Link className="text-blue-600 hover:underline" href="/guides/quests">
             前往任務流程
           </Link>
         </div>
@@ -283,7 +283,7 @@ export default async function DungeonsPage() {
                   ) : null}
 
                   <div className="mt-4 flex items-center justify-between text-sm">
-                    <Link className="text-blue-600 hover:underline" href="/quests">
+                    <Link className="text-blue-600 hover:underline" href="/guides/quests">
                       回到任務流程
                     </Link>
                     <span className="text-slate-400">點標題可收合/展開</span>

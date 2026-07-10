@@ -4,35 +4,31 @@ type FooterLink = { href: string; label: string; children?: FooterLink[] }
 
 const FOOTER_LINKS: Array<{ heading: string; links: FooterLink[] }> = [
   {
-    heading: '主要資訊',
+    heading: '武學與裝備',
     links: [
-      { href: '/skills', label: '武技比較' },
-      { href: '/dungeons', label: '副本資訊' },
-      { href: '/quests', label: '任務流程' },
-      { href: '/manuals', label: '武功秘笈' },
-      { href: '/updates', label: '近期更新' },
+      { href: '/skills', label: '武技總覽' },
+      { href: '/skills/compare', label: '多選比較' },
+      { href: '/skills/simulator', label: '特效模擬器' },
+      { href: '/equipment', label: '武器神兵' },
+      { href: '/equipment/manuals', label: '武功秘笈' },
     ],
   },
   {
-    heading: '其他資訊',
+    heading: '攻略與系統',
     links: [
-      { href: '/masters', label: '師傅給物' },
-      { href: '/attributes', label: '屬性獲得表' },
-      { href: '/guides', label: '攻略圖解' },
-      { href: '/weapons', label: '武器神兵' },
-      { href: '/five-elements', label: '五行相生相剋' },
-      { href: '/effect-simulator', label: '特效效果模擬器' },
+      { href: '/guides/quests', label: '任務流程' },
+      { href: '/guides/dungeons', label: '副本資訊' },
+      { href: '/guides/masters', label: '師傅給物' },
+      { href: '/guides/attributes', label: '屬性獲得表' },
+      { href: '/systems/five-elements', label: '五行相生相剋' },
     ],
   },
   {
-    heading: '工具與教學',
+    heading: '工具與更新',
     links: [
       { href: '/tools/dazuo', label: '打坐計算' },
-      {
-        href: '/macros',
-        label: '按精教程',
-        children: [{ href: '/macros/dazuo-ocr', label: 'DaZuo OCR' }],
-      },
+      { href: '/tools/macros', label: '按精教程' },
+      { href: '/updates', label: '近期更新' },
     ],
   },
 ]

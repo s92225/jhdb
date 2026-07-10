@@ -3,13 +3,13 @@ import { getStats, getAllUpdates } from '@/lib/data'
 
 const QUICK_LINKS = [
   { href: '/skills', label: '武技比較', icon: '⚔️', desc: '篩選、排序、多選比較武技數據' },
-  { href: '/weapons', label: '武器神兵', icon: '🗡️', desc: '神兵取得方式與鑄煉資訊' },
-  { href: '/quests', label: '任務流程', icon: '📜', desc: '各類任務詳細攻略步驟' },
-  { href: '/dungeons', label: '副本資訊', icon: '🏯', desc: '副本流程、BOSS、掉落物' },
+  { href: '/equipment', label: '武器神兵', icon: '🗡️', desc: '神兵取得方式與鑄煉資訊' },
+  { href: '/guides/quests', label: '任務流程', icon: '📜', desc: '各類任務詳細攻略步驟' },
+  { href: '/guides/dungeons', label: '副本資訊', icon: '🏯', desc: '副本流程、BOSS、掉落物' },
   { href: '/tools/dazuo', label: '打坐計算', icon: '🧘', desc: '估算打坐所需時間' },
-  { href: '/manuals', label: '武功秘笈', icon: '📖', desc: '秘笈取得方式一覽' },
-  { href: '/guides', label: '攻略圖解', icon: '🧭', desc: '五行系統、迷宮解法等圖解攻略' },
-  { href: '/macros', label: '按精教程', icon: '🤖', desc: '按鍵精靈 + OCR 自動打坐安裝教程' },
+  { href: '/equipment/manuals', label: '武功秘笈', icon: '📖', desc: '秘笈取得方式一覽' },
+  { href: '/systems', label: '遊戲系統', icon: '🧭', desc: '五行系統與戰鬥機制總覽' },
+  { href: '/tools/macros', label: '按精教程', icon: '🤖', desc: '按鍵精靈 + OCR 自動打坐安裝教程' },
 ]
 
 const FEATURES = [
@@ -151,11 +151,11 @@ export default function HomePage() {
               <div className="font-medium text-ink">🧘 打坐時間計算器</div>
               <div className="mt-1 text-sm text-muted">輸入內力估算打坐時間，或反向計算</div>
             </Link>
-            <Link href="/attributes" className="block rounded-xl border border-hairline bg-canvas p-4 transition-shadow hover:shadow-airbnb">
+            <Link href="/guides/attributes" className="block rounded-xl border border-hairline bg-canvas p-4 transition-shadow hover:shadow-airbnb">
               <div className="font-medium text-ink">📊 屬性獲得表</div>
               <div className="mt-1 text-sm text-muted">各屬性的獲得方式與數值</div>
             </Link>
-            <Link href="/masters" className="block rounded-xl border border-hairline bg-canvas p-4 transition-shadow hover:shadow-airbnb">
+            <Link href="/guides/masters" className="block rounded-xl border border-hairline bg-canvas p-4 transition-shadow hover:shadow-airbnb">
               <div className="font-medium text-ink">👨‍🏫 師傅給物</div>
               <div className="mt-1 text-sm text-muted">各門派師傅傳授技能條件</div>
             </Link>

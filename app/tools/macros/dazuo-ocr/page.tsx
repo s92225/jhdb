@@ -192,7 +192,7 @@ export default function DazuoOcrTutorialPage() {
     <div className="space-y-10">
       {/* Header */}
       <header>
-        <Link href="/macros" className="text-sm font-medium text-muted hover:text-rausch">
+        <Link href="/tools/macros" className="text-sm font-medium text-muted hover:text-rausch">
           ← 按精教程
         </Link>
         <div className="mt-3">
@@ -243,7 +243,7 @@ export default function DazuoOcrTutorialPage() {
               <tr className="border-b border-hairline-soft">
                 <td className="py-3 pr-4">大漠 Plugin（含註冊插件）</td>
                 <td className="py-3 pr-4">
-                  <a href="/macros/dm-regdll-plugin.zip" download className="font-medium text-rausch hover:underline">
+                  <a href="/tools/macros/dm-regdll-plugin.zip" download className="font-medium text-rausch hover:underline">
                     下載 dm-regdll-plugin.zip
                   </a>
                 </td>
@@ -255,7 +255,7 @@ export default function DazuoOcrTutorialPage() {
               <tr className="border-b border-hairline-soft">
                 <td className="py-3 pr-4">OCR 字庫</td>
                 <td className="py-3 pr-4">
-                  <a href="/macros/mud_num.txt" download className="font-medium text-rausch hover:underline">
+                  <a href="/tools/macros/mud_num.txt" download className="font-medium text-rausch hover:underline">
                     下載 mud_num.txt
                   </a>
                 </td>
@@ -264,7 +264,7 @@ export default function DazuoOcrTutorialPage() {
               <tr>
                 <td className="py-3 pr-4">DaZuo OCR Script</td>
                 <td className="py-3 pr-4">
-                  <a href="/macros/dazuo-ocr-script.txt" download className="font-medium text-rausch hover:underline">
+                  <a href="/tools/macros/dazuo-ocr-script.txt" download className="font-medium text-rausch hover:underline">
                     下載 dazuo-ocr-script.txt
                   </a>
                 </td>
@@ -338,7 +338,7 @@ export default function DazuoOcrTutorialPage() {
         <Checklist items={[
           <>
             下載{' '}
-            <a href="/macros/mud_num.txt" download className="font-medium text-rausch hover:underline">
+            <a href="/tools/macros/mud_num.txt" download className="font-medium text-rausch hover:underline">
               mud_num.txt
             </a>
             。
@@ -370,7 +370,7 @@ export default function DazuoOcrTutorialPage() {
           <>在按鍵精靈新建腳本。</>,
           <>
             下載{' '}
-            <a href="/macros/dazuo-ocr-script.txt" download className="font-medium text-rausch hover:underline">
+            <a href="/tools/macros/dazuo-ocr-script.txt" download className="font-medium text-rausch hover:underline">
               dazuo-ocr-script.txt
             </a>
             ，並把全部內容貼入。

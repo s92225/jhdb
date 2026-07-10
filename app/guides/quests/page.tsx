@@ -296,13 +296,13 @@ export default function QuestsPage() {
         </p>
 
         <div className="mt-3 flex flex-wrap items-center gap-3 text-sm">
-          <Link className="text-blue-600 hover:underline" href="/dungeons">
+          <Link className="text-blue-600 hover:underline" href="/guides/dungeons">
             → 看副本
           </Link>
           <Link className="text-blue-600 hover:underline" href="/skills">
             → 看武技
           </Link>
-          <Link className="text-blue-600 hover:underline" href="/weapons">
+          <Link className="text-blue-600 hover:underline" href="/equipment">
             → 神兵取得流程
           </Link>
           <a className="text-blue-600 hover:underline" href="#dungeon-damo-maze">
@@ -350,10 +350,6 @@ function QuestCard({ q }: { q: IntegratedQuest }) {
   const versionNotes = Array.isArray(q.versionNotes) ? q.versionNotes : []
   const sourceRefs = Array.isArray(q.sourceRefs) ? q.sourceRefs : []
 
-  const sources = Array.isArray(q.sourceFiles)
-    ? q.sourceFiles.filter(Boolean)
-    : sourceRefs.map((s) => s.file).filter(Boolean) as string[]
-
   return (
     <article className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md">
       {/* Header strip */}
@@ -371,13 +367,6 @@ function QuestCard({ q }: { q: IntegratedQuest }) {
             </span>
           ) : null}
           <h2 className="ml-1 text-lg font-semibold text-gray-900">{q.name}</h2>
-
-          {sources.length > 0 ? (
-            <span className="ml-auto text-xs text-gray-400">
-              來源：{sources.slice(0, 3).join('、')}
-              {sources.length > 3 ? '…' : ''}
-            </span>
-          ) : null}
         </div>
         {q.summary ? (
           <p className="mt-2 text-sm leading-relaxed text-gray-700">{q.summary}</p>
@@ -440,11 +429,6 @@ function QuestCard({ q }: { q: IntegratedQuest }) {
                   <span className="absolute -left-[21px] top-1.5 inline-block h-2.5 w-2.5 rounded-full bg-blue-400 ring-2 ring-white" />
                   <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500">
                     {v.date ? <span className="font-mono">{v.date}</span> : null}
-                    {v.file ? (
-                      <span className="rounded bg-gray-200/70 px-1.5 py-0.5 text-[10px] text-gray-700">
-                        {v.file}
-                      </span>
-                    ) : null}
                   </div>
                   <div className="mt-0.5 text-sm text-gray-800">{v.note || '—'}</div>
                 </li>
@@ -462,9 +446,6 @@ function QuestCard({ q }: { q: IntegratedQuest }) {
             <div className="mt-3 space-y-3">
               {sourceRefs.map((s, i) => (
                 <div key={i} className="rounded-lg bg-gray-50 px-3 py-2">
-                  {s.file ? (
-                    <div className="text-[11px] font-mono text-gray-500">{s.file}</div>
-                  ) : null}
                   <pre className="mt-1 whitespace-pre-wrap font-sans text-xs leading-relaxed text-gray-700">
                     {s.excerpt || '—'}
                   </pre>

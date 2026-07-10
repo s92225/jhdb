@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 const TUTORIALS = [
   {
-    href: '/macros/dazuo-ocr',
+    href: '/tools/macros/dazuo-ocr',
     icon: '🧘',
     title: 'DaZuo OCR 自動打坐',
     desc: '按鍵精靈 + 大漠 Plugin + 打坐 OCR Script 完整安裝教程。OCR 自動讀取內力與氣，全程自動打坐衝內力。',

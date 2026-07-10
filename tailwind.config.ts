@@ -31,12 +31,14 @@ const config: Config = {
       fontFamily: {
         sans: [
           'var(--font-sans)',
+          'var(--font-tc)',
           'Circular',
           '-apple-system',
           'system-ui',
           'Roboto',
           'Helvetica Neue',
           'Arial',
+          'Microsoft JhengHei',
           'sans-serif',
         ],
       },

@@ -167,29 +167,28 @@ export default function UpdatesPage() {
         <div className="space-y-4">
           {updates.map((u, i) => {
             const blocks = parseContent(String(u.content || ''))
-            const src = String(u.sourceFile || '')
             return (
-              <article
+              <details
                 key={u.id}
-                className="rounded-2xl border border-hairline bg-canvas p-6 transition-shadow hover:shadow-airbnb sm:p-8"
+                className="collapsible rounded-2xl border border-hairline bg-canvas px-6 py-5 transition-shadow hover:shadow-airbnb sm:px-8"
               >
-                <div className="flex flex-wrap items-center gap-3">
-                  <time className="text-sm font-semibold text-ink">
-                    {u.date || u.title || '—'}
-                  </time>
-                  {i === 0 && (
-                    <span className="rounded-full bg-rausch px-2.5 py-0.5 text-xs font-semibold text-white">
-                      最新
-                    </span>
-                  )}
-                  {src && src !== 'manual' ? (
-                    <span className="rounded-full bg-surface-soft px-2 py-0.5 text-[11px] font-medium text-muted">
-                      {src}
-                    </span>
-                  ) : null}
-                </div>
+                <summary className="flex items-center justify-between gap-3">
+                  <div className="flex min-w-0 flex-wrap items-center gap-3">
+                    <time className="text-sm font-semibold text-ink">
+                      {u.date || u.title || '—'}
+                    </time>
+                    {i === 0 && (
+                      <span className="rounded-full bg-rausch px-2.5 py-0.5 text-xs font-semibold text-white">
+                        最新
+                      </span>
+                    )}
+                  </div>
+                  <svg className="chevron h-4 w-4 shrink-0 text-muted" viewBox="0 0 20 20" fill="none" aria-hidden>
+                    <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </summary>
 
-                <div className="mt-4 space-y-4">
+                <div className="collapsible-body mt-4 space-y-4">
                   {blocks.map((b, bi) => (
                     <div key={bi} className="flex gap-3">
                       {b.num ? (
@@ -208,7 +207,7 @@ export default function UpdatesPage() {
                     </div>
                   ))}
                 </div>
-              </article>
+              </details>
             )
           })}
         </div>

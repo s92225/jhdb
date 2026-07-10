@@ -58,12 +58,18 @@ export function ManualCard({
   const [open, setOpen] = useState<boolean>(defaultExpanded)
 
   const name = (manual?.name ?? manual?.title ?? '（未命名）') as string
-  const source = (manual?.sourceFile ?? manual?.source ?? '') as string
+  const rawSource = (manual?.sourceFile ?? manual?.source ?? '') as string
+  const source = rawSource.includes('update')
+    ? '更新新增'
+    : rawSource === 'user-provided'
+      ? '玩家整理'
+      : rawSource
 
   const obtainText = (manual?.obtain as string) || ''
   const reqRawText = (manual?.learnRequirementsText as string) || ''
   const reqSummary = (manual?.requirementsSummary as string) || ''
   const rawExcerpt = (manual?.rawExcerpt ?? '') as string
+  const steps = (manual?.steps ?? []) as Array<{ loc: string; npc: string; text: string }>
 
   const anchorId = manual?.id ? `manual-${String(manual.id)}` : undefined
 
@@ -108,6 +114,30 @@ export function ManualCard({
         <KV label="取得方式線索" value={obtainText} />
         <KV label="學習要求（原文）" value={reqRawText} />
       </div>
+
+      {steps.length > 0 && (
+        <div className="mt-4">
+          <div className="text-xs font-medium text-muted">取得步驟</div>
+          <ol className="mt-3 grid gap-3 sm:grid-cols-2">
+            {steps.map((s, i) => (
+              <li key={i} className="flex gap-3 rounded-xl border border-hairline bg-canvas p-3">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-rausch text-xs font-bold text-white">
+                  {i + 1}
+                </div>
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2 text-xs">
+                    <span className="rounded-full bg-surface-strong px-2 py-0.5 font-medium text-ink">
+                      {s.loc}
+                    </span>
+                    <span className="text-muted">NPC：{s.npc}</span>
+                  </div>
+                  <div className="mt-1.5 text-sm text-bodytext">{s.text}</div>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
 
       <div className="mt-3 rounded-xl bg-surface-soft p-3">
         <div className="text-xs font-medium text-muted">學習門檻（摘要）</div>

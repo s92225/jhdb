@@ -2,56 +2,35 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
+import type { SearchEntry } from '@/lib/searchIndex'
+import { SearchCommand } from './SearchCommand'
 
-type NavLink = { href: string; label: string }
+type NavLink = { href: string; label: string; match: string }
 
 const PRIMARY_NAV: NavLink[] = [
-  { href: '/skills', label: '武技比較' },
-  { href: '/dungeons', label: '副本資訊' },
-  { href: '/quests', label: '任務流程' },
-  { href: '/manuals', label: '武功秘笈' },
-  { href: '/updates', label: '近期更新' },
+  { href: '/skills', label: '武學', match: '/skills' },
+  { href: '/guides/quests', label: '攻略', match: '/guides' },
+  { href: '/equipment', label: '裝備', match: '/equipment' },
+  { href: '/systems', label: '系統', match: '/systems' },
+  { href: '/tools', label: '工具', match: '/tools' },
 ]
 
-const OTHER_NAV: NavLink[] = [
-  { href: '/masters', label: '師傅給物' },
-  { href: '/attributes', label: '屬性獲得表' },
-  { href: '/guides', label: '攻略圖解' },
-  { href: '/weapons', label: '武器神兵' },
-  { href: '/tools/dazuo', label: '打坐計算' },
-  { href: '/macros', label: '按精教程' },
-  { href: '/five-elements', label: '五行相生相剋系統' },
-  { href: '/effect-simulator', label: '特效效果模擬器' },
-]
-
-function isActive(pathname: string, href: string) {
-  return pathname === href || pathname.startsWith(`${href}/`)
+function isActive(pathname: string, match: string) {
+  return pathname === match || pathname.startsWith(`${match}/`)
 }
 
-export function SiteHeader() {
+export function SiteHeader({ searchEntries }: { searchEntries: SearchEntry[] }) {
   const pathname = usePathname() || '/'
-  const [open, setOpen] = useState(false)
-  const ref = useRef<HTMLDivElement | null>(null)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
-    function onDown(e: MouseEvent) {
-      if (!ref.current) return
-      if (!ref.current.contains(e.target as Node)) setOpen(false)
-    }
-    document.addEventListener('mousedown', onDown)
-    return () => document.removeEventListener('mousedown', onDown)
-  }, [])
-
-  useEffect(() => {
-    setOpen(false)
+    setMenuOpen(false)
   }, [pathname])
-
-  const dropdownActive = OTHER_NAV.some((n) => isActive(pathname, n.href))
 
   return (
     <header className="sticky top-0 z-30 border-b border-hairline bg-canvas/90 backdrop-blur">
-      <div className="mx-auto flex max-w-content items-center gap-6 px-4 py-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-content items-center gap-4 px-4 py-3.5 sm:px-6 lg:px-8">
         <Link
           href="/"
           className="flex shrink-0 items-center gap-2 text-lg font-bold tracking-tight text-rausch hover:text-rausch"
@@ -59,15 +38,16 @@ export function SiteHeader() {
           <span aria-hidden className="text-xl">⚔️</span>
           <span>人在江湖</span>
         </Link>
-        <nav className="-mx-2 flex min-w-0 flex-1 items-center gap-1 overflow-x-auto px-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+
+        <nav className="hidden min-w-0 flex-1 items-center gap-1 sm:flex">
           {PRIMARY_NAV.map((item) => {
-            const active = isActive(pathname, item.href)
+            const active = isActive(pathname, item.match)
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 className={[
-                  'whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-medium transition-colors',
+                  'whitespace-nowrap rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors',
                   active
                     ? 'bg-surface-strong text-ink'
                     : 'text-muted hover:bg-surface-soft hover:text-ink',
@@ -79,64 +59,45 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <div
-          className="relative shrink-0"
-          ref={ref}
-          onMouseEnter={() => setOpen(true)}
-          onMouseLeave={() => setOpen(false)}
-        >
-            <button
-              type="button"
-              onClick={() => setOpen((v) => !v)}
-              onFocus={() => setOpen(true)}
-              aria-haspopup="menu"
-              aria-expanded={open}
-              className={[
-                'inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-medium transition-colors',
-                dropdownActive
-                  ? 'bg-surface-strong text-ink'
-                  : 'text-muted hover:bg-surface-soft hover:text-ink',
-              ].join(' ')}
-            >
-              其他資訊
-              <svg
-                aria-hidden
-                viewBox="0 0 12 12"
-                className={`h-3 w-3 transition-transform ${open ? 'rotate-180' : ''}`}
-              >
-                <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-              </svg>
-            </button>
-            {open ? (
-              <div
-                role="menu"
-                className="absolute right-0 top-full w-56 overflow-hidden rounded-xl border border-hairline bg-canvas shadow-airbnb"
-              >
-                <ul className="py-1">
-                  {OTHER_NAV.map((item) => {
-                    const active = isActive(pathname, item.href)
-                    return (
-                      <li key={item.href}>
-                        <Link
-                          href={item.href}
-                          role="menuitem"
-                          className={[
-                            'block px-4 py-2 text-sm',
-                            active
-                              ? 'bg-surface-strong text-ink'
-                              : 'text-bodytext hover:bg-surface-soft hover:text-ink',
-                          ].join(' ')}
-                        >
-                          {item.label}
-                        </Link>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </div>
-          ) : null}
+        <div className="ml-auto flex items-center gap-2">
+          <SearchCommand entries={searchEntries} />
+          <button
+            type="button"
+            aria-label="選單"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((v) => !v)}
+            className="inline-flex items-center justify-center rounded-full p-2 text-muted transition-colors hover:bg-surface-soft hover:text-ink sm:hidden"
+          >
+            <svg aria-hidden viewBox="0 0 16 16" className="h-4 w-4">
+              {menuOpen ? (
+                <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              ) : (
+                <path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              )}
+            </svg>
+          </button>
         </div>
       </div>
+
+      {menuOpen ? (
+        <nav className="border-t border-hairline-soft bg-canvas px-4 py-2 sm:hidden">
+          {PRIMARY_NAV.map((item) => {
+            const active = isActive(pathname, item.match)
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={[
+                  'block rounded-lg px-3 py-2.5 text-sm font-medium',
+                  active ? 'bg-surface-strong text-ink' : 'text-bodytext hover:bg-surface-soft',
+                ].join(' ')}
+              >
+                {item.label}
+              </Link>
+            )
+          })}
+        </nav>
+      ) : null}
     </header>
   )
 }

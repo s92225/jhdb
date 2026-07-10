@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { FiveElementsInteractive } from '../guides/FiveElementsInteractive'
+import { FiveElementsInteractive } from '@/app/components/FiveElementsInteractive'
 
 export const metadata: Metadata = {
   title: '五行相生相剋系統｜人在江湖資料庫',

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { getSkills } from '@/lib/data'
-import { EffectSimulator } from '../guides/EffectSimulator'
+import { EffectSimulator } from '@/app/components/EffectSimulator'
 
 export const metadata: Metadata = {
   title: '特效效果模擬器｜人在江湖資料庫',

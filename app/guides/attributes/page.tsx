@@ -221,12 +221,12 @@ const dungeonNames = buildNameSet(rawDungeons as Array<{ name?: string }>)
 const manualNames = buildNameSet(rawManuals as Array<{ name?: string }>)
 const questNames = buildNameSet((rawQuests as { quests?: Array<{ name?: string }> })?.quests ?? [])
 const dungeonRewardLinks = new Map<string, string>([
-  ['真武秘典', '/dungeons#dungeon-慈航靜齋'],
-  ['天樞經卷', '/dungeons#dungeon-慈航靜齋'],
-  ['元始真法', '/dungeons#dungeon-慈航靜齋'],
-  ['太清靈訣', '/dungeons#dungeon-慈航靜齋'],
-  ['無極大成上冊', '/dungeons#dungeon-慈航靜齋'],
-  ['無極大成下冊', '/dungeons#dungeon-慈航靜齋'],
+  ['真武秘典', '/guides/dungeons#dungeon-慈航靜齋'],
+  ['天樞經卷', '/guides/dungeons#dungeon-慈航靜齋'],
+  ['元始真法', '/guides/dungeons#dungeon-慈航靜齋'],
+  ['太清靈訣', '/guides/dungeons#dungeon-慈航靜齋'],
+  ['無極大成上冊', '/guides/dungeons#dungeon-慈航靜齋'],
+  ['無極大成下冊', '/guides/dungeons#dungeon-慈航靜齋'],
 ])
 const noLinkItems = new Set(['龍龜散', '龍蛇散', '八脈聚神丹', '玲瓏七巧丹'])
 const skillNameToId = new Map<string, string>()
@@ -241,17 +241,17 @@ function getItemHref(name: string) {
   const key = norm(name)
   if (noLinkItems.has(name)) return null
   if (name === '公共武技') return '/skills?source=公共武技'
-  if (name === '九陽神功') return '/manuals#manual-manual-custom-九陽神功-1'
-  if (name === '九陰神功') return '/manuals#manual-manual-custom-九陰神功-1'
-  if (name === '葵花魔功') return '/manuals#manual-manual-custom-葵花魔功-1'
-  if (name === '無極大成') return '/dungeons#dungeon-慈航靜齋'
+  if (name === '九陽神功') return '/equipment/manuals#manual-manual-custom-九陽神功-1'
+  if (name === '九陰神功') return '/equipment/manuals#manual-manual-custom-九陰神功-1'
+  if (name === '葵花魔功') return '/equipment/manuals#manual-manual-custom-葵花魔功-1'
+  if (name === '無極大成') return '/guides/dungeons#dungeon-慈航靜齋'
   const dungeonLink = dungeonRewardLinks.get(name)
   if (dungeonLink) return dungeonLink
-  if (questNames.has(key)) return '/quests'
-  if (dungeonNames.has(key)) return '/dungeons'
-  if (manualNames.has(key)) return '/manuals'
+  if (questNames.has(key)) return '/guides/quests'
+  if (dungeonNames.has(key)) return '/guides/dungeons'
+  if (manualNames.has(key)) return '/equipment/manuals'
   const skillId = skillNameToId.get(key)
-  return skillId ? `/skills/${encodeURIComponent(skillId)}` : '/manuals'
+  return skillId ? `/skills/${encodeURIComponent(skillId)}` : '/equipment/manuals'
 }
 
 export default function AttributesPage() {

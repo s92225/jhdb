@@ -145,12 +145,11 @@ export function DungeonCard({
   const d = (dungeon || {}) as AnyObj
 
   const name = safeStr(d.name) || safeStr(d.title) || '（未命名副本）'
-  const source = safeStr(d.sourceFile || d.source || d.rawSource) || ''
   const rawExcerpt = safeStr(d.rawExcerpt || d.raw) || ''
 
   // 常見欄位：entry / requirements / reqs / gates
   const requirementsRaw = (d.requirements ?? d.entryRequirements ?? d.entryReqs ?? d.reqs ?? d.gates ?? []) as RequirementItem[]
-  const buckets = useMemo(() => bucketizeRequirements(requirementsRaw), [requirementsRaw])
+  const buckets = bucketizeRequirements(requirementsRaw)
 
   // 類型/難度/推薦等：盡量從現有欄位找，不猜
   const category = pickText(d, ['category', 'type', 'kind'])
@@ -225,10 +224,6 @@ export function DungeonCard({
           </div>
 
           <div className="mt-1 text-sm text-muted">{open ? '點擊收合' : '點擊展開'}</div>
-        </div>
-
-        <div className="shrink-0 text-xs text-muted-soft">
-          {source ? <span>來源：{source}</span> : <span>&nbsp;</span>}
         </div>
       </button>
 
