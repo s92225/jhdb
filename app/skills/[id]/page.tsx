@@ -166,6 +166,34 @@ export default async function SkillDetailPage({
                     </div>
                   </div>
                 )}
+                {e.type === '傳承絕學' && (
+                  <div className="mt-3 grid gap-3 sm:grid-cols-3">
+                    <div className="rounded-lg border border-amber-100 px-3 py-2">
+                      <div className="text-xs text-slate-500">發動機率</div>
+                      <div className="mt-1 text-sm font-semibold text-slate-800">{Math.round((e as any).triggerChance * 100)}%</div>
+                    </div>
+                    <div className="rounded-lg border border-amber-100 px-3 py-2">
+                      <div className="text-xs text-slate-500">傷害倍率</div>
+                      <div className="mt-1 text-sm font-semibold text-slate-800">×{(e as any).damageMultiplier}</div>
+                    </div>
+                    <div className="rounded-lg border border-amber-100 px-3 py-2">
+                      <div className="text-xs text-slate-500">必中</div>
+                      <div className="mt-1 text-sm font-semibold text-slate-800">{(e as any).alwaysHit ? '是' : '否'}</div>
+                    </div>
+                  </div>
+                )}
+                {e.type === '忙碌狀態' && (
+                  <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                    <div className="rounded-lg border border-amber-100 px-3 py-2">
+                      <div className="text-xs text-slate-500">觸發機率</div>
+                      <div className="mt-1 text-sm font-semibold text-slate-800">{Math.round((e as any).triggerChance * 100)}%</div>
+                    </div>
+                    <div className="rounded-lg border border-amber-100 px-3 py-2">
+                      <div className="text-xs text-slate-500">持續回合</div>
+                      <div className="mt-1 text-sm font-semibold text-slate-800">{(e as any).minTurns}~{(e as any).maxTurns} 回合</div>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>

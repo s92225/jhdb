@@ -80,6 +80,19 @@ function calcDotHpDamage(skill: Skill): number {
   return totalDot
 }
 
+function calcHeritageBonus(skill: Skill): number {
+  const effects = (skill as any).specialEffects ?? []
+  let bonus = 0
+  for (const e of effects) {
+    if (e.type === '傳承絕學') {
+      const chance = e.triggerChance ?? 0
+      const multiplier = e.damageMultiplier ?? 1
+      bonus += chance * (multiplier - 1)
+    }
+  }
+  return bonus
+}
+
 function getScoreRanges(skills: Skill[]) {
   const vals = {
     neishang: [] as number[],
@@ -87,6 +100,7 @@ function getScoreRanges(skills: Skill[]) {
     beishan: [] as number[],
     beizhao: [] as number[],
     dotHp: [] as number[],
+    heritage: [] as number[],
   }
   for (const s of skills) {
     const nei = n(s.averages?.neishang)
@@ -94,11 +108,13 @@ function getScoreRanges(skills: Skill[]) {
     const shan = n(s.averages?.beishan)
     const zhao = n(s.averages?.beizhao)
     const dot = calcDotHpDamage(s)
+    const heritage = calcHeritageBonus(s)
     if (nei !== null) vals.neishang.push(nei)
     if (bi !== null) vals.bishang.push(bi)
     if (shan !== null) vals.beishan.push(shan)
     if (zhao !== null) vals.beizhao.push(zhao)
     vals.dotHp.push(dot)
+    vals.heritage.push(heritage)
   }
   const range = (arr: number[]) => {
     if (!arr.length) return { min: 0, max: 0 }
@@ -110,6 +126,7 @@ function getScoreRanges(skills: Skill[]) {
     beishan: range(vals.beishan),
     beizhao: range(vals.beizhao),
     dotHp: range(vals.dotHp),
+    heritage: range(vals.heritage),
   }
 }
 
@@ -123,7 +140,10 @@ function calcScore(skill: Skill, ranges: ReturnType<typeof getScoreRanges>): num
   const dotHp = calcDotHpDamage(skill)
   const dotNorm = norm(dotHp, ranges.dotHp.min, ranges.dotHp.max) ?? 0
   
-  const raw = 0.20 * nei + 0.20 * bi + 0.20 * (1 - shan) + 0.20 * (1 - zhao) + 0.20 * dotNorm
+  const heritage = calcHeritageBonus(skill)
+  const heritageNorm = norm(heritage, ranges.heritage.min, ranges.heritage.max) ?? 0
+  
+  const raw = 0.17 * nei + 0.17 * bi + 0.17 * (1 - shan) + 0.17 * (1 - zhao) + 0.17 * dotNorm + 0.15 * heritageNorm
   return Math.round(raw * 100)
 }
 
@@ -146,7 +166,7 @@ function scoreToGrade(score: number | null, thresholds: ScoreThresholds | null) 
 }
 
 const scoreTooltip =
-  '公式：0.20×內傷 + 0.20×臂傷 + 0.20×(1-被閃) + 0.20×(1-被招) + 0.20×暗勁傷害（皆以資料集 min/max 正規化）\n暗勁傷害 = 觸發機率 × 疊加上限 × 每層氣血傷害\n等級：依分位數分級（S 前 16.7% / A 前 33.4% / B 前 50% / C 前 66.7% / D 前 83.4% / E 最後 16.7%）\n\n【閃避率加成】組合技能效果，戰鬥中配置指定輕功達等級要求時，獲得額外閃避率（30%~70%），敵方攻擊有該機率完全閃避。'
+  '公式：0.17×內傷 + 0.17×臂傷 + 0.17×(1-被閃) + 0.17×(1-被招) + 0.17×暗勁傷害 + 0.15×傳承絕學（皆以資料集 min/max 正規化）\n暗勁傷害 = 觸發機率 × 疊加上限 × 每層氣血傷害\n傳承絕學 = 觸發機率 × (傷害倍率 − 1)，例如 10% × (5−1) = 0.4\n等級：依分位數分級（S 前 16.7% / A 前 33.4% / B 前 50% / C 前 66.7% / D 前 83.4% / E 最後 16.7%）\n\n【閃避率加成】組合技能效果，戰鬥中配置指定輕功達等級要求時，獲得額外閃避率（30%~70%），敵方攻擊有該機率完全閃避。'
 
 function sourceTagClass(label: string) {
   const key = label.trim()
@@ -191,7 +211,7 @@ export function SkillTable({
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
   const [selected, setSelected] = useState<string[]>([])
 
-  const configs: string[] = ['拳腳', '劍法', '刀法', '棍法', '短兵', '招架', '輕功', '內功', '連擊進攻', '兵器加成', '組合技能', '暗勁效果']
+  const configs: string[] = ['拳腳', '劍法', '刀法', '棍法', '短兵', '招架', '輕功', '內功', '連擊進攻', '兵器加成', '組合技能', '暗勁效果', '傳承絕學', '忙碌狀態']
   const tiers: Array<SkillTier | '全部'> = ['全部', '第一階', '第二階', '第三階', '上古傳承無上神武']
 
   const familyOptions = useMemo(() => {
@@ -244,6 +264,10 @@ if (tier !== '全部' && rowTier !== tier) return false
             return !!(s as any).comboSkill
           } else if (cf === '暗勁效果') {
             return (s as any).specialEffects?.some((e: any) => e.type === '暗勁' || e.type === '毒性' || e.type === '寒毒')
+          } else if (cf === '忙碌狀態') {
+            return (s as any).specialEffects?.some((e: any) => e.type === '忙碌狀態')
+          } else if (cf === '傳承絕學') {
+            return (s as any).specialEffects?.some((e: any) => e.type === '傳承絕學')
           } else {
             return (s.configs ?? []).includes(cf as SkillConfig)
           }
@@ -518,6 +542,12 @@ if (tier !== '全部' && rowTier !== tier) return false
                         {(s as any).specialEffects?.some((e: any) => e.type === '暗勁' || e.type === '毒性' || e.type === '寒毒') && (
                           <Badge className="border-cyan-300 bg-cyan-50 text-cyan-700">暗勁效果</Badge>
                         )}
+                        {(s as any).specialEffects?.some((e: any) => e.type === '傳承絕學') && (
+                          <Badge className="border-orange-300 bg-orange-50 text-orange-700">傳承絕學</Badge>
+                        )}
+                        {(s as any).specialEffects?.some((e: any) => e.type === '忙碌狀態') && (
+                          <Badge className="border-teal-300 bg-teal-50 text-teal-700">忙碌狀態</Badge>
+                        )}
                         {(s as any).weaponBonus?.length > 0 && (
                           <Badge className="border-violet-300 bg-violet-50 text-violet-700">
                             兵器加成
@@ -539,6 +569,18 @@ if (tier !== '全部' && rowTier !== tier) return false
                         <div key={i} className="mt-2 rounded-lg bg-cyan-50 px-3 py-2 text-xs text-cyan-800">
                           <span className="font-medium">{e.type}效果：</span>
                           {e.effectName} — {Math.round(e.triggerChance * 100)}% 機率疊加，上限 {e.maxStacks} 層，每層 {e.hpPerStack} 氣血 / {e.spiritPerStack} 精神
+                        </div>
+                      ))}
+                      {(s as any).specialEffects?.filter((e: any) => e.type === '傳承絕學').map((e: any, i: number) => (
+                        <div key={i} className="mt-2 rounded-lg bg-orange-50 px-3 py-2 text-xs text-orange-800">
+                          <span className="font-medium">傳承絕學：</span>
+                          {Math.round(e.triggerChance * 100)}% 機率發動，必中且傷害 ×{e.damageMultiplier}
+                        </div>
+                      ))}
+                      {(s as any).specialEffects?.filter((e: any) => e.type === '忙碌狀態').map((e: any, i: number) => (
+                        <div key={i} className="mt-2 rounded-lg bg-teal-50 px-3 py-2 text-xs text-teal-800">
+                          <span className="font-medium">忙碌狀態：</span>
+                          {Math.round(e.triggerChance * 100)}% 機率使目標陷入 {e.minTurns}~{e.maxTurns} 回合忙碌
                         </div>
                       ))}
                     </div>

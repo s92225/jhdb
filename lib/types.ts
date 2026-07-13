@@ -71,11 +71,37 @@ export interface DotEffect {
   description: string
 }
 
+/** 傳承絕學：裝備上古傳承無上神武搭配本門高級內功時，有機率發動必中暴擊 */
+export interface HeritageUltimate {
+  type: '傳承絕學'
+  /** 發動機率（0–1），例如 0.10 = 10% */
+  triggerChance: number
+  /** 傷害倍率，例如 5 = 原傷害的 5 倍 */
+  damageMultiplier: number
+  /** 是否必中 */
+  alwaysHit: boolean
+  /** 給 UI 顯示的完整說明 */
+  description: string
+}
+
+/** 忙碌狀態：命中時有機率使目標陷入忙碌 */
+export interface StunEffect {
+  type: '忙碌狀態'
+  /** 觸發機率（0–1） */
+  triggerChance: number
+  /** 最少持續回合 */
+  minTurns: number
+  /** 最多持續回合 */
+  maxTurns: number
+  /** 給 UI 顯示的完整說明 */
+  description: string
+}
+
 /**
  * 技能特殊效果（discriminated union）。
  * 日後新增其他效果時，只需加入新的 interface 並擴充此 union。
  */
-export type SkillSpecialEffect = ComboAttack | DotEffect
+export type SkillSpecialEffect = ComboAttack | DotEffect | HeritageUltimate | StunEffect
 
 export interface SkillWeaponBonus {
   weaponName: string
