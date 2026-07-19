@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation'
 import { SiteHeader } from './SiteHeader'
 import { SiteFooter } from './SiteFooter'
+import { FeedbackWidget } from './FeedbackWidget'
 import type { SearchEntry } from '@/lib/searchIndex'
 
 export function LayoutShell({
@@ -16,7 +17,12 @@ export function LayoutShell({
   const isLanding = pathname === '/'
 
   if (isLanding) {
-    return <>{children}</>
+    return (
+      <>
+        {children}
+        <FeedbackWidget />
+      </>
+    )
   }
 
   return (
@@ -26,6 +32,7 @@ export function LayoutShell({
         {children}
       </main>
       <SiteFooter />
+      <FeedbackWidget />
     </div>
   )
 }
