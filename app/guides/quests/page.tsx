@@ -53,6 +53,7 @@ type IntegratedQuest = {
   versionNotes?: Array<{ date?: string; file?: string; note?: string }>
   sourceRefs?: Array<{ file?: string; excerpt?: string }>
   weapons?: WeaponsData // 神兵資料
+  blackwoodToken?: { source: string; details: string }
 }
 
 type IntegratedRoot = { quests?: IntegratedQuest[] }
@@ -314,7 +315,7 @@ export default function QuestsPage() {
       <CategoryTabs
         items={items}
         searchPlaceholder="搜尋任務名稱、流程…"
-        orderedCategories={['新手', '新手進階', '新手/蒙古', '門派', '城市', '練功', '練功/多階段']}
+        orderedCategories={['新手', '新手進階', '新手/蒙古', '門派', '城市', '練功', '練功/多階段', '副本/解謎', '世界BOSS']}
       />
 
       <div className="mt-12 border-t border-hairline pt-10">
@@ -405,6 +406,16 @@ function QuestCard({ q }: { q: IntegratedQuest }) {
             emptyHint="未提及"
           />
         </div>
+
+        {q.blackwoodToken ? (
+          <div className="mt-4 rounded-xl border border-indigo-200 bg-indigo-50/60 p-4">
+            <div className="text-sm font-semibold text-indigo-900">🔑 黑木令取得方式</div>
+            <div className="mt-2 text-sm text-indigo-900/90">
+              <p className="font-medium">{q.blackwoodToken.source}</p>
+              <p className="mt-1 text-gray-700">{q.blackwoodToken.details}</p>
+            </div>
+          </div>
+        ) : null}
 
         {notes.length ? (
           <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50/60 p-4">

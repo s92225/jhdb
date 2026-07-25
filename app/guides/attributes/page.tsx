@@ -104,6 +104,33 @@ const rows: AttributeRow[] = [
     agility: '50',
   },
   {
+    item: '道心種魔大法',
+    note1: '每 20 級增加 1 點[臂力]',
+    note2: '上限 2000 級',
+    strength: '100',
+    intellect: '',
+    constitution: '',
+    agility: '',
+  },
+  {
+    item: '長生訣',
+    note1: '每 20 級增加 1 點[根骨]',
+    note2: '上限 2000 級',
+    strength: '',
+    intellect: '',
+    constitution: '100',
+    agility: '',
+  },
+  {
+    item: '戰神圖錄',
+    note1: '每 20 級增加 1 點[身法]',
+    note2: '上限 2000 級',
+    strength: '',
+    intellect: '',
+    constitution: '',
+    agility: '100',
+  },
+  {
     item: '公共武技',
     note1: '練達上限後可尋 GM 相助，以啟先天脈絡',
     note2: '每個角色只能獲得 1 次',
@@ -197,10 +224,10 @@ const rows: AttributeRow[] = [
 
 const totalRow = {
   note2: '總計屬性點數',
-  strength: '740',
-  intellect: '270',
-  constitution: '720',
-  agility: '720',
+  strength: String(rows.reduce((sum, r) => sum + (parseInt(r.strength) || 0), 0)),
+  intellect: String(rows.reduce((sum, r) => sum + (parseInt(r.intellect) || 0), 0)),
+  constitution: String(rows.reduce((sum, r) => sum + (parseInt(r.constitution) || 0), 0)),
+  agility: String(rows.reduce((sum, r) => sum + (parseInt(r.agility) || 0), 0)),
 }
 
 function norm(value: string) {

@@ -25,6 +25,7 @@ function tagClass(label: string) {
   if (key === '招架') return 'border-slate-200 bg-slate-50 text-slate-700'
   if (key === '輕功') return 'border-indigo-200 bg-indigo-50 text-indigo-700'
   if (key === '內功') return 'border-purple-200 bg-purple-50 text-purple-700'
+  if (key === '反震') return 'border-fuchsia-200 bg-fuchsia-50 text-fuchsia-700'
   return 'border-hairline bg-surface-soft text-muted'
 }
 
@@ -211,7 +212,7 @@ export function SkillTable({
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
   const [selected, setSelected] = useState<string[]>([])
 
-  const configs: string[] = ['拳腳', '劍法', '刀法', '棍法', '短兵', '招架', '輕功', '內功', '連擊進攻', '兵器加成', '組合技能', '暗勁效果', '傳承絕學', '忙碌狀態']
+  const configs: string[] = ['拳腳', '劍法', '刀法', '棍法', '短兵', '招架', '輕功', '內功', '反震', '連擊進攻', '兵器加成', '組合技能', '暗勁效果', '傳承絕學', '忙碌狀態']
   const tiers: Array<SkillTier | '全部'> = ['全部', '第一階', '第二階', '第三階', '上古傳承無上神武']
 
   const familyOptions = useMemo(() => {
@@ -268,6 +269,8 @@ if (tier !== '全部' && rowTier !== tier) return false
             return (s as any).specialEffects?.some((e: any) => e.type === '忙碌狀態')
           } else if (cf === '傳承絕學') {
             return (s as any).specialEffects?.some((e: any) => e.type === '傳承絕學')
+          } else if (cf === '反震') {
+            return (s.configs ?? []).some((c: string) => c.includes('反震'))
           } else {
             return (s.configs ?? []).includes(cf as SkillConfig)
           }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 type ElKey = '木' | '火' | '土' | '金' | '水' | '無'
 
@@ -42,6 +42,8 @@ export type SkillLite = {
     spiritPerStack: number
     description: string
   } | null
+  /** 反震：成功招架時無視防禦反彈傷害 */
+  fanzhen: boolean
 }
 
 const ELEMENTS: ElKey[] = ['木', '火', '土', '金', '水', '無']
@@ -137,6 +139,19 @@ function detectWeaponType(configs: string[]): WeaponType | null {
   return null
 }
 
+// Reverse mapping: element → weapon type label (for display next to element buttons)
+const ELEMENT_WEAPON_LABEL: Record<ElKey, string | null> = {
+  木: '棍法',
+  火: '刀法',
+  土: '拳腳',
+  金: '劍法',
+  水: '短兵',
+  無: null,
+}
+
+// 左右互搏之術：最終傷害 ×1.5（作用於所有加成之後的最終環節）
+const ZUOYOU_MULT = 1.5
+
 export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
   // Filter to skills with usable damage data
   const usable = useMemo(
@@ -161,6 +176,7 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
   const [opponentDodge, setOpponentDodge] = useState(0) // 對方閃避 %
   const [turns, setTurns] = useState(10) // 戰鬥回合數（用來估算疊層 DoT）
   const [divineWeapon, setDivineWeapon] = useState<DivineWeapon | null>(null)
+  const [zuoyou, setZuoyou] = useState(false) // 左右互搏之術
 
   // ── derived ──────────────────────────────────────────────────────────────
   const baseNei = skill?.avgNeishang ?? 0
@@ -182,6 +198,18 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
   const effectiveDivine = divineCompatible ? divineWeapon : null
   // Auto-reset if user switches skills to incompatible one
   // (use effect-free pattern: compute below, derived values use effectiveDivine)
+
+  // Auto-suggest self element based on skill's weapon type
+  const suggestedEl: ElKey | null = useMemo(() => {
+    if (!skillWeaponType) return null
+    const el = WEAPON_TYPE_ELEMENT[skillWeaponType]
+    return (ELEMENTS as string[]).includes(el) ? (el as ElKey) : null
+  }, [skillWeaponType])
+
+  // Auto-apply suggested element when skill changes
+  useEffect(() => {
+    if (suggestedEl) setSelfEl(suggestedEl)
+  }, [suggestedEl])
 
   const elMod = elementMod(selfEl, targetEl)
 
@@ -243,8 +271,13 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
     }
   }
 
+  // 左右互搏之術：最終傷害 ×1.5（獨立作用於主攻擊與連擊，在所有加成之後）
+  const zuoyouMult = zuoyou ? ZUOYOU_MULT : 1
+  const perTurnDirectFinal = Math.round(perTurnDirect * zuoyouMult)
+  const perTurnNeiFinal = Math.round(perTurnNei * zuoyouMult)
+  const perTurnBiFinal = Math.round(perTurnBi * zuoyouMult)
   const perTurnTotal =
-    perTurnDirect + (stackInfo ? Math.round(stackInfo.dotTotal / turns) : 0)
+    perTurnDirectFinal + (stackInfo ? Math.round(stackInfo.dotTotal / turns) : 0)
 
   // Defensive bonus from 組合技能 (配對輕功 → 閃避加成)
   const dodgeBonus = comboCfg && skill?.comboSkill ? skill.comboSkill.bonus : 0
@@ -264,9 +297,16 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
 
           {/* 五行 */}
           <div className="rounded-2xl border border-hairline bg-canvas p-5">
-            <div className="text-sm font-semibold text-ink">五行對位</div>
+            <div className="flex items-center justify-between">
+              <div className="text-sm font-semibold text-ink">五行對位</div>
+              {suggestedEl && (
+                <span className="text-[11px] text-muted">
+                  已依武技類型自動選擇我方：{suggestedEl}（{ELEMENT_WEAPON_LABEL[suggestedEl]}）
+                </span>
+              )}
+            </div>
             <div className="mt-3 grid gap-4 sm:grid-cols-2">
-              <ElPicker label="我方" value={selfEl} onChange={setSelfEl} />
+              <ElPicker label="我方" value={selfEl} onChange={setSelfEl} highlightEl={suggestedEl} />
               <ElPicker label="對方" value={targetEl} onChange={setTargetEl} />
             </div>
             <div className="mt-3 inline-flex items-center gap-2 text-xs">
@@ -283,6 +323,7 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
             </div>
             <p className="mt-2 text-[11px] text-muted">
               規則：對方生我方 +{SHENG_BONUS}%、對方剋我方 {KE_PENALTY}%；反向不觸發。
+              五行對應武器：木＝棍法、火＝刀法、土＝拳腳、金＝劍法、水＝短兵。
             </p>
           </div>
 
@@ -310,6 +351,11 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
                 disabled={!skill?.comboSkill}
                 checked={comboCfg}
                 onChange={setComboCfg}
+              />
+              <Toggle
+                label="左右互搏之術（技能 ≥100 級、悟性 ≤100 時，最終傷害 ×1.5）"
+                checked={zuoyou}
+                onChange={setZuoyou}
               />
 
               {/* 上古神兵 */}
@@ -463,13 +509,13 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
               <div className="rounded-md bg-canvas p-2">
                 <div className="text-muted">內傷 / 回合</div>
                 <div className="font-bold tabular-nums text-ink">
-                  {perTurnNei.toLocaleString()}
+                  {perTurnNeiFinal.toLocaleString()}
                 </div>
               </div>
               <div className="rounded-md bg-canvas p-2">
                 <div className="text-muted">臂傷 / 回合</div>
                 <div className="font-bold tabular-nums text-ink">
-                  {perTurnBi.toLocaleString()}
+                  {perTurnBiFinal.toLocaleString()}
                 </div>
               </div>
             </div>
@@ -477,6 +523,7 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
               每招 {perHit.toLocaleString()} ({perHitNei.toLocaleString()} 內 +{' '}
               {perHitBi.toLocaleString()} 臂) × 回合倍率 {comboTurnMult.toFixed(2)}
               {hitProb < 1 ? ` × 命中 ${Math.round(hitProb * 100)}%` : ''}
+              {zuoyou ? ` × 左右互搏 ${ZUOYOU_MULT}` : ''}
               {stackInfo
                 ? ` + DoT 均攤 ${Math.round(stackInfo.dotTotal / turns).toLocaleString()}`
                 : ''}
@@ -512,7 +559,7 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
                     {perHit.toLocaleString()}
                   </span>
                 </div>
-                {skill?.combo && (
+                {skill?.combo ? (
                   <div className="mt-1 flex justify-between text-muted">
                     <span>
                       連擊（{Math.round(skill.combo.triggerChance * 100)}% 機率多打{' '}
@@ -528,6 +575,18 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
                       +{Math.round(perHit * (comboTurnMult - 1)).toLocaleString()}
                     </span>
                   </div>
+                ) : (
+                  <div className="mt-1 text-muted">
+                    此武技無連擊進攻效果，回合倍率 = 1.0
+                  </div>
+                )}
+                {zuoyou && (
+                  <div className="mt-1 flex justify-between text-muted">
+                    <span>左右互搏之術 ×{ZUOYOU_MULT}</span>
+                    <span className="font-bold tabular-nums text-ink">
+                      +{(perTurnDirectFinal - perTurnDirect).toLocaleString()}
+                    </span>
+                  </div>
                 )}
                 {hitProb < 1 && (
                   <div className="mt-1 flex justify-between text-muted">
@@ -540,9 +599,9 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
                   </div>
                 )}
                 <div className="mt-1 flex justify-between border-t border-hairline-soft pt-1 text-muted">
-                  <span>每回合直傷</span>
+                  <span>每回合直傷{zuoyou ? '（含左右互搏）' : ''}</span>
                   <span className="font-bold tabular-nums text-ink">
-                    {perTurnDirect.toLocaleString()}
+                    {perTurnDirectFinal.toLocaleString()}
                   </span>
                 </div>
               </div>
@@ -599,11 +658,19 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
               {skill?.weaponBonus && (
                 <li className="text-muted">{skill.weaponBonus.description}</li>
               )}
+              {skill?.fanzhen && (
+                <li>
+                  <span className="font-semibold text-ink">反震：</span>
+                  <span className="text-muted">
+                    成功招架對手攻擊時，100% 機率發動，無視防禦直接造成反彈傷害。僅在成功招架時觸發，閃避或被擊中時不發動。
+                  </span>
+                </li>
+              )}
             </ul>
           </div>
 
           <p className="text-[11px] leading-relaxed text-muted">
-            模擬以資料庫平均內傷為基準，套用五行、兵器、連擊、疊層 DoT、閃避等
+            模擬以資料庫平均內傷為基準，套用五行、兵器、連擊、左右互搏、上古神兵、疊層 DoT、閃避等
             可量化條件。實際傷害仍受招式等級、屬性、被閃/被招、buff 等影響。
           </p>
         </aside>
@@ -647,10 +714,12 @@ function ElPicker({
   label,
   value,
   onChange,
+  highlightEl,
 }: {
   label: string
   value: ElKey
   onChange: (v: ElKey) => void
+  highlightEl?: ElKey | null
 }) {
   return (
     <div>
@@ -658,19 +727,30 @@ function ElPicker({
       <div className="mt-1.5 flex flex-wrap gap-1.5">
         {ELEMENTS.map((e) => {
           const active = value === e
+          const highlighted = highlightEl === e && !active
+          const weaponLabel = ELEMENT_WEAPON_LABEL[e]
           return (
             <button
               key={e}
               type="button"
               onClick={() => onChange(e)}
-              className="h-8 w-8 rounded-full text-xs font-bold text-white"
+              className="flex h-14 w-16 flex-col items-center justify-center rounded-xl text-sm font-bold text-white"
               style={{
                 background: EL_COLOR[e],
-                outline: active ? '3px solid #222' : 'none',
-                outlineOffset: 2,
+                outline: active
+                  ? '3px solid #222'
+                  : highlighted
+                    ? '2px dashed #e0413a'
+                    : 'none',
+                outlineOffset: active ? 2 : 1,
               }}
             >
-              {e}
+              <span>{e}</span>
+              {weaponLabel && (
+                <span className="text-[10px] font-normal leading-tight opacity-80">
+                  {weaponLabel}
+                </span>
+              )}
             </button>
           )
         })}
@@ -721,7 +801,7 @@ function Slider({
   )
 }
 
-type TraitFilter = 'all' | '連擊' | '兵器' | '疊層' | '組合'
+type TraitFilter = 'all' | '連擊' | '兵器' | '疊層' | '組合' | '反震'
 
 function SkillPicker({
   skills,
@@ -752,6 +832,7 @@ function SkillPicker({
       if (trait === '兵器' && !s.weaponBonus) return false
       if (trait === '疊層' && !s.stack) return false
       if (trait === '組合' && !s.comboSkill) return false
+      if (trait === '反震' && !s.fanzhen) return false
       if (q && !s.name.includes(q) && !(s.sect ?? '').includes(q)) return false
       return true
     })
@@ -763,6 +844,7 @@ function SkillPicker({
     { k: '兵器', label: '兵器加成' },
     { k: '疊層', label: '暗勁/毒性' },
     { k: '組合', label: '組合技能' },
+    { k: '反震', label: '反震' },
   ]
 
   return (
@@ -801,6 +883,9 @@ function SkillPicker({
               )}
               {selected.comboSkill && (
                 <TraitChip color="#16a34a">組合</TraitChip>
+              )}
+              {selected.fanzhen && (
+                <TraitChip color="#9333ea">反震</TraitChip>
               )}
             </div>
           </div>
@@ -908,6 +993,7 @@ function SkillPicker({
                         />
                       )}
                       {s.comboSkill && <Dot color="#16a34a" title="組合" />}
+                      {s.fanzhen && <Dot color="#9333ea" title="反震" />}
                     </span>
                   </button>
                 </li>

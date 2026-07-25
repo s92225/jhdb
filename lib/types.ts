@@ -11,6 +11,7 @@ export type SkillConfig =
   | '招架'
   | '輕功'
   | '內功'
+  | '反震'
   | '未知'
 
 export type SkillTier = '第一階' | '第二階' | '第三階' | '上古傳承無上神武' | '未知'

@@ -4,7 +4,7 @@ import { EffectSimulator } from '@/app/components/EffectSimulator'
 
 export const metadata: Metadata = {
   title: '特效效果模擬器｜人在江湖資料庫',
-  description: '武技連擊、兵器加成、暗勁/毒性/寒毒疊層與組合技能效果模擬。',
+  description: '武技連擊、兵器加成、左右互搏、暗勁/毒性/寒毒疊層與組合技能效果模擬。',
 }
 
 export default async function EffectSimulatorPage() {
@@ -68,6 +68,7 @@ export default async function EffectSimulatorPage() {
         description: String(st.description ?? ''),
       }
     })(),
+    fanzhen: Array.isArray(s?.configs) && s.configs.some((c: string) => c.includes('反震')),
   }))
 
   return (

@@ -8462,7 +8462,7 @@
     "name": "乾坤大挪移",
     "family": "明教",
     "stage": null,
-    "config": "招架",
+    "config": "招架, 反震",
     "requirements": [
       {
         "name": "內力",
@@ -13567,5 +13567,48 @@
     },
     "sourceFile": "逍遙派.txt",
     "rawExcerpt": "<上古傳承無上神武>\n\n逍遙御風\t\t配置:\t短兵, 招架\t\t\n\n學習條件\t\t內力:\t5000\t\t\n\n\t \t凌波微步:\t800\t\t\n\n \n\n招式 \t內傷\t臂傷\t被閃\t被招\t等級\n\n風舞仙跡\t600\t600\t30\t30\t0\n\n影隨步履\t700\t700\t30\t30\t100\n\n霜寒降臨\t800\t800\t30\t30\t200\n\n雷霆萬鈞\t900\t900\t30\t30\t300\n\n雲影浮沉\t1000 1000 30\t30\t400\n\n御風逍遙\t1100 1100 30\t30\t500\n\n平均值 \t850\t850\t30\t30\t250"
+  },
+  {
+    "id": "skill-姑蘇慕容-txt-斗轉星移-1",
+    "name": "斗轉星移",
+    "family": "公共武技",
+    "stage": null,
+    "config": "招架, 反震",
+    "requirements": [
+      {
+        "name": "基本招架",
+        "value": 500,
+        "raw": "基本招架: 500"
+      },
+      {
+        "name": "悟性",
+        "value": 30,
+        "raw": "悟性: 30"
+      },
+      {
+        "name": "臂力",
+        "value": 30,
+        "raw": "臂力: 30"
+      },
+      {
+        "name": "根骨",
+        "value": 30,
+        "raw": "根骨: 30"
+      },
+      {
+        "name": "身法",
+        "value": 30,
+        "raw": "身法: 30"
+      },
+      {
+        "name": "內力",
+        "value": 500,
+        "raw": "內力: 500"
+      }
+    ],
+    "moves": [],
+    "averages": null,
+    "sourceFile": "更新公告",
+    "rawExcerpt": "斗轉星移\t配置: 招架, 反震\t\t\t\t\n\n學習條件\t基本招架: 500\t\t\t\t\n\n\t悟性: 30\t\t\t\t\n\n\t臂力: 30\t\t\t\t\n\n\t根骨: 30\t\t\t\t\n\n\t身法: 30\t\t\t\t\n\n\t內力: 500\t\t\t\t\n\n最高等級: 800"
   }
 ]

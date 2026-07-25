@@ -42,6 +42,7 @@ const HUBS: Record<string, { title: string; tabs: HubTab[] }> = {
     tabs: [
       { href: '/tools', label: '工具總覽', exact: true },
       { href: '/tools/dazuo', label: '打坐計算' },
+      { href: '/tools/stats', label: '屬性計算' },
       { href: '/tools/macros', label: '按精教程' },
     ],
   },
