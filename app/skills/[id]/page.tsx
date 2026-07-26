@@ -3,6 +3,22 @@ import { notFound } from "next/navigation";
 import { Badge } from "@/app/components/Badge";
 import EmptyState from "@/app/components/EmptyState";
 import { getSkillById } from "@/lib/data";
+import manualsData from "@/data/manuals.json";
+
+type ManualEntry = { id: string; name: string };
+
+function norm(s: string) {
+  return (s ?? "").replace(/\u3000/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function findManualForSkill(skillName: string): { id: string; name: string } | null {
+  const target = norm(skillName);
+  if (!target) return null;
+  for (const m of manualsData as ManualEntry[]) {
+    if (norm(m.name) === target) return { id: m.id, name: m.name };
+  }
+  return null;
+}
 
 export default async function SkillDetailPage({
   params,
@@ -11,6 +27,8 @@ export default async function SkillDetailPage({
 }) {
   const skill = await getSkillById(params.id);
   if (!skill) return notFound();
+
+  const manual = findManualForSkill(skill.name);
 
   const prereqText =
     skill.requirement?.prerequisites && skill.requirement.prerequisites.length
@@ -26,7 +44,6 @@ export default async function SkillDetailPage({
           <h1 className="text-2xl font-semibold">{skill.name || "(未命名武技)"}</h1>
           <div className="mt-2 flex flex-wrap gap-2">
             {skill.sourceTag ? <Badge>{skill.sourceTag}</Badge> : null}
-            {skill.sect ? <Badge>{skill.sect}</Badge> : null}
             {skill.tier ? <Badge>{skill.tier}</Badge> : null}
             {skill.configs?.map((c) => (
               <Badge key={c}>{c}</Badge>
@@ -46,6 +63,14 @@ export default async function SkillDetailPage({
           >
             去比較
           </Link>
+          {manual && (
+            <Link
+              href={`/equipment/manuals#manual-${encodeURIComponent(manual.id)}`}
+              className="rounded-lg bg-red-600 px-3 py-2 text-sm text-white hover:bg-red-700"
+            >
+              武功秘笈
+            </Link>
+          )}
         </div>
       </div>
 
@@ -55,7 +80,7 @@ export default async function SkillDetailPage({
           <InfoRow label="內力需求" value={skill.requirement?.neili} />
           <InfoRow label="精力需求" value={skill.requirement?.jingli} />
           <InfoRow label="前置技能" value={prereqText} />
-          <InfoRow label="備註" value={skill.requirement?.notes ?? ""} />
+          <InfoRow label="備註" value={skill.requirement?.notes ?? ""} multiline />
         </div>
       </section>
 
@@ -216,6 +241,13 @@ export default async function SkillDetailPage({
         </section>
       ) : null}
 
+      {skill.rawExcerpt ? (
+        <section className="mt-6 rounded-xl border border-slate-200 bg-white p-5">
+          <h2 className="text-lg font-semibold">詳細說明</h2>
+          <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-slate-700">{skill.rawExcerpt}</p>
+        </section>
+      ) : null}
+
       {skill.rawSource ? (
         <p className="mt-6 text-xs text-slate-500">來源：{skill.rawSource}</p>
       ) : null}
@@ -223,12 +255,12 @@ export default async function SkillDetailPage({
   );
 }
 
-function InfoRow({ label, value }: { label: string; value: any }) {
+function InfoRow({ label, value, multiline }: { label: string; value: any; multiline?: boolean }) {
   const isEmpty = value === null || value === undefined || value === "";
   return (
     <div className="rounded-lg border border-slate-200 px-3 py-2">
       <div className="text-xs text-slate-500">{label}</div>
-      <div className="mt-1 text-sm text-slate-800">
+      <div className={`mt-1 text-sm text-slate-800 ${multiline ? "whitespace-pre-line" : ""}`}>
         {isEmpty ? <span className="text-slate-400">(空白)</span> : String(value)}
       </div>
     </div>

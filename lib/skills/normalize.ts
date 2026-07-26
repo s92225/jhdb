@@ -109,6 +109,7 @@ export type UISkill = {
   weaponBonus?: SkillWeaponBonus[] | null
   comboSkill?: ComboSkill | null
   rawSource?: string | null
+  rawExcerpt?: string | null
 }
 
 // ---- 傳承絕學：9 種上古傳承無上神武 ----
@@ -445,6 +446,7 @@ export function normalizeSkill(raw: any): UISkill {
     weaponBonus: weaponBonus.length ? weaponBonus : null,
     comboSkill,
     rawSource,
+    rawExcerpt: typeof raw?.rawExcerpt === 'string' ? raw.rawExcerpt : null,
   }
 }
 

@@ -126,6 +126,7 @@ export interface Skill {
   specialEffects?: SkillSpecialEffect[] | null
   weaponBonus?: SkillWeaponBonus[] | null
   rawSource?: string | null // 來源檔名/段落，方便追溯，不一定有
+  rawExcerpt?: string | null // 原始說明文字，用於詳細說明區塊
 }
 
 export interface QuestStep {
