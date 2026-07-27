@@ -92,6 +92,21 @@ const SYSTEMS: Array<{
     href: '/skills',
     linkLabel: '查看具備忙碌狀態的武技 →',
   },
+  {
+    title: '死亡懲罰',
+    desc: '玩家死亡時損失 3% 經驗值。',
+    color: 'bg-red-700',
+  },
+  {
+    title: '門派功勳兌換',
+    desc: '專屬門派裝備：100 功勳／件。專屬限定防具：300 功勳／件。100 功勳 → 20 黃金（GM）。1000 功勳 → 10000 潛能（GM）。3000 功勳 → 5000000 經驗（GM）。',
+    color: 'bg-blue-600',
+  },
+  {
+    title: '擊殺掉落',
+    desc: '擊殺任何生物後，有 10% 機率獨立獲得「九轉熊蛇丸」和「丹劫」。',
+    color: 'bg-purple-600',
+  },
 ]
 
 export default function SystemsPage() {

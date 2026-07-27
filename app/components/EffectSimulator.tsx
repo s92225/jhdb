@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
+import weaponsData from '@/data/weapons.json'
 
 type ElKey = '木' | '火' | '土' | '金' | '水' | '無'
 
@@ -116,16 +117,59 @@ const WEAPON_TYPE_ELEMENT: Record<WeaponType, string> = {
   拳腳: '土',
 }
 
-const DIVINE_WEAPON_LIST: Array<{ name: string; type: WeaponType }> = [
-  { name: '真·倚天劍', type: '劍法' },
-  { name: '真·玄鐵神劍', type: '劍法' },
-  { name: '真·伏魔刀', type: '刀法' },
-  { name: '真·屠龍刀', type: '刀法' },
-  { name: '真·打狗棒', type: '棍法' },
-  { name: '五輪歸一', type: '短兵' },
-]
-const DIVINE_WEAPON_NAMES = DIVINE_WEAPON_LIST.map((w) => w.name)
-type DivineWeapon = (typeof DIVINE_WEAPON_NAMES)[number]
+// Build full weapon list from data/weapons.json
+const WEAPON_CATEGORY_TYPE: Record<string, WeaponType> = {
+  '劍類': '劍法',
+  '刀類': '刀法',
+  '棍棒類': '棍法',
+  '短兵類': '短兵',
+}
+
+type WeaponEntry = { name: string; type: WeaponType; attack: number; isDivine: boolean }
+
+const ALL_WEAPONS: WeaponEntry[] = (() => {
+  const list: WeaponEntry[] = []
+  for (const cat of weaponsData.divineWeapons as Array<{
+    type: string
+    weapons: Array<{
+      name: string
+      attack: number
+      forgeable: boolean
+      upgradedName?: string
+      upgradedAttack?: number
+    }>
+  }>) {
+    const wt = WEAPON_CATEGORY_TYPE[cat.type]
+    if (!wt) continue
+    for (const w of cat.weapons) {
+      list.push({ name: w.name, type: wt, attack: w.attack, isDivine: false })
+      if (w.forgeable && w.upgradedName && w.upgradedAttack != null) {
+        list.push({ name: w.upgradedName, type: wt, attack: w.upgradedAttack, isDivine: true })
+      }
+    }
+  }
+  // Other weapons with known attack
+  for (const w of weaponsData.otherWeapons as Array<{
+    name: string
+    attack: number | null
+    notes?: string
+  }>) {
+    if (w.attack != null && w.attack > 0) {
+      // Infer weapon type from name
+      const name = w.name
+      let wt: WeaponType | null = null
+      if (name.includes('劍')) wt = '劍法'
+      else if (name.includes('刀')) wt = '刀法'
+      else if (name.includes('棒') || name.includes('杖')) wt = '棍法'
+      else if (name.includes('輪') || name.includes('鞭') || name.includes('扇') || name.includes('索')) wt = '短兵'
+      if (wt) {
+        list.push({ name: w.name, type: wt, attack: w.attack, isDivine: false })
+      }
+    }
+  }
+  return list.sort((a, b) => a.name.localeCompare(b.name, 'zh-Hant'))
+})()
+
 const DIVINE_CRIT_CHANCE = 0.5
 const DIVINE_CRIT_BONUS = 0.3 // +30%
 
@@ -175,7 +219,7 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
   const [comboCfg, setComboCfg] = useState(true) // 組合技能 (輕功配置)
   const [opponentDodge, setOpponentDodge] = useState(0) // 對方閃避 %
   const [turns, setTurns] = useState(10) // 戰鬥回合數（用來估算疊層 DoT）
-  const [divineWeapon, setDivineWeapon] = useState<DivineWeapon | null>(null)
+  const [selectedWeapon, setSelectedWeapon] = useState<string | null>(null)
   const [zuoyou, setZuoyou] = useState(false) // 左右互搏之術
 
   // ── derived ──────────────────────────────────────────────────────────────
@@ -189,15 +233,14 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
     [skill],
   )
 
-  // If the currently selected 神兵 doesn't match the skill's weapon type, clear it.
-  const divineCompatible =
-    divineWeapon === null
+  // If the currently selected weapon doesn't match the skill's weapon type, clear it.
+  const selectedWeaponEntry = ALL_WEAPONS.find((w) => w.name === selectedWeapon)
+  const weaponCompatible =
+    selectedWeapon === null
       ? true
-      : DIVINE_WEAPON_LIST.find((w) => w.name === divineWeapon)?.type ===
-        skillWeaponType
-  const effectiveDivine = divineCompatible ? divineWeapon : null
-  // Auto-reset if user switches skills to incompatible one
-  // (use effect-free pattern: compute below, derived values use effectiveDivine)
+      : selectedWeaponEntry?.type === skillWeaponType
+  const effectiveWeapon = weaponCompatible ? selectedWeapon : null
+  const effectiveWeaponEntry = effectiveWeapon ? selectedWeaponEntry : null
 
   // Auto-suggest self element based on skill's weapon type
   const suggestedEl: ElKey | null = useMemo(() => {
@@ -219,21 +262,25 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
     ? (skill!.weaponBonus!.minPct + skill!.weaponBonus!.maxPct) / 2
     : 0
 
-  // 上古神兵之暴擊 (per-hit expectation; only applies when compatible)
+  // 上古神兵之暴擊 (per-hit expectation; only applies when weapon is a 真· divine weapon)
+  const isDivineWeapon = effectiveWeaponEntry?.isDivine ?? false
   const divineExpectedMult =
-    1 + (effectiveDivine ? DIVINE_CRIT_CHANCE * DIVINE_CRIT_BONUS : 0)
+    1 + (isDivineWeapon ? DIVINE_CRIT_CHANCE * DIVINE_CRIT_BONUS : 0)
 
-  // Per-hit damage: (內傷 + 臂傷) × (1 + element + weapon) × 神兵暴擊期望
+  // Weapon attack power (flat addition to base damage, 1:1)
+  const weaponAttack = effectiveWeaponEntry?.attack ?? 0
+
+  // Per-hit damage: (內傷 + 臂傷 + 武器攻擊力) × (1 + element + weapon) × 神兵暴擊期望
   const totalAddPct = elMod.pct + weaponPct
   const multiplier = (1 + totalAddPct / 100) * divineExpectedMult
-  const perHitNei = Math.round(baseNei * multiplier)
+  const perHitNei = Math.round((baseNei + weaponAttack) * multiplier)
   const perHitBi = Math.round(baseBi * multiplier)
   const perHit = perHitNei + perHitBi
 
-  // Combo: when it triggers, you get `hitCount` strikes, each at avgMult × base
-  // damage. When it doesn't, you get a single 100% strike.
-  //   turnMult = (1 - p) × 1  +  p × hitCount × avgMult
-  // expectedStrikesPerTurn (for UI / DoT) = (1 - p) × 1 + p × hitCount
+  // Combo: when it triggers, you get (hitCount - 1) EXTRA strikes at avgMult × base
+  // damage, on top of the normal 100% strike.
+  //   turnMult = 1 + p × (hitCount - 1) × avgMult
+  // expectedStrikesPerTurn (for UI / DoT) = 1 + p × (hitCount - 1)
   let expectedStrikes = 1
   let avgComboMult = 1
   let comboTurnMult = 1
@@ -241,8 +288,8 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
     avgComboMult = (skill.combo.multMin + skill.combo.multMax) / 2
     const p = skill.combo.triggerChance
     const hc = skill.combo.hitCount
-    expectedStrikes = (1 - p) * 1 + p * hc
-    comboTurnMult = (1 - p) * 1 + p * hc * avgComboMult
+    expectedStrikes = 1 + p * (hc - 1)
+    comboTurnMult = 1 + p * (hc - 1) * avgComboMult
   }
 
   const hitProb = Math.max(0, 1 - opponentDodge / 100)
@@ -358,11 +405,11 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
                 onChange={setZuoyou}
               />
 
-              {/* 上古神兵 */}
+              {/* 武器選擇 */}
               <div>
                 <div className="flex items-baseline justify-between text-xs">
                   <span className="text-muted">
-                    上古神兵（每命中 50% × +30%，期望 ×1.15）
+                    武器（攻擊力 1:1 加入傷害，真·神兵額外暴擊 +15%）
                   </span>
                   {skillWeaponType ? (
                     <span className="text-[10px] text-muted">
@@ -376,46 +423,40 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
                     </span>
                   ) : (
                     <span className="text-[10px] text-muted">
-                      無武器類型（無法配神兵）
+                      無武器類型（無法裝備武器）
                     </span>
                   )}
                 </div>
                 <div className="mt-1.5 flex flex-wrap gap-1.5">
                   <button
                     type="button"
-                    onClick={() => setDivineWeapon(null)}
+                    onClick={() => setSelectedWeapon(null)}
                     className={[
                       'rounded-full border px-2.5 py-0.5 text-[11px]',
-                      divineWeapon === null
+                      selectedWeapon === null
                         ? 'border-ink bg-ink text-white'
                         : 'border-hairline text-ink hover:bg-surface-soft',
                     ].join(' ')}
                   >
                     無
                   </button>
-                  {DIVINE_WEAPON_LIST.map((w) => {
-                    const compat = w.type === skillWeaponType
-                    const active = divineWeapon === w.name && compat
+                  {ALL_WEAPONS.filter((w) => w.type === skillWeaponType).map((w) => {
+                    const active = selectedWeapon === w.name
                     return (
                       <button
                         key={w.name}
                         type="button"
-                        disabled={!compat}
-                        onClick={() =>
-                          setDivineWeapon(w.name as DivineWeapon)
-                        }
+                        onClick={() => setSelectedWeapon(w.name)}
                         title={
-                          compat
-                            ? `${w.type}（${WEAPON_TYPE_ELEMENT[w.type]}）`
-                            : `需 ${w.type}（${WEAPON_TYPE_ELEMENT[w.type]}）武技，此武技為 ${skillWeaponType ?? '—'}`
+                          `${w.type}（${WEAPON_TYPE_ELEMENT[w.type]}）${w.isDivine ? ' · 真·神兵暴擊' : ''}`
                         }
                         className={[
                           'inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] transition-colors',
                           active
-                            ? 'border-amber-600 bg-amber-500 text-white'
-                            : compat
-                              ? 'border-hairline text-ink hover:bg-surface-soft'
-                              : 'cursor-not-allowed border-hairline-soft bg-surface-soft text-muted line-through',
+                            ? w.isDivine
+                              ? 'border-amber-600 bg-amber-500 text-white'
+                              : 'border-ink bg-ink text-white'
+                            : 'border-hairline text-ink hover:bg-surface-soft',
                         ].join(' ')}
                       >
                         {w.name}
@@ -425,15 +466,15 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
                             active ? 'text-white/90' : 'text-muted',
                           ].join(' ')}
                         >
-                          · {w.type}
+                          · {w.attack}攻{w.isDivine ? ' · 暴擊' : ''}
                         </span>
                       </button>
                     )
                   })}
                 </div>
-                {divineWeapon && !divineCompatible && (
+                {selectedWeapon && !weaponCompatible && (
                   <p className="mt-1 text-[11px] text-rausch">
-                    所選神兵與當前武技類型不符，暴擊效果不會套用。
+                    所選武器與當前武技類型不符，效果不會套用。
                   </p>
                 )}
               </div>
@@ -496,7 +537,8 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
           </div>
         </div>
 
-        {/* RIGHT: output */}
+        {/* RIGHT: output (sticky on large screens) */}
+        <div className="lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:self-start lg:overflow-y-auto lg:pb-4">
         <aside className="space-y-4">
           <div className="rounded-2xl border border-rausch bg-rausch/5 p-5">
             <div className="text-xs font-medium text-rausch">
@@ -521,7 +563,7 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
             </div>
             <div className="mt-2 text-[11px] text-muted">
               每招 {perHit.toLocaleString()} ({perHitNei.toLocaleString()} 內 +{' '}
-              {perHitBi.toLocaleString()} 臂) × 回合倍率 {comboTurnMult.toFixed(2)}
+              {perHitBi.toLocaleString()} 臂{weaponAttack > 0 ? ` + ${weaponAttack} 武器攻` : ''}) × 回合倍率 {comboTurnMult.toFixed(2)}
               {hitProb < 1 ? ` × 命中 ${Math.round(hitProb * 100)}%` : ''}
               {zuoyou ? ` × 左右互搏 ${ZUOYOU_MULT}` : ''}
               {stackInfo
@@ -536,19 +578,25 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
               <Row label="平均內傷（資料庫）" value={baseNei} />
               <Row label="平均臂傷（資料庫）" value={baseBi} />
               <Row label="基礎合計" value={baseTotal} />
+              {effectiveWeapon && weaponAttack > 0 && (
+                <Row
+                  label={`武器攻擊力「${effectiveWeapon}」`}
+                  value={weaponAttack}
+                />
+              )}
               <Row
                 label={`五行 ${elMod.pct >= 0 ? '+' : ''}${elMod.pct}%`}
-                value={Math.round(baseTotal * (elMod.pct / 100))}
+                value={Math.round((baseTotal + weaponAttack) * (elMod.pct / 100))}
               />
               <Row
                 label={`兵器 +${weaponPct.toFixed(0)}%`}
-                value={Math.round(baseTotal * (weaponPct / 100))}
+                value={Math.round((baseTotal + weaponAttack) * (weaponPct / 100))}
               />
-              {effectiveDivine && (
+              {isDivineWeapon && (
                 <Row
-                  label={`神兵暴擊「${effectiveDivine}」 50% × +30% → 期望 +15%`}
+                  label={`神兵暴擊「${effectiveWeapon}」 50% × +30% → 期望 +15%`}
                   value={Math.round(
-                    baseTotal * (1 + totalAddPct / 100) * 0.15,
+                    (baseTotal + weaponAttack) * (1 + totalAddPct / 100) * 0.15,
                   )}
                 />
               )}
@@ -674,6 +722,7 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
             可量化條件。實際傷害仍受招式等級、屬性、被閃/被招、buff 等影響。
           </p>
         </aside>
+        </div>
       </div>
     </div>
   )
