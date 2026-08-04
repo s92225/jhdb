@@ -86,7 +86,15 @@
     "name": "岳不群",
     "location": "正氣堂",
     "skills": [
-      { "name": "辟邪劍法", "skillLevel": 50, "readWrite": 20, "basicQinggong": 50 },
+      { "name": "辟邪劍法", "skillLevel": 50, "readWrite": 20, "basicQinggong": 50 }
+    ]
+  },
+  {
+    "id": "master-華山派-風清揚",
+    "sect": "華山派",
+    "name": "風清揚",
+    "location": "含身崖",
+    "skills": [
       { "name": "劈石破玉拳", "skillLevel": 60, "readWrite": 20 },
       { "name": "反兩儀刀法", "skillLevel": 60, "readWrite": 20 },
       { "name": "華山身法", "skillLevel": 60, "readWrite": 20 },
@@ -97,13 +105,6 @@
       { "name": "狂風快劍", "skillLevel": 50 },
       { "name": "靈蛇生死搏", "skillLevel": 50 }
     ]
-  },
-  {
-    "id": "master-華山派-風清揚",
-    "sect": "華山派",
-    "name": "風清揚",
-    "location": "含身崖",
-    "skills": []
   },
   {
     "id": "master-崑崙武館-趙崑崙",
