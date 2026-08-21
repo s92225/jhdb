@@ -44,6 +44,7 @@ type IntegratedQuest = {
   accept?: any // 接取方式 (string[] | {text}[] | string)
   requirements?: any
   rewards?: any
+  targets?: any
   workflow?: any // 流程
   notes?: any
   // alternative schema fields
@@ -275,6 +276,7 @@ export default function QuestsPage() {
       q.summary,
       q.giver,
       q.location,
+      ...(Array.isArray(q.targets) ? (q.targets as any[]).map((x) => stringifyItem(x) ?? '') : []),
       ...(Array.isArray(q.workflow) ? (q.workflow as any[]).map((x) => stringifyItem(x) ?? '') : []),
     ]
       .filter(Boolean)
@@ -346,6 +348,7 @@ function QuestCard({ q }: { q: IntegratedQuest }) {
 
   const requirements = arr(q.requirements)
   const rewards = arr(q.rewards)
+  const targets = arr(q.targets)
   const workflow = arr(q.workflow ?? q.steps)
   const notes = arr(q.notes)
   const versionNotes = Array.isArray(q.versionNotes) ? q.versionNotes : []
@@ -405,6 +408,16 @@ function QuestCard({ q }: { q: IntegratedQuest }) {
             ordered
             emptyHint="未提及"
           />
+          {targets.length ? (
+            <div className="md:col-span-2">
+              <Section
+                title="任務目標"
+                icon="🎯"
+                tone="rose"
+                items={targets}
+              />
+            </div>
+          ) : null}
         </div>
 
         {q.blackwoodToken ? (
