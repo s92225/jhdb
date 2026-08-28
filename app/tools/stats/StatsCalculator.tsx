@@ -1,9 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-
-// ── helpers ──────────────────────────────────────────────────────────────
-const INT = (n: number) => Math.trunc(n)
+import { calculateVitalStats, INT } from './formulas'
 
 // ── accent color map (full class names for Tailwind JIT) ─────────────────
 const ACCENT_COLORS: Record<string, { text: string; bar: string }> = {
@@ -123,10 +121,13 @@ export function StatsCalculator() {
   const [根骨, set根骨] = useState(30)
   const [身法, set身法] = useState(30)
   const [內力, set內力] = useState(500)
+  const [精力, set精力] = useState(300)
   const [基本內功, set基本內功] = useState(200)
   const [讀書寫字, set讀書寫字] = useState(200)
   const [年齡, set年齡] = useState(20)
   const [道學禪宗, set道學禪宗] = useState(0)
+  const [額外氣加成, set額外氣加成] = useState(0)
+  const [額外精加成, set額外精加成] = useState(0)
   const [武功等級, set武功等級] = useState(100)
 
   const calc = useMemo(() => {
@@ -138,31 +139,20 @@ export function StatsCalculator() {
     const 潛能上限 = 讀書寫字 * 10 + 20
     const 打坐時間秒 = 內力 / 8 + 7
     const 內力回復 = INT(基本內功 / 2) + INT(內力 / 20) + 2
-    const 精力回復 = INT(基本內功 / 2) + INT(精力上限 / 20) + 2
+    const 精力回復 = INT(基本內功 / 2) + INT(精力 / 20) + 2
     const 武功所需經驗 = INT((武功等級 * 武功等級 * 武功等級) / 30)
     const 武功等級所需經驗 = 武功等級 * 武功等級
-
-    let 氣基礎 = 100 + (年齡 - 14) * 根骨 + INT(內力 / 4)
-    if (年齡 > 100) 氣基礎 -= (年齡 - 100) * 20
-    if (年齡 > 60) 氣基礎 -= (年齡 - 60) * 20
-    if (年齡 > 35) 氣基礎 -= (年齡 - 35) * 20
-
-    let 氣加成 = 0
-    let 精加成 = 0
-    if (道學禪宗 > 60) {
-      氣加成 = 道學禪宗 * 10
-      精加成 = 道學禪宗 * 6
-    } else if (道學禪宗 > 30) {
-      氣加成 = 道學禪宗 * 6
-      精加成 = 道學禪宗 * 4
-    }
-    const 氣總和 = 氣基礎 + 氣加成
-
-    let 精基礎 = 100 + (年齡 - 14) * 根骨 + INT(內力 / 4)
-    if (年齡 > 100) 精基礎 -= (年齡 - 100) * 20
-    if (年齡 > 60) 精基礎 -= (年齡 - 60) * 20
-    if (年齡 > 35) 精基礎 -= (年齡 - 35) * 20
-    const 精總和 = 精基礎 + 精加成
+    const vitalStats = calculateVitalStats({
+      age: 年齡,
+      intellect: 悟性,
+      strength: 臂力,
+      constitution: 根骨,
+      currentMaxNeili: 內力,
+      currentMaxJingli: 精力,
+      taoismOrBuddhism: 道學禪宗,
+      extraMaxQi: 額外氣加成,
+      extraMaxJing: 額外精加成,
+    })
 
     return {
       消1潛武功經驗_師父,
@@ -176,12 +166,9 @@ export function StatsCalculator() {
       精力回復,
       武功所需經驗,
       武功等級所需經驗,
-      氣總和,
-      精總和,
-      氣加成,
-      精加成,
+      ...vitalStats,
     }
-  }, [悟性, 臂力, 根骨, 身法, 內力, 基本內功, 讀書寫字, 年齡, 道學禪宗, 武功等級])
+  }, [悟性, 臂力, 根骨, 內力, 精力, 基本內功, 讀書寫字, 年齡, 道學禪宗, 額外氣加成, 額外精加成, 武功等級])
 
   const formatTime = (seconds: number) => {
     if (seconds < 60) return `${seconds.toFixed(1)} 秒`
@@ -215,6 +202,7 @@ export function StatsCalculator() {
           <Section title="技能與內力">
             <div className="space-y-4">
               <Slider label="目前內力上限（已修練）" value={內力} set={set內力} min={0} max={10000} step={50} accent="purple" />
+              <Slider label="目前精力上限（已修練）" value={精力} set={set精力} min={0} max={10000} step={10} accent="teal" />
               <Slider label="基本內功" value={基本內功} set={set基本內功} min={0} max={2000} step={10} accent="purple" />
               <Slider label="讀書寫字" value={讀書寫字} set={set讀書寫字} min={0} max={2000} step={10} accent="blue" />
               <Slider label="道學/禪宗心法" value={道學禪宗} set={set道學禪宗} min={0} max={2000} step={10} accent="indigo" />
@@ -225,6 +213,16 @@ export function StatsCalculator() {
             <div className="space-y-4">
               <Slider label="年齡" value={年齡} set={set年齡} min={14} max={1000} accent="slate" />
               <Slider label="武功等級" value={武功等級} set={set武功等級} min={1} max={2000} step={1} accent="rausch" />
+            </div>
+          </Section>
+
+          <Section title="轉生與永久加成（選填）">
+            <div className="space-y-4">
+              <Slider label="額外最大氣" value={額外氣加成} set={set額外氣加成} min={0} max={200000} accent="red" />
+              <Slider label="額外最大精" value={額外精加成} set={set額外精加成} min={0} max={100000} accent="green" />
+            </div>
+            <div className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-700">
+              轉生、頭銜、永久物品等加成未有公開完整公式，請把角色固定加成填在這裡。
             </div>
           </Section>
         </div>
@@ -257,19 +255,20 @@ export function StatsCalculator() {
 
           <Section title="氣 / 精總和">
             <div className="grid gap-3 sm:grid-cols-2">
-              <ResultCard label="氣的總和" value={calc.氣總和.toLocaleString()} formula="100+(歲-14)x根骨+INT(內力/4)+道學/禪宗" accent="text-red-600" />
-              <ResultCard label="精的總和" value={calc.精總和.toLocaleString()} formula="100+(歲-14)x根骨+INT(內力/4)+道學/禪宗" accent="text-green-600" />
+              <ResultCard label="最大氣" value={calc.maxQi.toLocaleString()} formula="基礎氣+內力/3+道學/禪宗+額外加成" accent="text-red-600" />
+              <ResultCard label="最大精" value={calc.maxJing.toLocaleString()} formula="基礎精+精力/3+道學/禪宗+額外加成" accent="text-green-600" />
             </div>
-            {年齡 > 35 && (
-              <div className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-700">
-                ⚠ 年齡超過 35 歲，氣精開始衰減（每歲 -20）
-                {年齡 > 60 && '；超過 60 歲再 -20/歲'}
-                {年齡 > 100 && '；超過 100 歲再 -20/歲'}
+            <div className="mt-3 grid gap-2 text-xs text-bodytext sm:grid-cols-2">
+              <div className="rounded-lg bg-surface-soft px-3 py-2">
+                氣：600 + 年齡成長 {calc.qiAgeGrowth.toLocaleString()} + 內力 {INT(內力 / 3).toLocaleString()} + 心法 {calc.qiKnowledgeBonus.toLocaleString()} + 額外 {calc.extraMaxQi.toLocaleString()}
               </div>
-            )}
+              <div className="rounded-lg bg-surface-soft px-3 py-2">
+                精：200 + 年齡成長 {calc.jingAgeGrowth.toLocaleString()} + 精力 {INT(精力 / 3).toLocaleString()} + 心法 {calc.jingKnowledgeBonus.toLocaleString()} + 額外 {calc.extraMaxJing.toLocaleString()}
+              </div>
+            </div>
             {道學禪宗 > 0 && (
               <div className="mt-2 text-xs text-muted">
-                道學/禪宗心法加成：氣 +{calc.氣加成}、精 +{calc.精加成}
+                道學/禪宗心法加成：氣 +{calc.qiKnowledgeBonus}、精 +{calc.jingKnowledgeBonus}
                 {道學禪宗 <= 30 && '（<=30 級：無加成）'}
                 {道學禪宗 > 30 && 道學禪宗 <= 60 && '（31-60 級：氣每級+6、精每級+4）'}
                 {道學禪宗 > 60 && '（>60 級：氣每級+10、精每級+6）'}
@@ -297,11 +296,11 @@ export function StatsCalculator() {
           <div className="rounded-lg bg-canvas px-3 py-2"><span className="font-medium text-ink">錢莊重量上限</span>：200,000</div>
         </div>
         <div className="mt-3 rounded-lg bg-canvas px-3 py-2 text-xs text-bodytext">
-          <span className="font-medium text-ink">氣的總和</span>：100+(歲數-14)x根骨+INT(內力/4)+道學/禪宗心法加成
+          <span className="font-medium text-ink">最大氣</span>：600+INT(MIN(歲數-14,12)x(臂力+根骨)x2/3)+INT(目前內力/3)+心法+額外加成
           <br />
-          <span className="text-muted">年齡衰減：&gt;35 歲每歲 -20、&gt;60 歲再 -20/歲、&gt;100 歲再 -20/歲</span>
+          <span className="font-medium text-ink">最大精</span>：200+INT(MIN(歲數-14,10)x悟性x2/3)+INT(目前精力/3)+心法+額外加成
           <br />
-          <span className="text-muted">道學/禪宗：&gt;30 級氣每級+6、精每級+4；&gt;60 級氣每級+10、精每級+6</span>
+          <span className="text-muted">年齡成長：氣於 26 歲封頂、精於 24 歲封頂；道學/禪宗：&gt;30 級氣每級+6、精每級+4；&gt;60 級氣每級+10、精每級+6。</span>
         </div>
       </div>
     </div>
