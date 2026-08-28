@@ -14,12 +14,6 @@ const TOOLS = [
     desc: '輸入內力估算打坐所需時間，或由時間反推內力。',
   },
   {
-    href: '/tools/stats',
-    icon: '📊',
-    title: '人物屬性計算器',
-    desc: '調整悟性、內力、根骨等屬性，即時計算武功經驗、潛能、氣精總和。',
-  },
-  {
     href: '/tools/macros',
     icon: '🤖',
     title: '按精教程',

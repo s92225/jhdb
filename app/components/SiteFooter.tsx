@@ -27,7 +27,6 @@ const FOOTER_LINKS: Array<{ heading: string; links: FooterLink[] }> = [
     heading: '工具與更新',
     links: [
       { href: '/tools/dazuo', label: '打坐計算' },
-      { href: '/tools/stats', label: '屬性計算' },
       { href: '/tools/macros', label: '按精教程' },
       { href: '/updates', label: '近期更新' },
     ],
