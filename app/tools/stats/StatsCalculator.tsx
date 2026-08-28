@@ -214,7 +214,7 @@ export function StatsCalculator() {
 
           <Section title="技能與內力">
             <div className="space-y-4">
-              <Slider label="內力" value={內力} set={set內力} min={0} max={10000} step={50} accent="purple" />
+              <Slider label="目前內力上限（已修練）" value={內力} set={set內力} min={0} max={10000} step={50} accent="purple" />
               <Slider label="基本內功" value={基本內功} set={set基本內功} min={0} max={2000} step={10} accent="purple" />
               <Slider label="讀書寫字" value={讀書寫字} set={set讀書寫字} min={0} max={2000} step={10} accent="blue" />
               <Slider label="道學/禪宗心法" value={道學禪宗} set={set道學禪宗} min={0} max={2000} step={10} accent="indigo" />
@@ -244,11 +244,14 @@ export function StatsCalculator() {
 
           <Section title="內力 / 精力 / 打坐">
             <div className="grid gap-3 sm:grid-cols-2">
-              <ResultCard label="內力上限" value={calc.內力上限.toLocaleString()} formula="基本內功x10" accent="text-purple-600" />
-              <ResultCard label="精力上限" value={calc.精力上限.toLocaleString()} formula="基本內功x3" accent="text-teal-600" />
+              <ResultCard label="內力可修練理論上限" value={calc.內力上限.toLocaleString()} formula="基本內功x10" accent="text-purple-600" />
+              <ResultCard label="精力可修練理論上限" value={calc.精力上限.toLocaleString()} formula="基本內功x3" accent="text-teal-600" />
               <ResultCard label="打坐時間" value={formatTime(calc.打坐時間秒)} formula="內力/8+7 秒" accent="text-indigo-600" />
               <ResultCard label="內力回復量" value={calc.內力回復} formula="INT(內功/2)+INT(內力/20)+2" accent="text-purple-600" />
               <ResultCard label="精力回復量" value={calc.精力回復} formula="INT(內功/2)+INT(精力/20)+2" accent="text-teal-600" />
+            </div>
+            <div className="mt-3 rounded-lg bg-blue-50 px-3 py-2 text-xs text-blue-700">
+              理論上限是基本內功允許修練到的最高值，不是角色目前已修練的內力或精力。
             </div>
           </Section>
 
@@ -283,8 +286,8 @@ export function StatsCalculator() {
           <div className="rounded-lg bg-canvas px-3 py-2"><span className="font-medium text-ink">消1潛武功經驗（師父）</span>：INT(悟性/5)+1</div>
           <div className="rounded-lg bg-canvas px-3 py-2"><span className="font-medium text-ink">消1潛武功經驗（秘笈）</span>：INT(悟性/6)</div>
           <div className="rounded-lg bg-canvas px-3 py-2"><span className="font-medium text-ink">消1潛耗精</span>：INT(150/悟性)</div>
-          <div className="rounded-lg bg-canvas px-3 py-2"><span className="font-medium text-ink">內力上限</span>：基本內功x10</div>
-          <div className="rounded-lg bg-canvas px-3 py-2"><span className="font-medium text-ink">精力上限</span>：基本內功x3</div>
+          <div className="rounded-lg bg-canvas px-3 py-2"><span className="font-medium text-ink">內力可修練理論上限</span>：基本內功x10</div>
+          <div className="rounded-lg bg-canvas px-3 py-2"><span className="font-medium text-ink">精力可修練理論上限</span>：基本內功x3</div>
           <div className="rounded-lg bg-canvas px-3 py-2"><span className="font-medium text-ink">潛能上限</span>：讀書寫字x10+20</div>
           <div className="rounded-lg bg-canvas px-3 py-2"><span className="font-medium text-ink">打坐時間</span>：內力/8+7 秒</div>
           <div className="rounded-lg bg-canvas px-3 py-2"><span className="font-medium text-ink">內力回復</span>：INT(內功/2)+INT(內力/20)+2</div>
