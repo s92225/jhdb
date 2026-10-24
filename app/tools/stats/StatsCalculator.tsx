@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useMemo } from 'react'
-import { calculateVitalStats, INT } from './formulas'
+import { useId, useState, useMemo } from 'react'
+import { calculateVitalStats, INT, VITAL_STATS_AGE_CAP } from './formulas'
 
 // ── accent color map (full class names for Tailwind JIT) ─────────────────
 const ACCENT_COLORS: Record<string, { text: string; bar: string }> = {
@@ -42,31 +42,52 @@ function Slider({
   unit?: string
   accent?: string
 }) {
+  const inputId = useId()
+  const [draftValue, setDraftValue] = useState<string | null>(null)
   const c = ACCENT_COLORS[accent] ?? ACCENT_COLORS.rausch
   const pct = ((value - min) / (max - min)) * 100
   return (
     <div>
       <div className="flex items-center justify-between gap-3">
-        <label className="text-sm font-medium text-ink">{label}</label>
+        <label htmlFor={inputId} className="text-sm font-medium text-ink">{label}</label>
         <input
+          id={inputId}
           type="number"
           min={min}
           max={max}
-          value={value}
+          step={1}
+          value={draftValue ?? value}
           onChange={(e) => {
-            const v = Number(e.target.value)
-            if (!isNaN(v)) set(Math.max(min, Math.min(max, v)))
+            const draft = e.target.value
+            setDraftValue(draft)
+            const v = Number(draft)
+            // Keep partial input (e.g. "", "1", "12") intact while typing.
+            if (draft !== '' && Number.isInteger(v) && v >= min && v <= max) set(v)
+          }}
+          onBlur={() => {
+            const v = Number(draftValue)
+            if (draftValue !== null && draftValue !== '' && Number.isFinite(v)) {
+              set(Math.max(min, Math.min(max, Math.trunc(v))))
+            }
+            setDraftValue(null)
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') e.currentTarget.blur()
           }}
           className={`w-24 rounded-lg border border-hairline px-2 py-1 text-right text-sm font-bold tabular-nums ${c.text} focus:outline-none focus:ring-1 focus:ring-current`}
         />
       </div>
       <input
         type="range"
+        aria-label={`${label}滑桿`}
         min={min}
         max={max}
         step={step}
         value={value}
-        onChange={(e) => set(Number(e.target.value))}
+        onChange={(e) => {
+          setDraftValue(null)
+          set(Number(e.target.value))
+        }}
         className="mt-2 w-full cursor-pointer appearance-none rounded-full outline-none"
         style={{
           background: `linear-gradient(to right, ${c.bar} ${pct}%, #ebebeb ${pct}%)`,
@@ -212,6 +233,7 @@ export function StatsCalculator() {
           <Section title="其他">
             <div className="space-y-4">
               <Slider label="年齡" value={年齡} set={set年齡} min={14} max={1000} accent="slate" />
+              <p className="text-xs text-muted">年齡可超過 {VITAL_STATS_AGE_CAP} 歲；最大氣、最大精的年齡成長均於 {VITAL_STATS_AGE_CAP} 歲封頂。</p>
               <Slider label="武功等級" value={武功等級} set={set武功等級} min={1} max={2000} step={1} accent="rausch" />
             </div>
           </Section>
@@ -296,11 +318,11 @@ export function StatsCalculator() {
           <div className="rounded-lg bg-canvas px-3 py-2"><span className="font-medium text-ink">錢莊重量上限</span>：200,000</div>
         </div>
         <div className="mt-3 rounded-lg bg-canvas px-3 py-2 text-xs text-bodytext">
-          <span className="font-medium text-ink">最大氣</span>：600+INT(MIN(歲數-14,12)x(臂力+根骨)x2/3)+INT(目前內力/3)+心法+額外加成
+          <span className="font-medium text-ink">最大氣</span>：600+INT(MAX(0,MIN(歲數,{VITAL_STATS_AGE_CAP})-14)x(臂力+根骨)x2/3)+INT(目前內力/3)+心法+額外加成
           <br />
-          <span className="font-medium text-ink">最大精</span>：200+INT(MIN(歲數-14,10)x悟性x2/3)+INT(目前精力/3)+心法+額外加成
+          <span className="font-medium text-ink">最大精</span>：200+INT(MAX(0,MIN(歲數,{VITAL_STATS_AGE_CAP})-14)x悟性x2/3)+INT(目前精力/3)+心法+額外加成
           <br />
-          <span className="text-muted">年齡成長：氣於 26 歲封頂、精於 24 歲封頂；道學/禪宗：&gt;30 級氣每級+6、精每級+4；&gt;60 級氣每級+10、精每級+6。</span>
+          <span className="text-muted">年齡成長：氣、精均於 {VITAL_STATS_AGE_CAP} 歲封頂；道學/禪宗：&gt;30 級氣每級+6、精每級+4；&gt;60 級氣每級+10、精每級+6。</span>
         </div>
       </div>
     </div>

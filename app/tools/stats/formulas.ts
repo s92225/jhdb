@@ -1,4 +1,5 @@
 export const INT = (n: number) => Math.trunc(n)
+export const VITAL_STATS_AGE_CAP = 25
 
 export type VitalStatsInput = {
   age: number
@@ -48,12 +49,11 @@ export function calculateVitalStats({
   extraMaxQi = 0,
   extraMaxJing = 0,
 }: VitalStatsInput): VitalStatsResult {
-  // Current 寒江湖 observations show that 氣 gains eight points per
-  // displayed 根骨/臂力 point after the age-growth cap: 12 * 2 / 3 = 8.
-  const qiGrowthYears = Math.max(0, Math.min(age, 26) - 14)
-  const jingGrowthYears = Math.max(0, Math.min(age, 24) - 14)
-  const qiAgeGrowth = INT((qiGrowthYears * (constitution + strength) * 2) / 3)
-  const jingAgeGrowth = INT((jingGrowthYears * intellect * 2) / 3)
+  // Current-server correction: both age-growth bonuses stop at age 25.
+  // Preserve the character's actual age; cap only its contribution here.
+  const growthYears = Math.max(0, Math.min(age, VITAL_STATS_AGE_CAP) - 14)
+  const qiAgeGrowth = INT((growthYears * (constitution + strength) * 2) / 3)
+  const jingAgeGrowth = INT((growthYears * intellect * 2) / 3)
   const knowledge = calculateKnowledgeBonus(taoismOrBuddhism)
 
   const baseQi = 600 + qiAgeGrowth + INT(currentMaxNeili / 3) + knowledge.qi
