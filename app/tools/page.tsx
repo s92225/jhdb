@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { ArrowUpRight } from 'lucide-react'
+import { ReferenceHeading } from '@/app/components/ReferenceHeading'
 
 export const metadata: Metadata = {
   title: '工具總覽｜人在江湖資料庫',
@@ -9,19 +11,16 @@ export const metadata: Metadata = {
 const TOOLS = [
   {
     href: '/tools/dazuo',
-    icon: '🧘',
     title: '打坐時間計算器',
     desc: '輸入內力估算打坐所需時間，或由時間反推內力。',
   },
   {
     href: '/tools/stats',
-    icon: '📊',
     title: '人物屬性計算器',
     desc: '調整悟性、內力、根骨等屬性，即時計算武功經驗、潛能、氣精總和。',
   },
   {
     href: '/tools/macros',
-    icon: '🤖',
     title: '按精教程',
     desc: '按鍵精靈 + 大漠 Plugin + OCR 自動打坐安裝教程。',
   },
@@ -30,31 +29,25 @@ const TOOLS = [
 export default function ToolsPage() {
   return (
     <div className="space-y-10">
-      <header>
-        <span className="pill">工具 · Tools</span>
-        <h1 className="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-4xl">工具總覽</h1>
-        <p className="mt-3 max-w-2xl text-base leading-relaxed text-bodytext">
-          輔助遊戲進行的計算器、規劃器與自動化教程。
-        </p>
-      </header>
+      <ReferenceHeading title="工具總覽" description={<p>輔助遊戲進行的計算器、規劃器與自動化教程。</p>} />
 
-      <section className="grid gap-4 sm:grid-cols-2">
+      <div className="reference-directory">
         {TOOLS.map((t) => (
           <Link
             key={t.href}
             href={t.href}
-            className="group rounded-2xl border border-hairline bg-canvas p-5 transition-shadow hover:shadow-airbnb"
+            className="reference-directory-row group"
           >
             <div className="flex items-start gap-4">
-              <span className="text-3xl">{t.icon}</span>
               <div>
-                <div className="font-semibold text-ink group-hover:text-rausch">{t.title}</div>
-                <div className="mt-1 text-sm text-muted">{t.desc}</div>
+                <h2>{t.title}</h2>
+                <p className="mt-3 text-base text-bodytext">{t.desc}</p>
               </div>
             </div>
+            <ArrowUpRight size={20} aria-hidden="true" />
           </Link>
         ))}
-      </section>
+      </div>
     </div>
   )
 }

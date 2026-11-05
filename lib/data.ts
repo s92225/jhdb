@@ -1,7 +1,9 @@
+import { visibleQuestEntries } from './guide-catalog'
 import rawSkills from '@/data/skills.json'
 import rawQuests from '@/data/quests.json'
 import rawManuals from '@/data/manuals.json'
 import rawDungeons from '@/data/dungeons.json'
+import dungeonGuide from '@/data/dungeons_integrated.json'
 import rawUpdates from '@/data/updates.json'
 import rawMasters from '@/data/masters.json'
 // lib/data.ts
@@ -64,11 +66,27 @@ export function getAllManuals(): Manual[] {
 }
 
 export function getAllDungeons(): Dungeon[] {
+  // Search and homepage counts follow the same catalogue as /guides/dungeons.
+  if (Array.isArray(dungeonGuide.dungeons)) return dungeonGuide.dungeons.map((d) => ({
+    id: d.id, name: d.name,
+    entryNpc: d.entry?.npc || null, entryLocation: d.entry?.location || null,
+    requirements: [d.recommendedStrength?.stage,d.recommendedStrength?.config].filter(Boolean).join('；') || null,
+    tags: [d.positioning?.type,d.positioning?.stage].filter((s): s is string => Boolean(s)),
+    bosses: (d.bosses || []).map((name) => ({name})),
+    drops: (d.loot || []).map((name) => ({name})),
+    tips: (d.workflow || []).map((text) => ({text})),
+  }))
   return asArray<Dungeon>(rawDungeons)
 }
 
 export function getAllUpdates(): UpdateNote[] {
-  return asArray<UpdateNote>(rawUpdates)
+  return [...asArray<UpdateNote>(rawUpdates)].sort((a, b) => {
+    const date = (value?: string | null) => {
+      const parsed = Date.parse(value || '')
+      return Number.isFinite(parsed) ? parsed : 0
+    }
+    return date(b.date) - date(a.date)
+  })
 }
 
 // --- Async accessors (server components friendly) ---
@@ -128,7 +146,7 @@ export async function getMasters(): Promise<Master[]> {
 export function getStats() {
   return {
     skills: getAllSkills().length,
-    quests: getAllQuests().length,
+    quests: visibleQuestEntries(getAllQuests()).length,
     manuals: getAllManuals().length,
     dungeons: getAllDungeons().length,
     updates: getAllUpdates().length,

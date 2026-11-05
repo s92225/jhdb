@@ -3,6 +3,7 @@ import { getAllMasters } from '@/lib/data'
 import type { Master, MasterSkill } from '@/lib/types'
 import { Badge } from '@/app/components/Badge'
 import { CategoryTabs, type CategorizedItem } from '@/app/components/CategoryTabs'
+import { GuideHeader } from '@/app/components/GuideHeader'
 
 export const metadata: Metadata = {
   title: '師傅所在地與給物條件｜人在江湖資料庫',
@@ -49,12 +50,11 @@ function SkillRow({ skill }: { skill: MasterSkill }) {
 
 function MasterCard({ master }: { master: Master }) {
   return (
-    <div className="rounded-2xl border border-hairline bg-canvas p-4 transition-shadow hover:shadow-airbnb">
+    <article className="guide-record p-6">
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <div className="font-semibold text-ink">{master.name}</div>
           <div className="mt-0.5 flex items-center gap-1 text-xs text-muted">
-            <span aria-hidden>📍</span>
             {master.location}
           </div>
         </div>
@@ -69,7 +69,7 @@ function MasterCard({ master }: { master: Master }) {
           ))}
         </div>
       )}
-    </div>
+    </article>
   )
 }
 
@@ -79,21 +79,8 @@ export default function MastersPage() {
   const totalSkills = masters.reduce((sum, m) => sum + m.skills.length, 0)
 
   return (
-    <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">
-      <header className="space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight text-ink">師傅所在地與給物條件</h1>
-        <p className="text-sm text-muted">
-          數值為需達到的技能等級才可獲得秘笈。額外條件以標籤顯示。
-        </p>
-        <div className="flex flex-wrap gap-2">
-          <Badge className="border-none bg-surface-soft font-medium text-bodytext">
-            {masters.length} 位師傅
-          </Badge>
-          <Badge className="border-none bg-surface-soft font-medium text-bodytext">
-            {totalSkills} 項技能
-          </Badge>
-        </div>
-      </header>
+    <div className="guide-page space-y-6">
+      <GuideHeader title="師傅所在地與給物條件" count={`${masters.length} 位師傅 · ${totalSkills} 項技能`} description="各門派師傅的位置、傳授技能與給物門檻。數值為需要達到的技能等級。" />
 
       <CategoryTabs
         searchPlaceholder="搜尋師傅、技能、地點…"

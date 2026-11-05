@@ -68,9 +68,9 @@ type Bucket = {
 function bucketizeRequirements(reqs: RequirementItem[]): Bucket[] {
   const buckets: Record<string, Bucket> = {
     inner: { key: 'inner', title: '內力', colorClass: 'bg-red-50 text-red-700 ring-red-200', items: [] },
-    energy: { key: 'energy', title: '精力', colorClass: 'bg-amber-50 text-amber-700 ring-amber-200', items: [] },
-    basic: { key: 'basic', title: '基本武學', colorClass: 'bg-blue-50 text-blue-700 ring-blue-200', items: [] },
-    other: { key: 'other', title: '其他', colorClass: 'bg-slate-50 text-slate-700 ring-slate-200', items: [] },
+    energy: { key: 'energy', title: '精力', colorClass: 'bg-surface-soft text-bodytext ring-hairline', items: [] },
+    basic: { key: 'basic', title: '基本武學', colorClass: 'bg-surface-soft text-bodytext ring-hairline', items: [] },
+    other: { key: 'other', title: '其他', colorClass: 'bg-surface-soft text-bodytext ring-hairline', items: [] },
   }
 
   for (const r of reqs || []) {
@@ -180,7 +180,7 @@ export function DungeonCard({
   const [open, setOpen] = useState<boolean>(!!defaultExpanded)
 
   return (
-    <div className="rounded-2xl border border-hairline bg-canvas transition-shadow hover:shadow-airbnb">
+    <div className="rounded-2xl border border-hairline bg-canvas ">
       <button
         type="button"
         className="flex w-full items-start justify-between gap-3 px-5 py-4 text-left"
@@ -195,16 +195,16 @@ export function DungeonCard({
             {/* 類型/難度/地點 */}
             <div className="flex flex-wrap items-center gap-1.5">
               {category ? (
-                <Badge className="bg-emerald-50 text-emerald-700 ring-emerald-200">{category}</Badge>
+                <Badge className="bg-surface-soft text-bodytext ring-hairline">{category}</Badge>
               ) : null}
               {difficulty ? (
-                <Badge className="bg-purple-50 text-purple-700 ring-purple-200">{difficulty}</Badge>
+                <Badge className="bg-surface-soft text-bodytext ring-hairline">{difficulty}</Badge>
               ) : null}
               {location ? (
-                <Badge className="bg-cyan-50 text-cyan-700 ring-cyan-200">{location}</Badge>
+                <Badge className="bg-surface-soft text-bodytext ring-hairline">{location}</Badge>
               ) : null}
               {recommended ? (
-                <Badge className="bg-orange-50 text-orange-700 ring-orange-200">{recommended}</Badge>
+                <Badge className="bg-surface-soft text-bodytext ring-hairline">{recommended}</Badge>
               ) : null}
             </div>
 

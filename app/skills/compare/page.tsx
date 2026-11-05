@@ -5,10 +5,10 @@ import { getSkills } from "@/lib/data";
 export default async function ComparePage({
   searchParams,
 }: {
-  searchParams?: { ids?: string };
+  searchParams?: Promise<{ ids?: string }>;
 }) {
   const skills = await getSkills();
-  const ids = (searchParams?.ids ?? "")
+  const ids = ((await searchParams)?.ids ?? "")
     .split(",")
     .map((s) => decodeURIComponent(s.trim()))
     .filter(Boolean);
@@ -16,7 +16,7 @@ export default async function ComparePage({
   const selected = skills.filter((s) => ids.includes(s.id));
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-10">
+    <div className="reference-screen">
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold">武技比較</h1>
@@ -86,7 +86,7 @@ export default async function ComparePage({
           </table>
         </div>
       )}
-    </main>
+    </div>
   );
 }
 

@@ -187,6 +187,8 @@ export interface UpdateNote {
   content: string
   sourceFile?: string | null
   rawSource?: string | null
+  sourceUrl?: string | null
+  verifiedAt?: string | null
 }
 
 export interface MasterSkill {

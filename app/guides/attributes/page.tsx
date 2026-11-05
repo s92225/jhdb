@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Badge } from '@/app/components/Badge'
+import { GuideHeader } from '@/app/components/GuideHeader'
 import rawDungeons from '@/data/dungeons.json'
 import rawManuals from '@/data/manuals.json'
 import rawQuests from '@/data/quests_integrated.json'
@@ -283,20 +283,13 @@ function getItemHref(name: string) {
 
 export default function AttributesPage() {
   return (
-    <div className="mx-auto max-w-6xl space-y-6 px-4 py-8">
-      <header className="space-y-2">
-        <h1 className="text-2xl font-semibold text-ink">屬性獲得概覽表</h1>
-        <p className="text-sm text-muted">
-          資料來源：Google 試算表「屬性獲得概覽表」。若表格更新，可再同步此頁。
-        </p>
-        <div>
-          <Badge className="border border-hairline bg-surface-soft text-bodytext">共 {rows.length} 筆</Badge>
-        </div>
-      </header>
+    <div className="guide-page space-y-6">
+      <GuideHeader title="屬性獲得概覽表" count={`${rows.length} 項來源`} description="對照武學、任務與物品帶來的屬性點數。資料來源為「屬性獲得概覽表」試算表。" />
 
       <div className="overflow-hidden rounded-2xl border border-hairline bg-canvas">
-        <div className="overflow-x-auto">
-          <table className="min-w-full border-separate border-spacing-0 text-sm">
+        <p className="guide-table-hint">左右滑動查看其餘屬性 →</p>
+        <div className="overflow-x-auto" role="region" tabIndex={0} aria-label="屬性獲得資料表，可左右捲動">
+          <table className="guide-attribute-table min-w-full border-separate border-spacing-0 text-sm">
             <thead>
               <tr className="bg-surface-soft text-left text-xs text-muted">
                 <th className="px-4 py-3">項目</th>

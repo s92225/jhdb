@@ -1,0 +1,234 @@
+/* Inner pages are working references, not smaller landing pages.
+   1280px = 280px filter + 24px gutter + 976px results.
+   Community: 216px navigation + 32px gutter + 1032px reading plane.
+   Paper, seal and ink follow the approved homepage; colour remains functional. */
+.wuxia-reference-skin {
+  --reference-edge: #dce4df;
+  --reference-control: #aabcb6;
+  position: relative;
+  isolation: isolate;
+  font-size: 16px;
+  line-height: 1.75;
+}
+/* A full-bleed ink wash belongs to the paper, not to a title's image slot.
+   The mask dissolves the artwork into the page; it is not a gradient surface.
+   Functional panels remain opaque and the decorative layer never takes input. */
+.wuxia-reference-skin::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 680px;
+  z-index: -1;
+  pointer-events: none;
+  background-image: url('/art/wuxia/hero.webp');
+  background-repeat: no-repeat;
+  background-position: center 42%;
+  background-size: cover;
+  mix-blend-mode: multiply;
+  opacity: .24;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 24%, transparent 100%); /* taste-skill-ignore: transparency mask for actual artwork, not a gradient fill. */
+  mask-image: linear-gradient(to bottom, #000 0%, #000 24%, transparent 100%); /* taste-skill-ignore: transparency mask for actual artwork, not a gradient fill. */
+}
+.wuxia-reference-skin .site-frame { width: calc(100% - 128px); max-width: 1280px; }
+.wuxia-reference-skin .site-header .site-frame { max-width: 1280px; }
+.wuxia-reference-skin .header-row { min-height: 88px; }
+.wuxia-reference-skin .site-header { background: transparent; border-bottom: 1px solid var(--reference-edge); }
+.wuxia-reference-skin .wuxia-brand-seal { font-family: var(--font-display), serif; }
+.wuxia-site-skin .desktop-nav a[aria-current] { font-weight: 500; text-decoration-color: var(--wuxia-red); }
+.wuxia-site-skin .mobile-nav a { background: var(--wuxia-surface); }
+.wuxia-site-skin .mobile-nav a[aria-current] { text-decoration: underline; text-underline-offset: 5px; }
+.wuxia-reference-skin :is(.inner-page,.community-page) { padding-block: 28px 72px; }
+.wuxia-reference-skin .inner-page { min-width: 0; }
+.wuxia-reference-skin .inner-page :is(h1,h2,h3,h4) { overflow-wrap: anywhere; }
+.wuxia-reference-skin :is(.inner-page,.community-grid) h1 {
+  font: 500 32px/1.4 var(--font-display), serif;
+  letter-spacing: 0;
+  color: var(--wuxia-ink);
+  margin-top: 0;
+}
+.wuxia-reference-skin .inner-page :is(p,li) { line-height: 1.85; }
+.wuxia-reference-skin .inner-page .font-bold,
+.wuxia-reference-skin .inner-page .font-semibold { font-weight: 500; }
+.wuxia-reference-skin .inner-page :is(.text-sm) { font-size: 16px; }
+.wuxia-reference-skin .inner-page :is(.text-xs,.text-\[9px\],.text-\[10px\],.text-\[11px\]) { font-size: 14px; line-height: 1.65; }
+.wuxia-reference-skin .inner-page :is(.rounded-2xl,.rounded-xl,.rounded-lg) { border-radius: 4px; }
+.wuxia-reference-skin .inner-page :is(.shadow-sm,.shadow-md,.shadow-airbnb,.hover\:shadow-airbnb:hover) { box-shadow: none; }
+.wuxia-reference-skin .inner-page :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea) {
+  font-size: 16px;
+  font-weight: 400;
+  border-radius: 4px;
+  color: var(--wuxia-ink);
+}
+.wuxia-reference-skin :is(input,textarea)::placeholder { color: var(--wuxia-muted); opacity: 1; }
+.wuxia-reference-skin :is(input[type=checkbox],input[type=radio]) { accent-color: var(--wuxia-focus); }
+.wuxia-reference-skin .inner-page :is(button,summary) { min-height: 44px; }
+.wuxia-reference-skin .inner-page :is(table,output,input[type=number],.tabular-nums) { font-variant-numeric: tabular-nums; }
+.wuxia-reference-skin .inner-page :is(th,td) { line-height: 1.65; }
+.wuxia-reference-skin .inner-page thead { background: transparent; }
+.wuxia-reference-skin .inner-page thead th { font-size: 14px; font-weight: 500; }
+.wuxia-reference-skin .inner-page pre { line-height: 1.7; tab-size: 2; }
+.wuxia-reference-skin .inner-page code { overflow-wrap: anywhere; }
+
+/* A single page gutter, including legacy reference/detail/calculator wrappers. */
+.wuxia-reference-skin .inner-page > .mx-auto,
+.wuxia-reference-skin .inner-page > div > .mx-auto,
+.wuxia-reference-skin .stats-page > .mx-auto { max-width: none; padding: 0; margin-inline: 0; }
+.wuxia-reference-skin .guide-shell { max-width: none; }
+.wuxia-reference-skin .reference-tabs,
+.wuxia-reference-skin .guide-shell nav.reference-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  max-width: 100%;
+  gap: 24px;
+  margin: 0 0 28px;
+  padding: 0;
+  border-bottom: 1px solid var(--reference-edge);
+  scrollbar-width: thin;
+}
+.wuxia-reference-skin .reference-tabs a,
+.wuxia-reference-skin .guide-shell nav.reference-tabs a {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  min-height: 48px;
+  padding: 8px 0 12px;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--wuxia-muted);
+}
+.wuxia-reference-skin .reference-tabs a[aria-current] {
+  color: var(--wuxia-ink);
+  border-color: var(--wuxia-red);
+  font-weight: 500;
+}
+.reference-heading { margin-bottom: 28px; min-width: 0; }
+.reference-heading-copy { min-width: 0; }
+.reference-title-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px; }
+.reference-count { color: var(--wuxia-muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+.reference-description { margin-top: 8px; font-size: 16px; line-height: 1.8; color: var(--wuxia-muted); max-width: 46em; }
+.reference-directory { display: grid; }
+.reference-directory-row { display: flex; align-items: center; justify-content: space-between; gap: 32px; padding: 28px 0; border-bottom: 1px solid var(--reference-edge); }
+.reference-directory-row:first-child { padding-top: 0; }
+.reference-directory-row h2 { font-size: 22px; font-weight: 500; line-height: 1.5; }
+.reference-directory-row p { margin-top: 8px; max-width: 44em; }
+.reference-directory-row > svg { flex: none; transition: transform 160ms ease; }
+.reference-directory-row:hover h2 { text-decoration: underline; text-underline-offset: 6px; }
+.reference-directory-row:hover > svg { transform: translate(2px,-2px); }
+
+/* Filter/search/result anatomy stays unchanged. Selected is a quiet ink state;
+   skill-type colours and labelled metric bars are intentionally not recoloured. */
+.wuxia-reference-skin .skill-filters > div { border: 0; background: var(--wuxia-surface); padding: 20px; }
+.wuxia-reference-skin .skill-filters > .skill-refine { display: grid; gap: 16px; background: transparent; padding: 0; }
+.wuxia-reference-skin .skill-refine > div { background: var(--wuxia-surface); border: 0; padding: 20px; }
+.wuxia-reference-skin .skill-filters .skill-refine-toggle { display: none; }
+.skill-search-label { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.wuxia-reference-skin .skill-filters button { background: white; border-color: var(--reference-edge); }
+.wuxia-reference-skin .skill-filters button[aria-pressed=true] { background: var(--wuxia-ink); color: white; border-color: var(--wuxia-ink); }
+.wuxia-reference-skin .skill-result-card { background: white; border-color: var(--reference-edge); padding: 20px; }
+.wuxia-reference-skin .skill-name { color: var(--wuxia-ink); }
+.wuxia-reference-skin .skills-workbench > section > div:first-child { background: var(--wuxia-surface); border: 0; }
+.wuxia-reference-skin .skills-workbench .sticky > div { background: var(--wuxia-ink); }
+.wuxia-reference-skin .skill-metric-label { font-size: 14px; font-weight: 400; }
+.wuxia-reference-skin .rules-list { gap: 0 32px; }
+.wuxia-reference-skin .rules-list article { background: transparent; padding: 24px 0; border-bottom: 1px solid var(--reference-edge); }
+.wuxia-reference-skin .rules-list h2 { font: 500 22px/1.5 var(--font-display),serif; }
+.wuxia-reference-skin .rules-list p { margin-top: 8px; }
+.wuxia-reference-skin .rules-list a { margin-top: 8px; }
+.wuxia-reference-skin .rule-page { gap: 36px; }
+.wuxia-reference-skin .rule-page section > h2 { font-size: 24px; }
+.wuxia-reference-skin .rule-callout { border-radius: 4px; }
+.element-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 24px; font-size: 14px; }
+.element-legend span { display: inline-flex; align-items: center; gap: 8px; }
+.element-legend i { width: 24px; border-top: 2px solid var(--signal-success); }
+.element-legend span:last-child i { border-top: 2px dashed var(--signal-danger); }
+.wuxia-reference-skin .momentum-explorer { background: white; border: 1px solid var(--reference-edge); border-radius: 4px; }
+.wuxia-reference-skin .momentum-explorer output { font: 500 32px/1.4 var(--font-tc),sans-serif; }
+.wuxia-reference-skin .momentum-explorer > label { font-size: 16px; }
+.wuxia-reference-skin .update-toolbar { margin-bottom: 24px; }
+.wuxia-reference-skin .update-toolbar input { background: white; border-color: var(--reference-control); border-radius: 4px; }
+.wuxia-reference-skin .update-toolbar button { border-radius: 4px; }
+.wuxia-reference-skin .update-toolbar button[aria-pressed=true] { background: var(--wuxia-ink); color: white; }
+.wuxia-reference-skin .update-log { gap: 0; }
+.wuxia-reference-skin .update-log details { background: transparent; border-bottom: 1px solid var(--reference-edge); padding: 24px 0; }
+.wuxia-reference-skin .update-log summary { gap: 24px; }
+.wuxia-reference-skin .update-log summary strong { font-weight: 500; }
+.wuxia-reference-skin .update-content { max-width: 46em; }
+
+/* Community is an ink-on-paper reading plane. Nothing changes authentication,
+   profile storage, pagination, replies or server-enforced moderation rights. */
+.wuxia-reference-skin .community-sidebar .community-name { font-size: 20px; line-height: 1.6; }
+.wuxia-reference-skin .community-sidebar nav a { font-size: 16px; }
+.wuxia-reference-skin .community-sidebar nav a[aria-current=page] { background: var(--wuxia-surface); }
+.wuxia-reference-skin .forum-title-row { margin-bottom: 28px; }
+.wuxia-reference-skin .community-grid .forum-button { background: var(--wuxia-ink); color: white; border-color: var(--wuxia-ink); }
+.wuxia-reference-skin .community-grid .forum-button:hover:not(:disabled) { background: var(--wuxia-focus); }
+.wuxia-reference-skin .community-grid .forum-button:disabled { background: var(--wuxia-surface); color: var(--wuxia-muted); border-color: var(--reference-edge); }
+.wuxia-reference-skin .forum-categories button[aria-pressed=true] { border-color: var(--wuxia-red); }
+.wuxia-reference-skin .forum-badge { color: var(--wuxia-ink); background: var(--wuxia-surface); }
+.wuxia-reference-skin .forum-badge-hidden { color: var(--signal-danger-ink); background: var(--signal-danger-soft); }
+.wuxia-reference-skin .forum-prose { max-width: 46em; }
+.wuxia-reference-skin .forum-settings-grid { grid-template-columns: minmax(200px,1fr) minmax(0,1.7fr); }
+.wuxia-reference-skin .wuxia-footer { padding-block: 32px; }
+.wuxia-reference-skin .wuxia-footer .wuxia-frame { max-width: 1280px; }
+.wuxia-reference-skin .wuxia-footer-name { font-family: var(--font-display),serif; font-size: 24px; }
+.wuxia-reference-skin .wuxia-footer-bottom { margin-top: 12px; font-size: 14px; }
+.wuxia-reference-skin .wuxia-credits { margin-top: 0; font-size: 14px; }
+.wuxia-reference-skin .wuxia-copyright { margin-top: 8px; }
+.wuxia-reference-skin .feedback-trigger { position: static !important; align-self: flex-end; margin: 16px 32px 24px; }
+.wuxia-site-skin [role=dialog] { border-radius: 4px; }
+.wuxia-site-skin [role=dialog] :is(input,button) { font-size: 16px; min-height: 44px; }
+.wuxia-site-skin [role=dialog] button > span:last-child { font-size: 14px; }
+
+@media (max-width: 1199px) {
+  .wuxia-reference-skin .site-frame { width: calc(100% - 80px); }
+  .wuxia-reference-skin .desktop-nav { gap: 16px; }
+  .wuxia-reference-skin .wuxia-brand-name { font-size: 16px; }
+}
+@media (max-width: 1023px) {
+  .wuxia-reference-skin .desktop-nav { display: none; }
+  .wuxia-reference-skin .menu-toggle { display: inline-flex; }
+  .wuxia-reference-skin .skills-workbench { grid-template-columns: minmax(0,1fr); }
+  .wuxia-reference-skin .skill-filters { display: grid; grid-template-columns: minmax(0,1fr); gap: 16px; align-items: start; }
+  .wuxia-reference-skin .skill-filters > div { margin-top: 0; }
+  .wuxia-reference-skin .skill-filters > div:first-child { grid-column: 1/-1; }
+  .wuxia-reference-skin .skill-filters > .skill-refine { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .wuxia-reference-skin .skill-filters > .skill-refine[data-open=false] { display: none; }
+  .wuxia-reference-skin .skill-filters .skill-refine-toggle { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex: none; padding: 0; border: 0; font-size: 14px; color: var(--wuxia-ink); background: transparent; }
+}
+@media (max-width: 767px) {
+  .wuxia-reference-skin::before { height: 560px; background-size: auto 560px; background-position: 64% top; opacity: .12; }
+  .wuxia-reference-skin .site-frame { width: calc(100% - 40px); }
+  .wuxia-reference-skin .header-row { min-height: 76px; gap: 12px; }
+  .wuxia-reference-skin .wuxia-brand-name { font-size: 16px; }
+  .wuxia-reference-skin .brand { gap: 10px; }
+  .wuxia-reference-skin :is(.inner-page,.community-page) { padding-block: 20px 48px; }
+  .wuxia-reference-skin .reference-tabs,
+  .wuxia-reference-skin .guide-shell nav.reference-tabs { margin-bottom: 24px; gap: 24px; }
+  .wuxia-reference-skin :is(.inner-page,.community-grid) h1 { font-size: 28px; }
+  .reference-heading { margin-bottom: 24px; }
+  .wuxia-reference-skin .skill-filters > .skill-refine { grid-template-columns: minmax(0,1fr); }
+  .wuxia-reference-skin .skill-filters > div:first-child { background: transparent; padding: 0; }
+  .wuxia-reference-skin .skill-filters input[type=search] { margin-top: 0; }
+  .wuxia-reference-skin .skill-results-toolbar { padding: 12px; }
+  .wuxia-reference-skin .skill-results-toolbar > div { gap: 8px; }
+  .wuxia-reference-skin .skill-results-toolbar > div > div:last-child { display: grid; grid-template-columns: 88px minmax(0,1fr) 44px; gap: 8px; width: 100%; }
+  .wuxia-reference-skin .skill-results-toolbar select { min-width: 0; width: 100%; padding-inline: 8px; }
+  .reference-description { margin-top: 8px; }
+  .reference-directory-row { gap: 16px; padding-block: 24px; }
+  .reference-directory-row h2 { font-size: 20px; }
+  .wuxia-reference-skin .rules-list { grid-template-columns: 1fr; }
+  .wuxia-reference-skin .rule-page { gap: 28px; }
+  .wuxia-reference-skin .forum-settings-grid { grid-template-columns: 1fr; }
+  .wuxia-reference-skin .update-log summary { grid-template-columns: 1fr 20px; gap: 8px 16px; }
+  .wuxia-reference-skin .update-log summary time { grid-column: 1; font-size: 14px; }
+  .wuxia-reference-skin .update-log summary > div { grid-column: 1; }
+  .wuxia-reference-skin .update-log summary > svg { grid-column: 2; grid-row: 1/3; }
+  .wuxia-reference-skin .update-content { margin-left: 0; }
+  .wuxia-reference-skin .wuxia-footer-top { align-items: flex-start; gap: 16px; }
+  .wuxia-reference-skin .wuxia-footer-name { font-size: 24px; }
+  .wuxia-reference-skin .feedback-trigger { margin-inline: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reference-directory-row > svg { transition: none; }
+}

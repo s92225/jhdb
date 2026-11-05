@@ -63,7 +63,7 @@ export function FeedbackWidget() {
         type="button"
         onClick={() => setOpen(true)}
         aria-label="提交數據修正意見"
-        className="fixed bottom-5 right-5 z-40 inline-flex items-center gap-2 rounded-full bg-rausch px-4 py-3 text-sm font-semibold text-white shadow-airbnb transition-colors hover:bg-rausch-active"
+        className="feedback-trigger fixed bottom-5 right-5 z-40 inline-flex items-center gap-2 bg-rausch px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-rausch-active"
       >
         <svg aria-hidden viewBox="0 0 20 20" className="h-4 w-4">
           <path

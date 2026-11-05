@@ -10,22 +10,20 @@ const ELEMENTS: Array<{
   key: ElKey
   en: string
   color: string
-  /** lighter shade for gradient */
+  /** legacy palette companion */
   light: string
-  /** darker shade for gradient */
+  /** dark text tone */
   dark: string
   /** weapon type associated with this element */
   weapon: string
-  /** small glyph / emoji to evoke the element */
-  glyph: string
   x: number
   y: number
 }> = [
-  { key: '木', en: 'Wood', color: '#3aa657', light: '#6dd58a', dark: '#22773f', weapon: '棍', glyph: '🌿', x: 250, y: 60 },
-  { key: '火', en: 'Fire', color: '#e0413a', light: '#ff7a6f', dark: '#a8221b', weapon: '刀', glyph: '🔥', x: 450, y: 190 },
-  { key: '土', en: 'Earth', color: '#c98a3a', light: '#e6b070', dark: '#8d5b1d', weapon: '拳腳', glyph: '⛰', x: 370, y: 420 },
-  { key: '金', en: 'Metal', color: '#a3a3a3', light: '#d4d4d4', dark: '#6d6d6d', weapon: '劍', glyph: '⚔', x: 130, y: 420 },
-  { key: '水', en: 'Water', color: '#2f6fb5', light: '#6aa3df', dark: '#1a4877', weapon: '短兵', glyph: '💧', x: 50, y: 190 },
+  { key: '木', en: 'Wood', color: '#22773f', light: '#6dd58a', dark: '#22773f', weapon: '棍', x: 250, y: 60 },
+  { key: '火', en: 'Fire', color: '#a8221b', light: '#ff7a6f', dark: '#a8221b', weapon: '刀', x: 450, y: 190 },
+  { key: '土', en: 'Earth', color: '#8d5b1d', light: '#e6b070', dark: '#8d5b1d', weapon: '拳腳', x: 370, y: 420 },
+  { key: '金', en: 'Metal', color: '#526b6b', light: '#d4d4d4', dark: '#6d6d6d', weapon: '劍', x: 130, y: 420 },
+  { key: '水', en: 'Water', color: '#1a4877', light: '#6aa3df', dark: '#1a4877', weapon: '短兵', x: 50, y: 190 },
 ]
 
 // Generation cycle (相生): each element feeds the next.
@@ -131,47 +129,14 @@ export function FiveElementsInteractive() {
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr),360px]">
       {/* SVG */}
-      <div className="overflow-hidden rounded-2xl border border-hairline bg-gradient-to-br from-slate-50 to-white p-4 shadow-sm sm:p-6">
+      <div className="overflow-hidden rounded-2xl border border-hairline bg-white p-4 sm:p-6">
         <svg
-          viewBox="0 0 500 520"
+          viewBox="-16 -20 532 550"
           className="mx-auto block w-full max-w-[560px]"
           role="img"
           aria-label="五行相生相剋互動圖"
         >
           <defs>
-            {/* Radial gradients per element */}
-            {ELEMENTS.map((e) => (
-              <radialGradient
-                key={`grad-${e.key}`}
-                id={`grad-${e.key}`}
-                cx="35%"
-                cy="30%"
-                r="75%"
-              >
-                <stop offset="0%" stopColor={e.light} />
-                <stop offset="60%" stopColor={e.color} />
-                <stop offset="100%" stopColor={e.dark} />
-              </radialGradient>
-            ))}
-            {/* Drop shadow */}
-            <filter id="soft-shadow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
-              <feOffset dx="0" dy="2" result="offsetblur" />
-              <feComponentTransfer>
-                <feFuncA type="linear" slope="0.25" />
-              </feComponentTransfer>
-              <feMerge>
-                <feMergeNode />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="4" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
             <marker
               id="arrow-sheng"
               viewBox="0 0 10 10"
@@ -181,7 +146,7 @@ export function FiveElementsInteractive() {
               markerHeight="6"
               orient="auto-start-reverse"
             >
-              <path d="M0,0 L10,5 L0,10 z" fill="#3aa657" />
+              <path d="M0,0 L10,5 L0,10 z" fill="#22773f" />
             </marker>
             <marker
               id="arrow-ke"
@@ -192,7 +157,7 @@ export function FiveElementsInteractive() {
               markerHeight="6"
               orient="auto-start-reverse"
             >
-              <path d="M0,0 L10,5 L0,10 z" fill="#e0413a" />
+              <path d="M0,0 L10,5 L0,10 z" fill="#a8221b" />
             </marker>
           </defs>
 
@@ -218,7 +183,7 @@ export function FiveElementsInteractive() {
                 key={`ke-${a}-${b}`}
                 d={`M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`}
                 fill="none"
-                stroke="#e0413a"
+                stroke="#a8221b"
                 strokeWidth={active ? 3.5 : 2}
                 strokeDasharray="6 5"
                 strokeLinecap="round"
@@ -244,7 +209,7 @@ export function FiveElementsInteractive() {
                 key={`sheng-${a}-${b}`}
                 d={`M ${x1} ${y1} Q ${outX} ${outY} ${x2} ${y2}`}
                 fill="none"
-                stroke="#3aa657"
+                stroke="#22773f"
                 strokeWidth={active ? 4 : 2.5}
                 strokeLinecap="round"
                 markerEnd="url(#arrow-sheng)"
@@ -278,10 +243,9 @@ export function FiveElementsInteractive() {
                     cy={e.y}
                     r={r + 10}
                     fill="none"
-                    stroke={isSelf ? '#0f172a' : '#ff385c'}
+                    stroke={isSelf ? '#203e40' : '#b43a31'}
                     strokeWidth={2.5}
                     opacity={0.9}
-                    filter="url(#glow)"
                   />
                 )}
                 {/* Main filled circle */}
@@ -289,16 +253,7 @@ export function FiveElementsInteractive() {
                   cx={e.x}
                   cy={e.y}
                   r={r}
-                  fill={`url(#grad-${e.key})`}
-                  filter="url(#soft-shadow)"
-                />
-                {/* Inner highlight */}
-                <circle
-                  cx={e.x - r * 0.3}
-                  cy={e.y - r * 0.35}
-                  r={r * 0.35}
-                  fill="rgba(255,255,255,0.25)"
-                  pointerEvents="none"
+                  fill={e.color}
                 />
                 {/* Element character */}
                 <text
@@ -306,50 +261,37 @@ export function FiveElementsInteractive() {
                   y={e.y - 2}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  fontSize={30}
-                  fontWeight={800}
+                  fontSize={36}
+                  fontWeight={500}
                   fill="#fff"
                   style={{
                     pointerEvents: 'none',
-                    textShadow: '0 1px 2px rgba(0,0,0,0.3)',
                   }}
                 >
                   {e.key}
-                </text>
-                <text
-                  x={e.x}
-                  y={e.y + 22}
-                  textAnchor="middle"
-                  fontSize={9}
-                  fontWeight={600}
-                  fill="rgba(255,255,255,0.85)"
-                  letterSpacing={1}
-                  style={{ pointerEvents: 'none' }}
-                >
-                  {e.en.toUpperCase()}
                 </text>
 
                 {/* Weapon-type badge below node */}
                 <g pointerEvents="none">
                   <rect
-                    x={e.x - 30}
+                    x={e.x - 38}
                     y={e.y + r + 8}
-                    width={60}
-                    height={20}
-                    rx={10}
+                    width={76}
+                    height={30}
+                    rx={4}
                     fill="#fff"
                     stroke={e.color}
                     strokeWidth={1.5}
                   />
                   <text
                     x={e.x}
-                    y={e.y + r + 22}
+                    y={e.y + r + 29}
                     textAnchor="middle"
-                    fontSize={11}
-                    fontWeight={700}
+                    fontSize={20}
+                    fontWeight={500}
                     fill={e.dark}
                   >
-                    {e.glyph} {e.weapon}
+                    {e.weapon}
                   </text>
                 </g>
 
@@ -359,9 +301,9 @@ export function FiveElementsInteractive() {
                     x={e.x}
                     y={e.y - r - 14}
                     textAnchor="middle"
-                    fontSize={11}
-                    fontWeight={800}
-                    fill={isSelf ? '#0f172a' : '#ff385c'}
+                    fontSize={20}
+                    fontWeight={500}
+                    fill={isSelf ? '#203e40' : '#b43a31'}
                     letterSpacing={1}
                   >
                     {isSelf ? '◆ 我方' : '◆ 對方'}
@@ -371,38 +313,8 @@ export function FiveElementsInteractive() {
             )
           })}
 
-          {/* Legend */}
-          <g transform="translate(20, 500)">
-            <line
-              x1={0}
-              y1={0}
-              x2={28}
-              y2={0}
-              stroke="#3aa657"
-              strokeWidth={3}
-              strokeLinecap="round"
-            />
-            <text x={34} y={4} fontSize={12} fill="#0f172a" fontWeight={600}>
-              相生 +{SHENG_BONUS}%
-            </text>
-            <line
-              x1={140}
-              y1={0}
-              x2={168}
-              y2={0}
-              stroke="#e0413a"
-              strokeWidth={2.5}
-              strokeDasharray="6 5"
-              strokeLinecap="round"
-            />
-            <text x={174} y={4} fontSize={12} fill="#0f172a" fontWeight={600}>
-              相剋 {KE_PENALTY}%
-            </text>
-            <text x={290} y={4} fontSize={10} fill="#6a6a6a">
-              點擊節點切換我方／對方
-            </text>
-          </g>
         </svg>
+        <div className="element-legend"><span><i aria-hidden="true" />實線：相生 +{SHENG_BONUS}%</span><span><i aria-hidden="true" />虛線：相剋 {KE_PENALTY}%</span></div>
 
         {/* Weapon-type mapping caption */}
         <div className="mt-2 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] text-muted">
@@ -438,7 +350,7 @@ export function FiveElementsInteractive() {
               label="對方"
               value={target}
               onChange={setTarget}
-              accent="#ff385c"
+              accent="#b43a31"
             />
           </div>
         </div>
@@ -447,11 +359,11 @@ export function FiveElementsInteractive() {
           className={[
             'rounded-2xl border p-5',
             relation === 'ke-out'
-              ? 'border-[#3aa657] bg-[#3aa657]/5'
+              ? 'border-[#22773f] bg-[#22773f]/5'
               : relation === 'ke-in'
                 ? 'border-rausch bg-rausch/5'
                 : relation === 'sheng-in'
-                  ? 'border-[#2f6fb5] bg-[#2f6fb5]/5'
+                  ? 'border-[#1a4877] bg-[#1a4877]/5'
                   : 'border-hairline bg-surface-soft',
           ].join(' ')}
         >
@@ -466,7 +378,7 @@ export function FiveElementsInteractive() {
                 className={[
                   'mt-1 text-2xl font-bold tabular-nums',
                   dmgMod > 0
-                    ? 'text-[#3aa657]'
+                    ? 'text-[#22773f]'
                     : dmgMod < 0
                       ? 'text-rausch'
                       : 'text-ink',
@@ -524,7 +436,7 @@ function Selector({
               key={e.key}
               type="button"
               onClick={() => onChange(e.key)}
-              className="h-9 w-9 rounded-full text-sm font-bold text-white transition-transform"
+              className="h-11 w-11 rounded-full text-sm font-medium text-white transition-transform"
               style={{
                 background: e.color,
                 outline: active ? `3px solid ${accent}` : 'none',
@@ -532,6 +444,7 @@ function Selector({
                 transform: active ? 'scale(1.08)' : 'scale(1)',
               }}
               aria-label={`${label}：${e.key}`}
+              aria-pressed={active}
             >
               {e.key}
             </button>

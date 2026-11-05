@@ -4,6 +4,7 @@ import Link from "next/link";
 import EmptyState from "@/app/components/EmptyState";
 import { Badge } from "@/app/components/Badge";
 import { CategoryTabs, type CategorizedItem } from "@/app/components/CategoryTabs";
+import { GuideHeader } from '@/app/components/GuideHeader'
 
 
 
@@ -74,15 +75,17 @@ function yesNoUnknown(v?: boolean) {
 
 function Section({
   title,
+  tone,
   children,
 }: {
   title: string;
+  tone?: 'info' | 'attention' | 'danger' | 'success';
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-lg border bg-white p-4">
-      <div className="text-sm font-semibold text-slate-900">{title}</div>
-      <div className="mt-2 text-sm text-slate-700">{children}</div>
+    <section className="guide-section" data-guide-tone={tone}>
+      <h3>{title}</h3>
+      <div className="mt-2 text-sm text-bodytext">{children}</div>
     </section>
   );
 }
@@ -90,8 +93,8 @@ function Section({
 function KV({ k, v }: { k: string; v?: string }) {
   return (
     <div className="flex gap-2">
-      <div className="w-20 shrink-0 text-slate-500">{k}</div>
-      <div className="min-w-0 text-slate-900">{nonEmpty(v) ? v : "—"}</div>
+      <div className="w-20 shrink-0 text-muted">{k}</div>
+      <div className="min-w-0 text-ink">{nonEmpty(v) ? v : "—"}</div>
     </div>
   );
 }
@@ -100,23 +103,13 @@ export default async function DungeonsPage() {
   const dungeons = readIntegratedDungeons();
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8">
+    <div className="guide-page">
       {/* Header — align with the rest of the site */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-slate-900">副本攻略</h1>
-        <p className="mt-2 text-sm text-slate-600">
-          整理版副本資訊（入口、推薦強度、流程、掉落）。缺漏欄位以「—」顯示。
-        </p>
-
-        <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
-          <Badge className="bg-slate-50 text-slate-700 ring-1 ring-inset ring-slate-200 border-none">
-            共 {Array.isArray(dungeons) ? dungeons.length : 0} 筆
-          </Badge>
-          <Link className="text-blue-600 hover:underline" href="/guides/quests">
+      <GuideHeader title="副本攻略" count={`${dungeons.length} 個副本`} description="入口、推薦強度、機制與掉落，一次對照。缺漏資料以「—」保留。">
+          <Link href="/guides/quests">
             前往任務流程
           </Link>
-        </div>
-      </div>
+      </GuideHeader>
 
       {Array.isArray(dungeons) && dungeons.length > 0 ? (
         <CategoryTabs
@@ -137,39 +130,36 @@ export default async function DungeonsPage() {
               node: (
               <details
                 id={d.id ? String(d.id) : undefined}
-                className="rounded-xl border bg-white shadow-sm"
+                className="guide-record"
               >
                 <summary className="cursor-pointer list-none px-5 py-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
-                        <div className="truncate text-lg font-semibold text-slate-900" title={d.name}>
+                        <div className="truncate text-lg font-semibold text-ink" title={d.name}>
                           {d.name || "（未命名副本）"}
                         </div>
 
                         {nonEmpty(pos.stage) ? (
-                          <Badge className="bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-200 border-none">
+                          <Badge className="bg-surface-soft text-bodytext ring-1 ring-inset ring-hairline border-none">
                             {pos.stage}
                           </Badge>
                         ) : null}
 
                         {nonEmpty(pos.type) ? (
-                          <Badge className="bg-slate-50 text-slate-700 ring-1 ring-inset ring-slate-200 border-none">
+                          <Badge className="bg-surface-soft text-bodytext ring-1 ring-inset ring-hairline border-none">
                             {pos.type}
                           </Badge>
                         ) : null}
                       </div>
 
-                      <div className="mt-1 text-sm text-slate-600">
+                      <div className="mt-1 text-sm text-bodytext">
                         入口：{nonEmpty(entry.location) ? entry.location : "—"}
                         {nonEmpty(entry.npc) ? ` · ${entry.npc}` : ""}
                         {nonEmpty(entry.method) ? ` · ${entry.method}` : ""}
                       </div>
                     </div>
 
-                    <div className="shrink-0 text-xs text-slate-400 font-mono">
-                      {d.id || ""}
-                    </div>
                   </div>
                 </summary>
 
@@ -183,30 +173,30 @@ export default async function DungeonsPage() {
                       </div>
                     </Section>
 
-                    <Section title="入口方式">
+                    <Section title="入口方式" tone="info">
                       <div className="space-y-2">
                         <KV k="地點" v={entry.location} />
                         <KV k="NPC" v={entry.npc} />
                         <KV k="方式" v={entry.method} />
                         <div className="flex gap-2">
-                          <div className="w-20 shrink-0 text-slate-500">需道具</div>
-                          <div className="text-slate-900">{yesNoUnknown(entry.needsItem)}</div>
+                          <div className="w-20 shrink-0 text-muted">需道具</div>
+                          <div className="text-ink">{yesNoUnknown(entry.needsItem)}</div>
                         </div>
                         <div className="flex gap-2">
-                          <div className="w-20 shrink-0 text-slate-500">失敗踢出</div>
-                          <div className="text-slate-900">{yesNoUnknown(entry.kickOutOnFailure)}</div>
+                          <div className="w-20 shrink-0 text-muted">失敗踢出</div>
+                          <div className="text-ink">{yesNoUnknown(entry.kickOutOnFailure)}</div>
                         </div>
                       </div>
                     </Section>
 
-                    <Section title="推薦強度">
+                    <Section title="推薦強度" tone="danger">
                       <div className="space-y-2">
                         <KV k="階段" v={strength.stage} />
                         <KV k="配置" v={strength.config} />
                       </div>
                     </Section>
 
-                    <Section title="副本流程">
+                    <Section title="副本流程" tone="success">
                       {workflow.length > 0 ? (
                         <ol className="list-decimal space-y-1 pl-5">
                           {workflow.map((w, i) => (
@@ -216,28 +206,28 @@ export default async function DungeonsPage() {
                           ))}
                         </ol>
                       ) : (
-                        <div className="text-slate-500">—</div>
+                        <div className="text-muted">—</div>
                       )}
                     </Section>
 
-                    <Section title="BOSS">
+                    <Section title="BOSS" tone="danger">
                       {bosses.length > 0 ? (
                         <div className="flex flex-wrap gap-2">
                           {bosses.map((b, i) => (
                             <Badge
                               key={i}
-                              className="bg-purple-50 text-purple-700 ring-1 ring-inset ring-purple-200 border-none"
+                              className="bg-surface-soft text-bodytext ring-1 ring-inset ring-hairline border-none"
                             >
                               {b}
                             </Badge>
                           ))}
                         </div>
                       ) : (
-                        <div className="text-slate-500">—</div>
+                        <div className="text-muted">—</div>
                       )}
                     </Section>
 
-                    <Section title="關鍵機制">
+                    <Section title="關鍵機制" tone="attention">
                       {mechanics.length > 0 ? (
                         <ul className="list-disc space-y-1 pl-5">
                           {mechanics.map((m, i) => (
@@ -247,46 +237,46 @@ export default async function DungeonsPage() {
                           ))}
                         </ul>
                       ) : (
-                        <div className="text-slate-500">—</div>
+                        <div className="text-muted">—</div>
                       )}
                     </Section>
                   </div>
 
                   <div className="mt-3 grid gap-3 md:grid-cols-2">
-                    <Section title="主要掉落">
+                    <Section title="主要掉落" tone="attention">
                       {loot.length > 0 ? (
                         <div className="flex flex-wrap gap-2">
                           {loot.map((l, i) => (
                             <Badge
                               key={i}
-                              className="bg-amber-50 text-amber-800 ring-1 ring-inset ring-amber-200 border-none"
+                              className="bg-surface-soft text-ink ring-1 ring-inset ring-hairline border-none"
                             >
                               {l}
                             </Badge>
                           ))}
                         </div>
                       ) : (
-                        <div className="text-slate-500">—</div>
+                        <div className="text-muted">—</div>
                       )}
                     </Section>
 
                     <Section title="次數與重刷">
-                      <div className="text-slate-900">{nonEmpty(d.resetPolicy) ? d.resetPolicy : "—"}</div>
+                      <div className="text-ink">{nonEmpty(d.resetPolicy) ? d.resetPolicy : "—"}</div>
                     </Section>
                   </div>
 
                   {nonEmpty(d.notes) ? (
-                    <div className="mt-3 rounded-lg border bg-slate-50 p-4">
-                      <div className="text-sm font-semibold text-slate-900">小筆記</div>
-                      <div className="mt-2 whitespace-pre-wrap text-sm text-slate-700">{d.notes}</div>
+                    <div className="mt-3 rounded-lg border bg-surface-soft p-4">
+                      <div className="text-sm font-semibold text-ink">小筆記</div>
+                      <div className="mt-2 whitespace-pre-wrap text-sm text-bodytext">{d.notes}</div>
                     </div>
                   ) : null}
 
                   <div className="mt-4 flex items-center justify-between text-sm">
-                    <Link className="text-blue-600 hover:underline" href="/guides/quests">
+                    <Link className="text-bodytext hover:underline" href="/guides/quests">
                       回到任務流程
                     </Link>
-                    <span className="text-slate-400">點標題可收合/展開</span>
+                    <span className="text-muted">點標題可收合/展開</span>
                   </div>
                 </div>
               </details>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import { ReferenceHeading } from '@/app/components/ReferenceHeading'
 
 // ---------------------------------------------------------------------------
 // Built-in regression formulas (pre-calculated from sample data)
@@ -48,12 +49,7 @@ export default function DazuoPage() {
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       {/* Header */}
-      <div className="rounded-2xl border border-hairline bg-canvas p-6">
-        <h1 className="text-2xl font-semibold tracking-tight text-ink">打坐時間計算器</h1>
-        <p className="mt-2 text-sm text-muted">
-          快速估算打坐所需時間，或根據可用時間計算能打坐的內力。
-        </p>
-      </div>
+      <ReferenceHeading title="打坐時間計算器" description={<p>快速估算打坐所需時間，或根據可用時間計算能打坐的內力。</p>} />
 
       {/* Main Calculator */}
       <div className="rounded-2xl border border-hairline bg-surface-soft p-6">
@@ -64,10 +60,11 @@ export default function DazuoPage() {
             <p className="mt-1 text-xs text-muted">輸入要打坐的內力數量</p>
             <input
               type="number"
+              aria-label="要打坐的內力"
               placeholder="輸入內力"
               value={estNL}
               onChange={e => setEstNL(e.target.value)}
-              className="mt-4 w-full rounded-xl border-2 border-blue-200 px-4 py-3 text-lg font-medium focus:border-blue-500 focus:outline-none"
+              className="mt-4 w-full rounded-xl border-2 border-hairline px-4 py-3 text-lg font-medium focus:border-rausch focus:outline-none"
             />
             {estimate && (
               <div className="mt-4 space-y-2">
@@ -89,10 +86,11 @@ export default function DazuoPage() {
             <p className="mt-1 text-xs text-muted">輸入可用的秒數</p>
             <input
               type="number"
+              aria-label="可用的打坐秒數"
               placeholder="輸入秒數"
               value={estTime}
               onChange={e => setEstTime(e.target.value)}
-              className="mt-4 w-full rounded-xl border-2 border-indigo-200 px-4 py-3 text-lg font-medium focus:border-indigo-500 focus:outline-none"
+              className="mt-4 w-full rounded-xl border-2 border-hairline px-4 py-3 text-lg font-medium focus:border-rausch focus:outline-none"
             />
             {reverseEstimate && (
               <div className="mt-4 space-y-2">

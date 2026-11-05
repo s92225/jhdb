@@ -34,6 +34,7 @@ const HUBS: Record<string, { title: string; tabs: HubTab[] }> = {
     title: '系統',
     tabs: [
       { href: '/systems', label: '系統總覽', exact: true },
+      { href: '/systems/momentum', label: '氣勢系統' },
       { href: '/systems/five-elements', label: '五行相生相剋' },
     ],
   },
@@ -62,7 +63,7 @@ export function HubTabs({ hub }: { hub: keyof typeof HUBS }) {
   return (
     <nav
       aria-label={`${def.title}分頁`}
-      className="-mx-1 mb-6 flex items-center gap-1 overflow-x-auto border-b border-hairline-soft px-1 pb-px [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="reference-tabs -mx-1 mb-6 flex items-center gap-1 overflow-x-auto border-b border-hairline-soft px-1 pb-px [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
       {def.tabs.map((t) => {
         const active = t.exact

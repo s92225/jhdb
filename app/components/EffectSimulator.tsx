@@ -720,6 +720,7 @@ export function EffectSimulator({ skills }: { skills: SkillLite[] }) {
           <p className="text-[11px] leading-relaxed text-muted">
             模擬以資料庫平均內傷為基準，套用五行、兵器、連擊、左右互搏、上古神兵、疊層 DoT、閃避等
             可量化條件。實際傷害仍受招式等級、屬性、被閃/被招、buff 等影響。
+            本模擬器尚未計入 2026 年 10 月 31 日氣勢系統；氣勢加成請另查「系統 → 氣勢系統」，勿將此處結果視為含氣勢的最終傷害。
           </p>
         </aside>
         </div>

@@ -74,7 +74,7 @@ export default function LandingPage({ updates, stats }: { updates: UpdateItem[];
         const title = update.title && update.title !== update.date ? update.title : update.content.split('\n')[0].replace(/^\d+[.、]\s*/, '')
         const summary = update.content.split('\n').filter(Boolean)[0].replace(/^\d+[.、]\s*/, '')
         return <Link key={update.id} className="wuxia-update-row" href={`/updates#${update.id}`} data-ink-reveal><time>{update.date}</time><div><h3>{title}</h3>{summary !== title && <p>{summary}</p>}</div><ArrowUpRight size={18} aria-hidden="true" /></Link>
-      })}<p className="wuxia-community-note">未有答案？<Link href="/guides/quests">先查閱任務攻略。</Link></p></div>
+      })}<p className="wuxia-community-note">未有答案？<Link href="/forum">到江湖討論，問問同道。</Link></p></div>
     </section>
   </div>
 }

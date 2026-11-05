@@ -3,14 +3,20 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "node --test tests/*.test.mjs && npm run test:stats && npm run test:ui",
+    "test": "node --test tests/*.test.mjs && npm run test:stats && npm run test:rules && npm run test:forum && npm run test:guides && npm run test:ui",
     "test:stats": "tsx scripts/test-stats-formulas.ts",
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run test:production-baseline && next build",
     "start": "next start",
     "lint": "next lint",
     "import": "tsx scripts/import-from-txt.ts",
-    "test:ui": "tsx --tsconfig tests/tsconfig.json --test tests/hero-motion.test.ts tests/damo-maze.test.ts"
+    "test:rules": "tsx scripts/test-official-rules.ts",
+    "db:migrate": "tsx scripts/migrate-forum.ts",
+    "test:forum": "tsx scripts/test-forum.ts && tsx --test tests/forum-identity.test.ts",
+    "test:forum:integration": "tsx scripts/test-forum-integration.ts",
+    "test:guides": "tsx scripts/test-guides.ts",
+    "test:ui": "tsx --tsconfig tests/tsconfig.json --test tests/hero-motion.test.ts tests/damo-maze.test.ts",
+    "test:production-baseline": "node --test tests/production-baseline.test.mjs"
   },
   "keywords": [],
   "author": "",
@@ -18,22 +24,30 @@
   "description": "",
   "private": true,
   "dependencies": {
+    "better-auth": "1.7.14",
     "lucide-react": "^1.24.0",
-    "next": "14.2.5",
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "next": "15.5.28",
+    "pg": "8.16.3",
+    "react": "19.2.6",
+    "react-dom": "19.2.6"
   },
   "devDependencies": {
     "@types/node": "20.14.10",
-    "@types/react": "18.3.3",
-    "@types/react-dom": "18.3.0",
+    "@types/pg": "8.15.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
     "autoprefixer": "10.4.20",
     "eslint": "^8.57.1",
-    "eslint-config-next": "14.2.5",
-    "postcss": "8.4.41",
+    "eslint-config-next": "15.5.28",
+    "postcss": "8.5.23",
     "tailwindcss": "3.4.10",
     "ts-node": "10.9.2",
-    "tsx": "4.16.5",
+    "tsx": "4.23.15",
     "typescript": "5.5.4"
+  },
+  "overrides": {
+    "next": {
+      "postcss": "8.5.23"
+    }
   }
 }
