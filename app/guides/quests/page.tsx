@@ -5,6 +5,8 @@ import Link from 'next/link'
 import Badge from '@/app/components/Badge'
 import { CategoryTabs, type CategorizedItem } from '@/app/components/CategoryTabs'
 import { DamoMaze } from '@/app/components/DamoMaze'
+import { GuideHeader } from '@/app/components/GuideHeader'
+import { visibleQuestEntries } from '@/lib/guide-catalog'
 
 type WeaponItem = {
   name: string
@@ -103,34 +105,34 @@ function WeaponsSection({ weapons }: { weapons: WeaponsData }) {
     <div className="mt-6 space-y-6">
       {/* header */}
       <div className="flex flex-wrap items-center gap-3">
-        <h3 className="text-lg font-semibold text-gray-900">神兵一覽</h3>
-        <Badge className="bg-amber-50 text-amber-700 border-amber-200">
+        <h3 className="text-lg font-semibold text-ink">神兵一覽</h3>
+        <Badge className="bg-surface-soft text-bodytext border-hairline">
           共 {weapons.total} 把
         </Badge>
-        <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200">
+        <Badge className="bg-surface-soft text-bodytext border-hairline">
           每把 {weapons.price.toLocaleString()} 黃金
         </Badge>
       </div>
 
       {/* forging rules */}
       {forging?.description ? (
-        <div className="rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-3 text-sm text-indigo-900">
+        <div className="rounded-xl border border-hairline bg-surface-soft px-4 py-3 text-sm text-ink">
           <span className="font-semibold">鑄煉規則：</span>{forging.description}
         </div>
       ) : null}
 
       {/* materials */}
       {materials.length > 0 ? (
-        <div className="rounded-xl border bg-gray-50 p-4">
-          <h4 className="text-sm font-semibold text-gray-900">鑄煉素材</h4>
+        <div className="rounded-xl border bg-surface-soft p-4">
+          <h4 className="text-sm font-semibold text-ink">鑄煉素材</h4>
           {forging?.materialSource ? (
-            <p className="mt-1 text-xs text-gray-500">{forging.materialSource}</p>
+            <p className="mt-1 text-xs text-muted">{forging.materialSource}</p>
           ) : null}
           <div className="mt-3 grid gap-2 sm:grid-cols-2 md:grid-cols-4">
             {materials.map((m) => (
-              <div key={m.name} className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm">
-                <div className="font-semibold text-gray-800">{m.name}</div>
-                <div className="text-xs text-gray-500">用於：{m.forType}</div>
+              <div key={m.name} className="rounded-lg border border-hairline bg-white px-3 py-2 text-sm">
+                <div className="font-semibold text-ink">{m.name}</div>
+                <div className="text-xs text-muted">用於：{m.forType}</div>
               </div>
             ))}
           </div>
@@ -142,16 +144,16 @@ function WeaponsSection({ weapons }: { weapons: WeaponsData }) {
         const items = Array.isArray(cat.items) ? cat.items : []
         return (
           <div key={cat.type} className="rounded-xl border bg-white overflow-hidden">
-            <div className="flex items-center gap-2 border-b bg-gray-50 px-4 py-3">
-              <h4 className="text-sm font-semibold text-gray-900">{cat.type}</h4>
-              <span className="text-xs text-gray-500">鑄煉素材：{cat.forgingMaterial}</span>
-              <Badge className="ml-auto bg-gray-100 text-gray-600 border-gray-200 text-xs">
+            <div className="flex items-center gap-2 border-b bg-surface-soft px-4 py-3">
+              <h4 className="text-sm font-semibold text-ink">{cat.type}</h4>
+              <span className="text-xs text-muted">鑄煉素材：{cat.forgingMaterial}</span>
+              <Badge className="ml-auto bg-surface-strong text-bodytext border-hairline text-xs">
                 {items.length} 把
               </Badge>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="bg-gray-50 text-gray-600">
+                <thead className="bg-surface-soft text-bodytext">
                   <tr>
                     <th className="px-4 py-2 font-medium">名稱</th>
                     <th className="px-4 py-2 font-medium text-right">攻擊力</th>
@@ -160,20 +162,20 @@ function WeaponsSection({ weapons }: { weapons: WeaponsData }) {
                     <th className="px-4 py-2 font-medium text-center">可鑄煉</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-hairline">
                   {items.map((w) => (
-                    <tr key={w.name} className={w.forgeable ? 'bg-amber-50/40' : ''}>
-                      <td className="px-4 py-2 font-medium text-gray-900">{w.name}</td>
-                      <td className="px-4 py-2 text-right tabular-nums text-gray-700">{w.attack}</td>
-                      <td className="px-4 py-2 text-right tabular-nums text-gray-700">{w.defense}</td>
-                      <td className="px-4 py-2 text-right tabular-nums font-semibold text-gray-800">{w.attack + w.defense}</td>
+                    <tr key={w.name} className={w.forgeable ? 'bg-surface-soft' : ''}>
+                      <td className="px-4 py-2 font-medium text-ink">{w.name}</td>
+                      <td className="px-4 py-2 text-right tabular-nums text-bodytext">{w.attack}</td>
+                      <td className="px-4 py-2 text-right tabular-nums text-bodytext">{w.defense}</td>
+                      <td className="px-4 py-2 text-right tabular-nums font-semibold text-ink">{w.attack + w.defense}</td>
                       <td className="px-4 py-2 text-center">
                         {w.forgeable ? (
-                          <span className="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800 ring-1 ring-inset ring-amber-300">
+                          <span className="inline-flex items-center rounded-full bg-surface-strong px-2 py-0.5 text-xs font-semibold text-ink ring-1 ring-inset ring-hairline">
                             可鑄煉
                           </span>
                         ) : (
-                          <span className="text-xs text-gray-400">—</span>
+                          <span className="text-xs text-muted">—</span>
                         )}
                       </td>
                     </tr>
@@ -197,16 +199,16 @@ function WeaponsSection({ weapons }: { weapons: WeaponsData }) {
         )
         if (!upgraded.length) return null
         return (
-          <div className="rounded-xl border border-amber-300 bg-amber-50 overflow-hidden">
-            <div className="flex items-center gap-2 border-b border-amber-200 bg-amber-100/60 px-4 py-3">
-              <h4 className="text-sm font-semibold text-amber-900">鑄煉後神兵（真神兵）</h4>
-              <Badge className="ml-auto bg-amber-200 text-amber-900 border-amber-300 text-xs">
+          <div className="rounded-xl border border-hairline bg-surface-soft overflow-hidden">
+            <div className="flex items-center gap-2 border-b border-hairline bg-surface-strong px-4 py-3">
+              <h4 className="text-sm font-semibold text-ink">鑄煉後神兵（真神兵）</h4>
+              <Badge className="ml-auto bg-surface-strong text-ink border-hairline text-xs">
                 {upgraded.length} 把
               </Badge>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="bg-amber-100/40 text-amber-800">
+                <thead className="bg-surface-strong text-ink">
                   <tr>
                     <th className="px-4 py-2 font-medium">鑄煉後名稱</th>
                     <th className="px-4 py-2 font-medium text-right">攻擊力</th>
@@ -215,14 +217,14 @@ function WeaponsSection({ weapons }: { weapons: WeaponsData }) {
                     <th className="px-4 py-2 font-medium">原始神兵</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-amber-100">
+                <tbody className="divide-y divide-hairline">
                   {upgraded.map((w) => (
                     <tr key={w.name + w.original}>
-                      <td className="px-4 py-2 font-semibold text-amber-900">{w.name}</td>
-                      <td className="px-4 py-2 text-right tabular-nums text-amber-800">{w.attack}</td>
-                      <td className="px-4 py-2 text-right tabular-nums text-amber-800">{w.defense}</td>
-                      <td className="px-4 py-2 text-right tabular-nums font-semibold text-amber-900">{w.attack + w.defense}</td>
-                      <td className="px-4 py-2 text-sm text-amber-700">{w.original}</td>
+                      <td className="px-4 py-2 font-semibold text-ink">{w.name}</td>
+                      <td className="px-4 py-2 text-right tabular-nums text-ink">{w.attack}</td>
+                      <td className="px-4 py-2 text-right tabular-nums text-ink">{w.defense}</td>
+                      <td className="px-4 py-2 text-right tabular-nums font-semibold text-ink">{w.attack + w.defense}</td>
+                      <td className="px-4 py-2 text-sm text-bodytext">{w.original}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -241,16 +243,16 @@ export default function QuestsPage() {
   // JSON 壞掉：給可讀錯誤頁，不要直接 500
   if (error) {
     return (
-      <div className="mx-auto max-w-6xl px-4 py-8">
+      <div className="guide-page">
         <div className="mb-6">
-          <h1 className="text-2xl font-semibold text-gray-900">任務流程</h1>
-          <p className="mt-2 text-sm text-gray-600">整合版資料讀取失敗（本頁不會讓站台 500）。</p>
+          <h1 className="text-2xl font-semibold text-ink">任務流程</h1>
+          <p className="mt-2 text-sm text-bodytext">整合版資料讀取失敗（本頁不會讓站台 500）。</p>
         </div>
 
         <div className="rounded-2xl border bg-white p-5">
           <div className="text-sm font-medium text-red-700">quests_integrated.json 讀取失敗</div>
-          <div className="mt-2 text-sm text-gray-700 break-words">{error}</div>
-          <div className="mt-4 text-sm text-gray-500">
+          <div className="mt-2 text-sm text-bodytext break-words">{error}</div>
+          <div className="mt-4 text-sm text-muted">
             請確認：
             <ul className="mt-2 list-disc list-inside space-y-1">
               <li>檔案路徑：<code className="px-1">/data/quests_integrated.json</code></li>
@@ -264,9 +266,7 @@ export default function QuestsPage() {
   }
 
   // Filter out 神兵 entry (moved to /weapons page) to avoid duplication.
-  const list = (Array.isArray(quests) ? quests : []).filter(
-    (q) => q.id !== 'quest-神兵取得流程' && !q.weapons,
-  )
+  const list = visibleQuestEntries(Array.isArray(quests) ? quests : [])
 
   const items: CategorizedItem[] = list.map((q) => ({
     id: q.id,
@@ -278,6 +278,7 @@ export default function QuestsPage() {
       q.location,
       ...(Array.isArray(q.targets) ? (q.targets as any[]).map((x) => stringifyItem(x) ?? '') : []),
       ...(Array.isArray(q.workflow) ? (q.workflow as any[]).map((x) => stringifyItem(x) ?? '') : []),
+      ...(Array.isArray(q.steps) ? (q.steps as any[]).map((x) => stringifyItem(x) ?? '') : []),
     ]
       .filter(Boolean)
       .join(' '),
@@ -285,34 +286,22 @@ export default function QuestsPage() {
   }))
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8">
+    <div className="guide-page">
       {/* Page header */}
-      <div className="mb-6">
-        <div className="flex flex-wrap items-baseline gap-3">
-          <h1 className="text-2xl font-semibold text-gray-900">任務流程</h1>
-          <Badge className="bg-slate-50 text-slate-700 ring-1 ring-inset ring-slate-200 border-none">
-            共 {list.length} 筆
-          </Badge>
-        </div>
-        <p className="mt-2 max-w-3xl text-sm text-gray-600">
-          多個更新文件中的任務資料整合呈現；以分類頁籤切換、可搜尋名稱／敘述／流程。
-        </p>
-
-        <div className="mt-3 flex flex-wrap items-center gap-3 text-sm">
-          <Link className="text-blue-600 hover:underline" href="/guides/dungeons">
+      <GuideHeader title="任務流程" count={`${list.length} 項任務`} description="按門派與進度找任務，先核對門檻，再看流程與獎勵。">
+          <Link href="/guides/dungeons">
             → 看副本
           </Link>
-          <Link className="text-blue-600 hover:underline" href="/skills">
+          <Link href="/skills">
             → 看武技
           </Link>
-          <Link className="text-blue-600 hover:underline" href="/equipment">
+          <Link href="/equipment">
             → 神兵取得流程
           </Link>
-          <a className="text-blue-600 hover:underline" href="#dungeon-damo-maze">
+          <a href="#dungeon-damo-maze">
             ↓ 大漠迷宮（轉生）
           </a>
-        </div>
-      </div>
+      </GuideHeader>
 
       <CategoryTabs
         items={items}
@@ -355,55 +344,47 @@ function QuestCard({ q }: { q: IntegratedQuest }) {
   const sourceRefs = Array.isArray(q.sourceRefs) ? q.sourceRefs : []
 
   return (
-    <article className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md">
+    <article className="quest-card">
       {/* Header strip */}
-      <header className="border-b border-gray-100 bg-gradient-to-r from-slate-50 to-white px-5 py-4">
-        <div className="flex flex-wrap items-center gap-2">
-          <Badge className="bg-blue-50 text-blue-700 border-blue-100">{category}</Badge>
+      <header className="quest-card-header">
+        <div className="quest-meta">
+          <span className="guide-tag">{category}</span>
           {q.giver ? (
-            <span className="inline-flex items-center gap-1 rounded-full bg-purple-50 px-2.5 py-0.5 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-200">
-              <span aria-hidden>🧑</span> {q.giver}
-            </span>
+            <span>接取 NPC：{q.giver}</span>
           ) : null}
           {q.location ? (
-            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-200">
-              <span aria-hidden>📍</span> {q.location}
-            </span>
+            <span>地點：{q.location}</span>
           ) : null}
-          <h2 className="ml-1 text-lg font-semibold text-gray-900">{q.name}</h2>
         </div>
+        <h2>{q.name}</h2>
         {q.summary ? (
-          <p className="mt-2 text-sm leading-relaxed text-gray-700">{q.summary}</p>
+          <p className="mt-2 text-sm leading-relaxed text-bodytext">{q.summary}</p>
         ) : null}
       </header>
 
-      <div className="p-5">
-        <div className="grid gap-4 md:grid-cols-2">
+      <div className="quest-card-body">
+        <div className="quest-sections">
           <Section
             title="接取方式"
-            icon="🚩"
-            tone="indigo"
+            tone="info"
             items={accept}
             emptyHint="未提及"
           />
           <Section
             title="門檻"
-            icon="🔒"
-            tone="rose"
+            tone="danger"
             items={requirements}
             emptyHint="無門檻"
           />
           <Section
             title="獎勵"
-            icon="🎁"
-            tone="amber"
+            tone="attention"
             items={rewards}
             emptyHint="未提及"
           />
           <Section
             title="流程"
-            icon="🧭"
-            tone="emerald"
+            tone="success"
             items={workflow}
             ordered
             emptyHint="未提及"
@@ -412,8 +393,7 @@ function QuestCard({ q }: { q: IntegratedQuest }) {
             <div className="md:col-span-2">
               <Section
                 title="任務目標"
-                icon="🎯"
-                tone="rose"
+                tone="danger"
                 items={targets}
               />
             </div>
@@ -421,19 +401,19 @@ function QuestCard({ q }: { q: IntegratedQuest }) {
         </div>
 
         {q.blackwoodToken ? (
-          <div className="mt-4 rounded-xl border border-indigo-200 bg-indigo-50/60 p-4">
-            <div className="text-sm font-semibold text-indigo-900">🔑 黑木令取得方式</div>
-            <div className="mt-2 text-sm text-indigo-900/90">
+          <div className="mt-4 rounded-xl border border-hairline bg-surface-soft p-4">
+            <div className="text-sm font-semibold text-ink">黑木令取得方式</div>
+            <div className="mt-2 text-sm text-ink">
               <p className="font-medium">{q.blackwoodToken.source}</p>
-              <p className="mt-1 text-gray-700">{q.blackwoodToken.details}</p>
+              <p className="mt-1 text-bodytext">{q.blackwoodToken.details}</p>
             </div>
           </div>
         ) : null}
 
         {notes.length ? (
-          <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50/60 p-4">
-            <div className="text-sm font-semibold text-amber-900">備註</div>
-            <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-amber-900/90">
+          <div className="mt-4 rounded-xl border border-hairline bg-surface-soft p-4">
+            <div className="text-sm font-semibold text-ink">備註</div>
+            <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-ink">
               {notes.map((x, i) => (
                 <li key={i}>{x}</li>
               ))}
@@ -443,18 +423,18 @@ function QuestCard({ q }: { q: IntegratedQuest }) {
 
         {/* Version notes timeline */}
         {versionNotes.length ? (
-          <details className="mt-4 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
-            <summary className="cursor-pointer select-none text-sm font-semibold text-gray-900">
+          <details className="mt-4 rounded-xl border border-hairline bg-surface-soft px-4 py-3">
+            <summary className="cursor-pointer select-none text-sm font-semibold text-ink">
               版本紀錄（{versionNotes.length}）
             </summary>
-            <ol className="mt-3 space-y-2 border-l-2 border-gray-200 pl-4 text-sm">
+            <ol className="mt-3 space-y-2 border-l-2 border-hairline pl-4 text-sm">
               {versionNotes.map((v, i) => (
                 <li key={i} className="relative">
-                  <span className="absolute -left-[21px] top-1.5 inline-block h-2.5 w-2.5 rounded-full bg-blue-400 ring-2 ring-white" />
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500">
-                    {v.date ? <span className="font-mono">{v.date}</span> : null}
+                  <span className="absolute -left-[21px] top-1.5 inline-block h-2.5 w-2.5 rounded-full bg-rausch ring-2 ring-white" />
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-muted">
+                    {v.date ? <span className="font-sans">{v.date}</span> : null}
                   </div>
-                  <div className="mt-0.5 text-sm text-gray-800">{v.note || '—'}</div>
+                  <div className="mt-0.5 text-sm text-ink">{v.note || '—'}</div>
                 </li>
               ))}
             </ol>
@@ -463,14 +443,14 @@ function QuestCard({ q }: { q: IntegratedQuest }) {
 
         {/* Source refs */}
         {sourceRefs.length ? (
-          <details className="mt-3 rounded-xl border border-gray-200 bg-white px-4 py-3">
-            <summary className="cursor-pointer select-none text-sm font-semibold text-gray-900">
+          <details className="mt-3 rounded-xl border border-hairline bg-white px-4 py-3">
+            <summary className="cursor-pointer select-none text-sm font-semibold text-ink">
               原文出處（{sourceRefs.length}）
             </summary>
             <div className="mt-3 space-y-3">
               {sourceRefs.map((s, i) => (
-                <div key={i} className="rounded-lg bg-gray-50 px-3 py-2">
-                  <pre className="mt-1 whitespace-pre-wrap font-sans text-xs leading-relaxed text-gray-700">
+                <div key={i} className="rounded-lg bg-surface-soft px-3 py-2">
+                  <pre className="mt-1 whitespace-pre-wrap font-sans text-xs leading-relaxed text-bodytext">
                     {s.excerpt || '—'}
                   </pre>
                 </div>
@@ -485,42 +465,26 @@ function QuestCard({ q }: { q: IntegratedQuest }) {
   )
 }
 
-// Pretty section with icon + colored accent
-type Tone = 'indigo' | 'rose' | 'amber' | 'emerald'
-const TONE: Record<Tone, { bg: string; ring: string; text: string }> = {
-  indigo: { bg: 'bg-indigo-50/70', ring: 'ring-indigo-200', text: 'text-indigo-900' },
-  rose: { bg: 'bg-rose-50/70', ring: 'ring-rose-200', text: 'text-rose-900' },
-  amber: { bg: 'bg-amber-50/70', ring: 'ring-amber-200', text: 'text-amber-900' },
-  emerald: { bg: 'bg-emerald-50/70', ring: 'ring-emerald-200', text: 'text-emerald-900' },
-}
-
 function Section({
   title,
-  icon,
   tone,
   items,
   ordered = false,
   emptyHint,
 }: {
   title: string
-  icon: string
-  tone: Tone
+  tone?: 'info' | 'attention' | 'danger' | 'success'
   items: string[]
   ordered?: boolean
   emptyHint?: string
 }) {
-  const t = TONE[tone]
   const ListTag = ordered ? 'ol' : 'ul'
   return (
-    <section className={`rounded-xl ${t.bg} p-4 ring-1 ring-inset ${t.ring}`}>
-      <h3 className={`flex items-center gap-1.5 text-sm font-semibold ${t.text}`}>
-        <span aria-hidden>{icon}</span>
-        {title}
-      </h3>
+    <section className="guide-section" data-guide-tone={tone}><h3>{title}</h3>
       {items.length ? (
         <ListTag
           className={[
-            'mt-2 space-y-1 text-sm text-gray-800',
+            'mt-2 space-y-1 text-sm text-ink',
             ordered ? 'list-decimal' : 'list-disc',
             'pl-5',
           ].join(' ')}
@@ -532,7 +496,7 @@ function Section({
           ))}
         </ListTag>
       ) : (
-        <p className="mt-2 text-sm italic text-gray-400">{emptyHint ?? '未提及'}</p>
+        <p className="mt-2 text-sm text-muted">{emptyHint ?? '未提及'}</p>
       )}
     </section>
   )

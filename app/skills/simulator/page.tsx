@@ -74,7 +74,6 @@ export default async function EffectSimulatorPage() {
   return (
     <div className="space-y-6">
       <header>
-        <span className="pill">攻略圖解 · Effect Simulator</span>
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
           特效效果模擬器
         </h1>

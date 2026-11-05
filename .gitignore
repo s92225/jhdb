@@ -16,6 +16,8 @@ yarn-error.log*
 pnpm-debug.log*
 
 # env files
+.env*
+!.env.example
 .env
 .env.local
 .env.development.local
@@ -32,3 +34,6 @@ Thumbs.db
 # Scripts with credentials
 scripts/蒙古萬夫長_v2.txt
 .env*.local
+
+# generated TypeScript cache
+*.tsbuildinfo

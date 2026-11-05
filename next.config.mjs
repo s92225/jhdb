@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Keep review builds isolated from any already-running development server.
   distDir: process.env.JHDB_DIST_DIR || '.next',
   experimental: {
     serverActions: { allowedOrigins: [] },

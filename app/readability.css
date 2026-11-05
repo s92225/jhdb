@@ -1,0 +1,46 @@
+/* Keep the real range input: pointer, touch and arrow-key updates still work.
+   Only the browser's blue thumb disappears, not the fill or focus indication. */
+.stats-page input[type=range] { -webkit-appearance:none; appearance:none; }
+.stats-page input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:16px; height:44px; border:0; border-radius:0; background:transparent; box-shadow:none; opacity:0; }
+.stats-page input[type=range]::-moz-range-thumb { width:16px; height:44px; border:0; border-radius:0; background:transparent; box-shadow:none; opacity:0; }
+.stats-page input[type=range]::-moz-range-track,.stats-page input[type=range]::-moz-range-progress { background:transparent; border:0; }
+.stats-page input[type=range]:focus-visible { outline:2px solid var(--ink); outline-offset:4px; }
+
+/* CJK counters need space, not faux-bold. Real 400/500 faces are loaded by
+   next/font; headings use medium, controls and explanations use regular. */
+.skills-page { font-size:16px; line-height:1.7; font-synthesis:none; }
+.skills-page > div > div > h1 { font-size:32px; font-weight:500; letter-spacing:0; }
+.skills-page > div > div > p { font-size:16px; line-height:1.7; margin-top:8px; }
+.skills-workbench { min-width:0; }
+.skill-filters > div { padding:20px; }
+.skill-filter-title { display:block; font-size:16px; line-height:1.6; font-weight:500; }
+.skill-filters :is(button,label,input,select) { font-size:16px; font-weight:400; line-height:1.6; }
+.skill-filters .skill-filter-title { font-weight:500; }
+.skill-filters input[type=search] { background:white; min-height:48px; }
+.skill-filters input[type=search]::placeholder { color:#526b6b; opacity:1; }
+.skill-filters button { min-height:44px; }
+.skill-filters label:has(input[type=checkbox]) { min-height:40px; }
+.skill-filters :is(.text-xs,.text-\[10px\]) { font-size:14px; line-height:1.7; }
+.skill-filters input[type=checkbox],.skill-result-card input[type=checkbox] { min-height:0; width:18px; height:18px; flex:none; accent-color:var(--ink); }
+.skill-filters .font-semibold { font-weight:500; }
+.skills-workbench > section :is(select,button) { font-size:16px; min-height:44px; }
+.skills-workbench > section > div:first-child .text-sm { font-size:16px; }
+.skill-name { display:inline-block; font-size:20px; font-weight:500; line-height:1.6; }
+.skill-source-tag,.skill-config-tags > span { font-size:14px; font-weight:400; line-height:1.5; letter-spacing:0; }
+.skill-result-card .text-xs { font-size:14px; font-weight:400; line-height:1.7; }
+.skill-result-card .font-medium { font-weight:500; }
+.skill-result-card > div:first-child { align-items:flex-start; }
+.skill-result-card > div:first-child > div:first-child { min-width:0; align-items:flex-start; }
+.skill-result-card > div:first-child > div:first-child > input { margin-top:7px; }
+.skill-result-card > div:first-child > div:last-child { flex:none; }
+.skill-metric-label { font-size:14px; font-weight:400; line-height:1.6; }
+.skill-metric-label > span:last-child { font-weight:500; }
+.skills-workbench .sticky > div { box-shadow:none; border-radius:4px; }
+.skills-workbench .sticky a { font-size:16px; min-height:44px; display:inline-flex; align-items:center; }
+@media(max-width:640px) {
+  .skills-workbench { gap:24px; }
+  .skill-result-card { padding:16px; }
+  .skill-result-card > div:first-child { gap:12px; }
+  .skill-name { font-size:20px; }
+  .skills-workbench > section > div:first-child select { max-width:100%; }
+}

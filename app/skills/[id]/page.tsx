@@ -23,9 +23,9 @@ function findManualForSkill(skillName: string): { id: string; name: string } | n
 export default async function SkillDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const skill = await getSkillById(params.id);
+  const skill = await getSkillById((await params).id);
   if (!skill) return notFound();
 
   const manual = findManualForSkill(skill.name);

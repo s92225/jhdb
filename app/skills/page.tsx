@@ -1,19 +1,15 @@
-import Link from 'next/link'
+import { ReferenceHeading } from '@/app/components/ReferenceHeading'
 import { getAllSkills } from '@/lib/data'
 import { SkillTable } from './table'
 
-export default function SkillsPage({ searchParams }: { searchParams?: { source?: string } }) {
+export default async function SkillsPage({ searchParams }: { searchParams?: Promise<{ source?: string }> }) {
   const skills = getAllSkills()
-  const initialFamily = typeof searchParams?.source === 'string' ? searchParams.source : undefined
+  const source = (await searchParams)?.source
+  const initialFamily = typeof source === 'string' ? source : undefined
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-ink">武技比較</h1>
-          <p className="mt-1 text-sm text-muted">支援篩選、排序、與多選比較。缺資料欄位會保持空白。</p>
-        </div>
-      </div>
+    <div className="skills-page space-y-4">
+      <ReferenceHeading title="武技比較" description={<p>搜尋、篩選及多選比較。缺資料留白。</p>} />
 
       <SkillTable skills={skills} initialFamily={initialFamily} />
     </div>

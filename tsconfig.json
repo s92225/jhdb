@@ -39,10 +39,19 @@
     ]
   },
   "include": [
-    "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next-wuxia-bg-dev/types/**/*.ts",
+    ".next-wuxia-dev/types/**/*.ts",
+    ".next-wuxia-no-corner/types/**/*.ts",
+    ".next-wuxia-prod/types/**/*.ts",
+    ".next-wuxia-site-dev/types/**/*.ts",
+    ".next-wuxia-site-final/types/**/*.ts",
+    ".next-wuxia-site-final2/types/**/*.ts",
+    ".next-wuxia-site/types/**/*.ts",
+    ".next/types/**/*.ts",
+    "next-env.d.ts",
+    ".next-wuxia-atmosphere/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

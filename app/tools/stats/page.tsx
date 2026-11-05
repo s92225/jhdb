@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 }
 
 export default function StatsPage() {
-  return <StatsCalculator />
+  return <div className="stats-page"><StatsCalculator /></div>
 }

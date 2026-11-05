@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useId, useMemo, useState } from 'react'
 import type { Skill, SkillConfig, SkillTier } from '@/lib/types'
 import Link from 'next/link'
 import { Badge } from '@/app/components/Badge'
@@ -23,9 +23,9 @@ function tagClass(label: string) {
   if (key === '棍法') return 'border-emerald-200 bg-emerald-50 text-emerald-700'
   if (key === '短兵') return 'border-teal-200 bg-teal-50 text-teal-700'
   if (key === '招架') return 'border-slate-200 bg-slate-50 text-slate-700'
-  if (key === '輕功') return 'border-indigo-200 bg-indigo-50 text-indigo-700'
-  if (key === '內功') return 'border-purple-200 bg-purple-50 text-purple-700'
-  if (key === '反震') return 'border-fuchsia-200 bg-fuchsia-50 text-fuchsia-700'
+  if (key === '輕功') return 'border-indigo-200 bg-indigo-50 text-indigo-700' // taste-skill-ignore: established labelled skill/sect/metric colour, not brand chrome
+  if (key === '內功') return 'border-purple-200 bg-purple-50 text-purple-700' // taste-skill-ignore: established labelled skill/sect/metric colour, not brand chrome
+  if (key === '反震') return 'border-fuchsia-200 bg-fuchsia-50 text-fuchsia-700' // taste-skill-ignore: established labelled skill/sect/metric colour, not brand chrome
   return 'border-hairline bg-surface-soft text-muted'
 }
 
@@ -175,7 +175,7 @@ function sourceTagClass(label: string) {
   if (key === '少林') return 'border-amber-200 bg-amber-50 text-amber-700'
   if (key === '武當') return 'border-emerald-200 bg-emerald-50 text-emerald-700'
   if (key === '明教') return 'border-rose-200 bg-rose-50 text-rose-700'
-  if (key === '峨嵋') return 'border-purple-200 bg-purple-50 text-purple-700'
+  if (key === '峨嵋') return 'border-purple-200 bg-purple-50 text-purple-700' // taste-skill-ignore: established labelled skill/sect/metric colour, not brand chrome
   if (key === '武館') return 'border-blue-200 bg-blue-50 text-blue-700'
   return 'border-hairline bg-surface-soft text-muted'
 }
@@ -187,6 +187,9 @@ export function SkillTable({
   skills: Skill[]
   initialFamily?: string
 }) {
+  const searchId = useId()
+  const filtersId = useId()
+  const [filtersOpen, setFiltersOpen] = useState(false)
   const [q, setQ] = useState('')
   const [family, setFamily] = useState<string>(initialFamily) // 門派（含 公共武技/武館）
   const [tier, setTier] = useState<SkillTier | '全部'>('全部')
@@ -339,11 +342,13 @@ if (tier !== '全部' && rowTier !== tier) return false
   }
 
   return (
-    <div className="grid gap-4 lg:grid-cols-[260px_minmax(0,1fr)]">
-      <aside className="space-y-4">
-        <div className="rounded-2xl border border-hairline bg-canvas p-4">
-          <div className="text-sm font-semibold text-ink">搜尋武技</div>
+    <div className="skills-workbench grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
+      <aside className="skill-filters space-y-4" aria-label="武技篩選">
+        <div className="skill-filter-panel rounded-2xl border border-hairline bg-canvas p-4">
+          <div className="skill-search-label"><label htmlFor={searchId} className="skill-filter-title">搜尋武技</label><button type="button" className="skill-refine-toggle" aria-expanded={filtersOpen} aria-controls={filtersId} onClick={() => setFiltersOpen((open) => !open)}>{filtersOpen ? '收起篩選' : '篩選條件'}<span aria-hidden="true">{filtersOpen ? '−' : '+'}</span></button></div>
           <input
+            id={searchId}
+            type="search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="武技名 / 門派..."
@@ -351,13 +356,15 @@ if (tier !== '全部' && rowTier !== tier) return false
           />
         </div>
 
+        <div className="skill-refine" id={filtersId} data-open={filtersOpen}>
         <div className="rounded-2xl border border-hairline bg-canvas p-4">
-          <div className="text-sm font-semibold text-ink">門派篩選</div>
+          <h2 className="skill-filter-title">門派篩選</h2>
           <div className="mt-3 grid grid-cols-2 gap-2">
             {familyOptions.map((v) => (
               <button
                 key={v}
                 onClick={() => setFamily(v)}
+                aria-pressed={family === v}
                 className={`rounded-xl border px-3 py-2 text-sm ${family === v ? 'border-rausch bg-rausch/5 text-rausch' : 'border-hairline bg-canvas text-bodytext hover:bg-surface-soft'}`}
               >
                 {v}
@@ -368,7 +375,7 @@ if (tier !== '全部' && rowTier !== tier) return false
 
         <div className="rounded-2xl border border-hairline bg-canvas p-4">
           <div className="flex items-center justify-between">
-            <div className="text-sm font-semibold text-ink">類型配置</div>
+            <h2 className="skill-filter-title">類型配置</h2>
             {configFilters.size > 0 && (
               <button
                 onClick={() => setConfigFilters(new Set())}
@@ -403,7 +410,7 @@ if (tier !== '全部' && rowTier !== tier) return false
 
         <div className="rounded-2xl border border-hairline bg-canvas p-4">
           <div className="flex items-center justify-between">
-            <div className="text-sm font-semibold text-ink">內力需求上限</div>
+            <h2 className="skill-filter-title">內力需求上限</h2>
             <label className="flex items-center gap-2 text-xs text-muted">
               <input
                 type="checkbox"
@@ -442,7 +449,7 @@ if (tier !== '全部' && rowTier !== tier) return false
 
         <div className="rounded-2xl border border-hairline bg-canvas p-4">
           <div className="flex items-center justify-between">
-            <div className="text-sm font-semibold text-ink">平均傷害下限</div>
+            <h2 className="skill-filter-title">平均傷害下限</h2>
             <label className="flex items-center gap-2 text-xs text-muted">
               <input
                 type="checkbox"
@@ -478,19 +485,20 @@ if (tier !== '全部' && rowTier !== tier) return false
             <span>{avgDmgBounds.max}</span>
           </div>
         </div>
+        </div>
       </aside>
 
       <section className="space-y-4">
-        <div className="rounded-2xl border border-hairline bg-canvas p-4">
+        <div className="skill-results-toolbar rounded-2xl border border-hairline bg-canvas p-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="text-sm text-muted">共 {sorted.length} 筆</div>
             <div className="flex flex-wrap items-center gap-2">
-              <select value={tier} onChange={(e) => setTier(e.target.value as any)} className="rounded-xl border border-hairline bg-canvas px-3 py-2 text-sm text-ink">
+              <select aria-label="武技階級" value={tier} onChange={(e) => setTier(e.target.value as any)} className="rounded-xl border border-hairline bg-canvas px-3 py-2 text-sm text-ink">
                 {tiers.map((v) => (
                   <option key={v} value={v}>{v}</option>
                 ))}
               </select>
-              <select value={sortKey} onChange={(e) => setSortKey(e.target.value as SortKey)} className="rounded-xl border border-hairline bg-canvas px-3 py-2 text-sm text-ink">
+              <select aria-label="武技排序" value={sortKey} onChange={(e) => setSortKey(e.target.value as SortKey)} className="rounded-xl border border-hairline bg-canvas px-3 py-2 text-sm text-ink">
                 <option value="name">排序：名稱</option>
                 <option value="family">排序：門派</option>
                 <option value="tier">排序：階級</option>
@@ -504,6 +512,7 @@ if (tier !== '全部' && rowTier !== tier) return false
                 className="rounded-xl border border-hairline bg-canvas px-3 py-2 text-sm text-ink"
                 onClick={() => setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'))}
                 title="切換升冪/降冪"
+                aria-label="切換排序方向"
               >
                 {sortDir === 'asc' ? '↑' : '↓'}
               </button>
@@ -516,7 +525,7 @@ if (tier !== '全部' && rowTier !== tier) return false
         ) : (
           <div className="space-y-4">
             {sorted.map((s) => (
-              <div key={s.id} className="rounded-2xl border border-hairline bg-canvas p-5 transition-shadow hover:shadow-airbnb">
+              <div key={s.id} className="skill-result-card rounded-2xl border border-hairline bg-canvas p-5">
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
                     <input
@@ -528,14 +537,14 @@ if (tier !== '全部' && rowTier !== tier) return false
                     />
                     <div>
                       <div className="mb-2">
-                        <Badge className={`text-[11px] font-semibold tracking-wide ${sourceTagClass(show(s.sourceTag))}`}>
+                        <Badge className={`skill-source-tag ${sourceTagClass(show(s.sourceTag))}`}>
                           {show(s.sourceTag)}
                         </Badge>
                       </div>
-                      <Link href={`/skills/${encodeURIComponent(s.id)}`} className="text-[18px] font-semibold text-rausch hover:underline">
+                      <Link href={`/skills/${encodeURIComponent(s.id)}`} className="skill-name text-rausch hover:underline">
                         {s.name}
                       </Link>
-                      <div className="mt-2 flex flex-wrap gap-1.5">
+                      <div className="skill-config-tags mt-2 flex flex-wrap gap-2">
                         {Array.isArray(s.configs) && s.configs.length > 0
                           ? s.configs.map((c) => <Badge key={c} className={tagClass(c)}>{c}</Badge>)
                           : <span className="text-muted-soft">—</span>}
@@ -552,7 +561,7 @@ if (tier !== '全部' && rowTier !== tier) return false
                           <Badge className="border-teal-300 bg-teal-50 text-teal-700">忙碌狀態</Badge>
                         )}
                         {(s as any).weaponBonus?.length > 0 && (
-                          <Badge className="border-violet-300 bg-violet-50 text-violet-700">
+                          <Badge className="border-violet-300 bg-violet-50 text-violet-700"> {/* taste-skill-ignore: established labelled skill/sect/metric colour, not brand chrome */}
                             兵器加成
                           </Badge>
                         )}
@@ -608,8 +617,8 @@ if (tier !== '全部' && rowTier !== tier) return false
                   </div>
                 </div>
 
-                <div className="mt-4 grid gap-x-4 gap-y-3 md:grid-cols-4">
-                  <Attribute label="內力需求" value={show(s.requirement?.neili)} max={7000} color="bg-indigo-500" />
+                <div className="skill-metrics mt-5 grid gap-x-6 gap-y-4 sm:grid-cols-2 xl:grid-cols-3">
+                  <Attribute label="內力需求" value={show(s.requirement?.neili)} max={7000} color="bg-indigo-500" /> {/* taste-skill-ignore: established labelled skill/sect/metric colour, not brand chrome */}
                   <Attribute label="平均傷害" value={show(calcAvgDamage(s))} max={2000} color="bg-rose-500" />
                   <Attribute label="平均內傷" value={show(s.averages?.neishang)} max={2000} color="bg-emerald-500" />
                   <Attribute label="平均臂傷" value={show(s.averages?.bishang)} max={2000} color="bg-amber-500" />
@@ -621,7 +630,7 @@ if (tier !== '全部' && rowTier !== tier) return false
           </div>
         )}
 
-        <div className="sticky bottom-4 z-10">
+        {selected.length > 0 && <div className="sticky bottom-4 z-10" aria-live="polite">
           <div className="mx-auto flex max-w-xl items-center justify-between gap-4 rounded-full bg-ink px-6 py-3 text-white shadow-lg">
             <div className="text-sm">{selected.length} 個項目已選取</div>
             <Link
@@ -632,7 +641,7 @@ if (tier !== '全部' && rowTier !== tier) return false
               開始比較 →
             </Link>
           </div>
-        </div>
+        </div>}
       </section>
     </div>
   )
@@ -652,8 +661,8 @@ function Attribute({
   const numeric = Number(value)
   const pct = Number.isFinite(numeric) ? Math.min(100, Math.round((numeric / max) * 100)) : 0
   return (
-    <div className="w-full space-y-1">
-      <div className="flex items-center justify-between text-[13px] font-semibold text-bodytext">
+    <div className="skill-metric w-full space-y-2">
+      <div className="skill-metric-label flex items-center justify-between gap-2 text-bodytext">
         <span>{label}</span>
         <span className="tabular-nums text-ink">{value}</span>
       </div>

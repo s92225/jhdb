@@ -10,7 +10,6 @@ export default function FiveElementsPage() {
   return (
     <div className="space-y-6">
       <header>
-        <span className="pill">攻略圖解 · Five Elements</span>
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
           五行相生相剋系統
         </h1>

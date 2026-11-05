@@ -6,7 +6,7 @@
   font-display: swap;
 }
 
-/* Approved ink-wash identity. Inner pages retain their existing styling. */
+/* Approved ink-wash identity. Home composition stays scoped to .wuxia-home. */
 .wuxia-site-skin {
   --wuxia-paper: #f8f9f5;
   --wuxia-ink: #203e40;
@@ -14,7 +14,7 @@
   --wuxia-red: #b43a31;
   --wuxia-surface: #edf2ee;
   --wuxia-focus: #285f64;
-  --wuxia-display: 'JHDB Wuxia', serif;
+  --wuxia-display: 'JHDB Wuxia', var(--font-display), serif;
   --paper: var(--wuxia-paper);
   --ink: var(--wuxia-ink);
   --accent: var(--wuxia-red);
@@ -24,21 +24,6 @@
   font-synthesis: none;
 }
 .wuxia-site-skin ::selection { background: #cddfda; color: var(--wuxia-ink); }
-.wuxia-site-skin a { color: inherit; }
-.wuxia-site-skin button, .wuxia-site-skin summary { cursor: pointer; }
-.wuxia-site-skin .site-header { position: relative; z-index: 45; }
-.wuxia-site-skin .header-row { display: flex; align-items: center; justify-content: space-between; }
-.wuxia-site-skin .brand { display: inline-flex; align-items: center; }
-.wuxia-site-skin .desktop-nav { display: flex; align-items: center; margin-left: auto; }
-.wuxia-site-skin .desktop-nav a { display: flex; align-items: center; min-height: 44px; }
-.wuxia-site-skin .header-actions { display: flex; align-items: center; gap: 8px; }
-.wuxia-site-skin .menu-toggle { display: none; align-items: center; justify-content: center; width: 44px; height: 44px; }
-.wuxia-site-skin .mobile-nav { display: grid; grid-template-columns: 1fr 1fr; padding: 8px 0 24px; gap: 8px; }
-.wuxia-site-skin .mobile-nav a { display: flex; justify-content: space-between; align-items: center; min-height: 52px; padding: 12px 16px; }
-.wuxia-site-skin .skip-link { position: fixed; top: 8px; left: 16px; z-index: 100; padding: 12px 20px; color: #fff; background: var(--wuxia-ink); transform: translateY(-150%); }
-.wuxia-site-skin .skip-link:focus { transform: none; }
-.wuxia-site-skin .search-trigger { min-height: 44px; border-radius: 0; font-size: 16px; color: var(--wuxia-ink); }
-.wuxia-site-skin .search-trigger kbd { font-family: inherit; font-size: 16px; background: transparent; border: 0; }
 .wuxia-site-skin :focus-visible { outline: 3px solid var(--wuxia-focus); outline-offset: 5px; }
 .wuxia-frame,
 .wuxia-site-skin .site-header .site-frame { width: calc(100% - 128px); max-width: 1360px; margin-inline: auto; }

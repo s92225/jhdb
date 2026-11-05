@@ -1,0 +1,7 @@
+.git
+.env*
+.next*
+node_modules
+.taste-skill
+release-manifest.json
+audit-runtime.json

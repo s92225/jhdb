@@ -1,0 +1,19 @@
+{
+  "sourceDeployment": "dpl_FqC11WmYGjgPKcZsSnYuWh6sLacb",
+  "capturedDate": "2026-11-05",
+  "purpose": "Freeze existing production content and formulas, not a correctness assertion",
+  "files": [
+    {
+      "path": "app/tools/stats/StatsCalculator.tsx",
+      "sha256": "2af9710e7c0dcd979b989da67505dba85c98df0749f1751eb01d71c959e61fed"
+    },
+    {
+      "path": "app/tools/stats/formulas.ts",
+      "sha256": "2808d0dd07b305619783732f2683122ae787658cc23569df1030eb059859be55"
+    },
+    {
+      "path": "app/tools/stats/page.tsx",
+      "sha256": "223a20474547b3915167da410d86eeeb7fdb1169ac6381cc8884e6423ba325e4"
+    }
+  ]
+}

@@ -8,31 +8,29 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Airbnb design system tokens
+        // Approved ink-wash palette; legacy names retain every existing control.
         rausch: {
-          DEFAULT: '#ff385c',
-          active: '#e00b41',
-          disabled: '#ffd1da',
+          DEFAULT: '#285f64',
+          active: '#203e40',
+          disabled: '#dce6e1',
         },
-        ink: '#222222',
-        bodytext: '#3f3f3f',
+        ink: '#203e40',
+        bodytext: '#344e50',
         muted: {
-          DEFAULT: '#6a6a6a',
-          soft: '#929292',
+          DEFAULT: '#526b6b',
+          soft: '#5c7070',
         },
         hairline: {
-          DEFAULT: '#dddddd',
-          soft: '#ebebeb',
+          DEFAULT: '#dce4df',
+          soft: '#e6ece7',
         },
-        canvas: '#ffffff',
-        'surface-soft': '#f7f7f7',
-        'surface-strong': '#f2f2f2',
+        canvas: '#f8f9f5',
+        'surface-soft': '#edf2ee',
+        'surface-strong': '#e1eae4',
       },
       fontFamily: {
         sans: [
-          'var(--font-sans)',
           'var(--font-tc)',
-          'Circular',
           '-apple-system',
           'system-ui',
           'Roboto',

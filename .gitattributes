@@ -1,0 +1,2 @@
+# Preserve the frozen production calculator bytes on Windows and Linux.
+app/tools/stats/** -text

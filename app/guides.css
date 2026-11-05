@@ -1,0 +1,137 @@
+/* Reference screens share the site's ink / paper shell and functional signals.
+   One 1216px content plane, no second nested page gutter. */
+.guide-shell { max-width:1216px; margin-inline:auto; font-family:var(--font-tc),sans-serif; font-size:16px; line-height:1.8; }
+.guide-page { padding-block:0; min-width:0; }
+.guide-header { margin-bottom:20px; }
+.guide-title-row { display:flex; flex-wrap:wrap; align-items:baseline; gap:12px 20px; }
+.inner-page .guide-header h1,.inner-page .guide-page > div > h1 { font-family:var(--font-display),serif; font-size:32px; line-height:1.4; font-weight:500; letter-spacing:-.025em; }
+.guide-count { font-size:14px; color:#526b6b; font-variant-numeric:tabular-nums; }
+.guide-header > p { margin-top:8px; font-size:16px; color:#526b6b; max-width:64ch; }
+.guide-shortcuts { display:flex; flex-wrap:wrap; align-items:center; gap:8px 24px; margin-top:8px; }
+.guide-shortcuts a { display:inline-flex; align-items:center; min-height:44px; font-size:14px; color:#285f64; text-decoration:underline; text-underline-offset:5px; }
+.guide-shell :is(.text-sm) { font-size:16px; }
+.guide-shell :is(.text-xs) { font-size:14px; }
+.guide-shell :is(.rounded-lg,.rounded-xl,.rounded-2xl,.rounded-full) { border-radius:4px; }
+.guide-shell :is(.shadow-sm,.shadow-md,.hover\:shadow-airbnb:hover) { box-shadow:none; }
+.guide-shell nav[aria-label="攻略分頁"] { gap:16px; margin:0 0 20px; padding:0; border-bottom:1px solid #dce4df; }
+.guide-shell nav[aria-label="攻略分頁"] a { padding:8px 0 12px; min-height:48px; font-size:16px; }
+.guide-tag { display:inline-flex; align-items:center; font-size:12px; color:#344e50; background:#e1eae4; padding:2px 8px; border-radius:3px; white-space:nowrap; }
+.guide-record,.quest-card { background:white; border:1px solid #dce4df; border-radius:4px; overflow:hidden; }
+.quest-card-header { padding:24px; }
+.quest-meta { display:flex; flex-wrap:wrap; align-items:center; gap:8px 20px; font-size:14px; color:#526b6b; }
+.quest-card-header h2 { font-family:var(--font-display),serif; font-size:24px; font-weight:500; line-height:1.45; margin-top:12px; }
+.quest-card-header > p { margin-top:12px; color:#526b6b; max-width:84ch; }
+.quest-card-body { padding:0 24px 24px; }
+.quest-sections { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.quest-sections > div { grid-column:1/-1; }
+.guide-section { padding:20px; background:#edf2ee; border-radius:4px; min-width:0; }
+.guide-section h3 { font-size:16px; font-weight:500; line-height:1.5; color:#203e40; margin-bottom:12px; }
+.guide-section :is(ul,ol) { font-size:16px; color:#344e50; line-height:1.85; }
+.guide-shell details > summary { min-height:44px; }
+.guide-shell details.guide-record > summary { padding:20px 24px; }
+.guide-shell :is(pre,li,p,td) { overflow-wrap:anywhere; }
+.guide-shell table { font-size:14px; }
+.guide-shell :is(th,td) { border-bottom:1px solid #dce4df; }
+.guide-shell thead tr { background:transparent; }
+.guide-shell thead th { color:#526b6b; font-weight:500; }
+.guide-shell .guide-record .guide-section:not([data-guide-tone]) { background:#edf2ee; }
+.guide-shell .guide-record > summary:focus-visible { outline-offset:-4px; }
+.guide-table-hint { display:none; }
+.category-browser { display:grid; gap:16px; }
+.category-toolbar { display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.category-results { font-size:14px; color:#526b6b; font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
+.category-search { display:block; width:min(400px,50%); flex-shrink:0; }
+.category-search input { width:100%; min-height:48px; padding:10px 14px; border:1px solid #aabcb6; background:white; color:#203e40; font-size:16px; border-radius:4px; }
+.category-search input::placeholder { color:#526b6b; opacity:1; }
+.category-search input:focus-visible { outline:2px solid #285f64; outline-offset:3px; }
+.category-tabs { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
+.category-tabs button { min-height:44px; display:inline-flex; align-items:center; gap:8px; padding:8px 12px; background:#edf2ee; font-size:14px; color:#344e50; border-radius:4px; }
+.category-tabs button[aria-pressed=true] { background:#203e40; color:#f8f9f5; }
+.category-tabs button:hover:not([aria-pressed=true]) { background:#e1eae4; }
+.category-count { font-variant-numeric:tabular-nums; font-size:12px; opacity:.85; }
+.category-list { display:grid; gap:24px; }
+.category-empty { background:#edf2ee; padding:32px 24px; font-size:16px; color:#526b6b; border-radius:4px; }
+.category-empty button { min-height:44px; margin-top:12px; color:#285f64; text-decoration:underline; text-underline-offset:4px; }
+.library-art-objects img { object-position:58% 64%; }
+
+/* Colour describes a job, not the navigation. Keep the same meaning in every
+   quest and dungeon; headings and explicit map labels also work without colour. */
+[data-guide-tone=info] { --guide-signal:var(--signal-info); --guide-signal-ink:var(--signal-info-ink); --guide-signal-soft:var(--signal-info-soft); }
+[data-guide-tone=attention] { --guide-signal:var(--signal-attention); --guide-signal-ink:var(--signal-attention-ink); --guide-signal-soft:var(--signal-attention-soft); }
+[data-guide-tone=danger] { --guide-signal:var(--signal-danger); --guide-signal-ink:var(--signal-danger-ink); --guide-signal-soft:var(--signal-danger-soft); }
+[data-guide-tone=success] { --guide-signal:var(--signal-success); --guide-signal-ink:var(--signal-success-ink); --guide-signal-soft:var(--signal-success-soft); }
+.guide-section[data-guide-tone] { background:var(--guide-signal-soft); border-left:3px solid var(--guide-signal); }
+.guide-section[data-guide-tone] h3 { color:var(--guide-signal-ink); font-weight:600; }
+
+/* Maze: (1216 - 24) / 2 = 596px per panel; below 1024px stack the two
+   halves. The original 4 x 3 teleport-cell arrangement stays unchanged. */
+.maze-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:24px; align-items:start; }
+.maze-panel { padding:20px; background:white; border:1px solid #dce4df; border-radius:4px; min-width:0; }
+.maze-panel h3 { font-size:16px; line-height:1.5; font-weight:600; }
+.maze-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; margin-top:16px; }
+[data-maze-tone=start] { --maze-colour:var(--signal-info); --maze-ink:var(--signal-info-ink); --maze-soft:var(--signal-info-soft); }
+[data-maze-tone=route] { --maze-colour:var(--signal-attention); --maze-ink:var(--signal-attention-ink); --maze-soft:var(--signal-attention-soft); }
+[data-maze-tone=target] { --maze-colour:var(--signal-danger); --maze-ink:var(--signal-danger-ink); --maze-soft:var(--signal-danger-soft); }
+[data-maze-tone=exit] { --maze-colour:var(--signal-success); --maze-ink:var(--signal-success-ink); --maze-soft:var(--signal-success-soft); }
+.maze-cell { position:relative; display:flex; align-items:center; justify-content:center; aspect-ratio:1; border:1px solid #dce4df; background:#f7f8f7; border-radius:4px; font-variant-numeric:tabular-nums; }
+.maze-cell[data-maze-tone] { border:2px solid var(--maze-colour); background:var(--maze-soft); }
+.maze-cell-id { position:absolute; left:4px; top:2px; font-size:12px; font-weight:700; color:#526b6b; }
+.maze-cell[data-maze-tone] .maze-cell-id { color:var(--maze-ink); }
+.maze-cell-label { color:var(--maze-ink); font-size:14px; font-weight:600; line-height:1.2; }
+.maze-cell[data-maze-tone=route] .maze-cell-label { font-size:12px; }
+.maze-direction { position:absolute; color:#344e50; font-size:14px; font-weight:600; line-height:1.2; }
+.maze-direction--top { left:50%; top:3px; transform:translateX(-50%); }
+.maze-direction--bottom { left:50%; bottom:3px; transform:translateX(-50%); }
+.maze-direction--left { left:3px; top:50%; transform:translateY(-50%); }
+.maze-direction--right { right:3px; top:50%; transform:translateY(-50%); }
+.maze-direction--exit { writing-mode:vertical-rl; padding:3px 2px; border-radius:2px; background:var(--signal-success); color:white; font-size:12px; }
+.maze-grid-note { display:flex; align-items:center; justify-content:center; padding:4px; font-size:12px; color:#526b6b; text-align:center; }
+.maze-legend { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 16px; margin-top:20px; }
+.maze-legend-item { display:flex; align-items:center; gap:8px; font-size:14px; line-height:1.5; color:#344e50; }
+.maze-legend-swatch { flex:none; width:16px; height:16px; border:2px solid var(--maze-colour); background:var(--maze-soft); border-radius:3px; }
+.maze-legend-swatch[data-maze-tone=exit] { background:var(--maze-colour); border-radius:2px; }
+.maze-details { display:grid; gap:16px; }
+.maze-route-panel { border-top:3px solid var(--signal-attention); }
+.maze-route-panel h3 { color:var(--signal-attention-ink); }
+.maze-route-list { display:grid; gap:10px; margin-top:16px; }
+.maze-route-list li { display:flex; align-items:center; gap:12px; font-size:16px; }
+.maze-step-index { min-width:16px; color:#526b6b; font-size:14px; font-variant-numeric:tabular-nums; }
+.maze-step-dir { display:flex; align-items:center; justify-content:center; flex:none; width:32px; height:32px; border:1px solid var(--signal-attention); border-radius:4px; background:var(--signal-attention-soft); color:var(--signal-attention-ink); font-weight:600; }
+.maze-step-copy { font-variant-numeric:tabular-nums; }
+.maze-destination { display:inline-block; margin-left:12px; font-size:14px; color:var(--signal-danger-ink); font-weight:600; }
+.maze-requirement-panel { border-left:3px solid var(--signal-danger); background:var(--signal-danger-soft); }
+.maze-requirement-panel h3,.maze-requirement-panel strong { color:var(--signal-danger-ink); }
+.maze-stats-panel { background:#edf2ee; }
+.maze-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-top:16px; }
+.maze-stat { padding:8px 0; }
+.maze-stat dt { font-size:14px; color:#526b6b; }
+.maze-stat dd { margin-top:4px; font-size:18px; font-weight:600; color:#203e40; font-variant-numeric:tabular-nums; }
+@media(max-width:1023px) { .maze-layout { grid-template-columns:1fr; } }
+@media(max-width:480px) {
+  .maze-panel { padding:16px; }
+  .maze-grid { gap:6px; }
+  .maze-legend { gap:12px 8px; }
+  .maze-legend-item { font-size:12px; gap:6px; }
+  .maze-destination { display:block; margin-left:0; margin-top:2px; }
+  .maze-stats { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:768px) {
+  .guide-page { padding-top:0; }
+  .inner-page .guide-header h1 { font-size:28px; }
+  .guide-shell nav[aria-label="攻略分頁"] { margin-bottom:16px; }
+  .guide-shortcuts { gap:20px; flex-wrap:nowrap; overflow-x:auto; white-space:nowrap; padding-bottom:4px; margin-top:8px; }
+  .guide-shortcuts a { flex:none; }
+  .category-toolbar { flex-direction:column-reverse; align-items:stretch; gap:8px; }
+  .category-search { width:100%; }
+  .category-tabs { flex-wrap:nowrap; overflow-x:auto; max-width:100%; padding-bottom:8px; }
+  .category-tabs button { white-space:nowrap; flex:none; }
+  .quest-card-header { padding:20px; }
+  .quest-card-body { padding:0 20px 20px; }
+  .quest-card-header h2 { font-size:22px; }
+  .quest-meta { font-size:12px; gap:8px 12px; }
+  .quest-sections { grid-template-columns:1fr; }
+  .guide-section { padding:16px; }
+  .guide-shell table { min-width:800px; }
+  .guide-table-hint { display:block; padding:12px 16px 0; font-size:12px; color:#526b6b; }
+  .guide-attribute-table thead th:first-child,.guide-attribute-table tbody tr:not(:last-child) td:first-child { position:sticky; left:0; z-index:1; min-width:132px; background:#f8f9f5; border-right:1px solid #dce4df; }
+}

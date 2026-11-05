@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import weaponsData from '@/data/weapons.json'
+import { ReferenceHeading } from '@/app/components/ReferenceHeading'
 
 // ---------------------------------------------------------------------------
 // Weapon Data (single source of truth: data/weapons.json)
@@ -60,12 +61,7 @@ export default function WeaponsPage() {
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       {/* Header */}
-      <div className="rounded-2xl border border-hairline bg-canvas p-6">
-        <h1 className="text-2xl font-semibold tracking-tight text-ink">武器取得方式</h1>
-        <p className="mt-2 text-sm text-muted">
-          神兵系統共 20 把武器，可透過荊州歐治子任務線取得。另有副本掉落武器。
-        </p>
-      </div>
+      <ReferenceHeading title="武器取得方式" description={<p>神兵系統共 20 把武器，可透過荊州歐治子任務線取得。另有副本掉落武器。</p>} />
 
       {/* Divine Weapons Flow */}
       <div className="rounded-2xl border border-hairline bg-surface-soft p-6">

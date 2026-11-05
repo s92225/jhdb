@@ -20,7 +20,6 @@ export default function MacrosPage() {
   return (
     <div className="space-y-12">
       <header>
-        <span className="pill">按精教程 · Macro Tutorials</span>
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
           按精教程
         </h1>
