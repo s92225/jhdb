@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  distDir: process.env.JHDB_DIST_DIR || '.next',
   experimental: {
     serverActions: { allowedOrigins: [] },
   },

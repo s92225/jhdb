@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "node --test tests/*.test.mjs && npm run test:stats",
+    "test": "node --test tests/*.test.mjs && npm run test:stats && npm run test:ui",
     "test:stats": "tsx scripts/test-stats-formulas.ts",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "import": "tsx scripts/import-from-txt.ts"
+    "import": "tsx scripts/import-from-txt.ts",
+    "test:ui": "tsx --tsconfig tests/tsconfig.json --test tests/hero-motion.test.ts tests/damo-maze.test.ts"
   },
   "keywords": [],
   "author": "",

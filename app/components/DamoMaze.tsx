@@ -112,6 +112,7 @@ export function DamoMaze() {
             {Array.from({ length: 12 }).map((_, idx) => {
               const row = Math.floor(idx / 4)
               const col = idx % 4
+              const slotKey = `maze-slot-${row}-${col}`
               const cell = CELLS.find((c) => {
                 const [r, k] = LAYOUT[c.id]
                 return r === row && k === col
@@ -119,14 +120,14 @@ export function DamoMaze() {
               if (!cell) {
                 if (row === 1 && col === 3) {
                   return (
-                    <div key={idx} className="flex aspect-square items-center justify-center rounded-lg border border-dashed border-hairline-soft p-2 text-center text-[11px] text-muted">
+                    <div key={slotKey} className="flex aspect-square items-center justify-center rounded-lg border border-dashed border-hairline-soft p-2 text-center text-[11px] text-muted">
                       進入第一格為 1
                     </div>
                   )
                 }
-                return <div key={idx} className="aspect-square" />
+                return <div key={slotKey} className="aspect-square" />
               }
-              return <MazeCell key={cell.id} cell={cell} highlight={PATH_CELLS.has(cell.id)} />
+              return <MazeCell key={slotKey} cell={cell} highlight={PATH_CELLS.has(cell.id)} />
             })}
           </div>
           <div className="mt-4 grid grid-cols-3 gap-2 text-[11px] text-muted">

@@ -1,4 +1,4 @@
-import { getAllUpdates } from '@/lib/data'
+import { getAllUpdates, getStats } from '@/lib/data'
 import LandingPage from './LandingPage'
 
 export default function Page() {
@@ -9,5 +9,5 @@ export default function Page() {
     content: u.content,
   }))
 
-  return <LandingPage updates={updates} />
+  return <LandingPage updates={updates} stats={getStats()} />
 }

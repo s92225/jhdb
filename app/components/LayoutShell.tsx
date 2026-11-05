@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import { SiteHeader } from './SiteHeader'
 import { SiteFooter } from './SiteFooter'
 import { FeedbackWidget } from './FeedbackWidget'
+import { WuxiaHomeShell } from './WuxiaHomeShell'
 import type { SearchEntry } from '@/lib/searchIndex'
 
 export function LayoutShell({
@@ -18,10 +19,10 @@ export function LayoutShell({
 
   if (isLanding) {
     return (
-      <>
+      <WuxiaHomeShell searchEntries={searchEntries}>
         {children}
         <FeedbackWidget />
-      </>
+      </WuxiaHomeShell>
     )
   }
 
