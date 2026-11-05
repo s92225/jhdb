@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import type { SearchEntry } from '@/lib/searchIndex'
 
-const GROUP_ORDER = ['頁面', '武技', '任務', '副本', '秘笈']
+const GROUP_ORDER = ['頁面', '武技', '任務', '副本', '秘笈', '公告']
 
 function scoreEntry(entry: SearchEntry, needle: string): number {
   const label = entry.label.toLowerCase()
@@ -23,6 +23,23 @@ export function SearchCommand({ entries }: { entries: SearchEntry[] }) {
   const [cursor, setCursor] = useState(0)
   const inputRef = useRef<HTMLInputElement | null>(null)
   const listRef = useRef<HTMLDivElement | null>(null)
+  const triggerRef = useRef<HTMLButtonElement | null>(null)
+  const dialogRef = useRef<HTMLDivElement | null>(null)
+  const initialQuery = useRef('')
+
+  useEffect(() => {
+    const show = (event: Event) => { initialQuery.current = (event as CustomEvent<{ query?: string }>).detail?.query || ''; setQ(initialQuery.current); setOpen(true) }
+    window.addEventListener('jhdb:search', show)
+    return () => window.removeEventListener('jhdb:search', show)
+  }, [])
+
+  useEffect(() => {
+    if (!open) return
+    const previous = document.activeElement as HTMLElement | null
+    const overflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = overflow; previous?.focus() }
+  }, [open])
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -38,7 +55,8 @@ export function SearchCommand({ entries }: { entries: SearchEntry[] }) {
 
   useEffect(() => {
     if (open) {
-      setQ('')
+      setQ(initialQuery.current)
+      initialQuery.current = ''
       setCursor(0)
       requestAnimationFrame(() => inputRef.current?.focus())
     }
@@ -93,10 +111,11 @@ export function SearchCommand({ entries }: { entries: SearchEntry[] }) {
   return (
     <>
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
         aria-label="搜尋（Ctrl+K）"
-        className="inline-flex shrink-0 items-center gap-2 rounded-full border border-hairline bg-canvas px-3 py-1.5 text-sm text-muted transition-colors hover:border-hairline hover:bg-surface-soft hover:text-ink"
+        className="search-trigger inline-flex shrink-0 items-center gap-2 bg-canvas px-3 py-1.5 text-sm text-muted transition-colors hover:bg-surface-soft hover:text-ink"
       >
         <svg aria-hidden viewBox="0 0 16 16" className="h-3.5 w-3.5">
           <circle cx="7" cy="7" r="5" stroke="currentColor" strokeWidth="1.5" fill="none" />
@@ -110,12 +129,19 @@ export function SearchCommand({ entries }: { entries: SearchEntry[] }) {
 
       {open ? (
         <div
-          className="fixed inset-0 z-50 flex items-start justify-center bg-ink/40 p-4 pt-[12vh] backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-start justify-center bg-ink/60 p-4 pt-[12vh]"
           onMouseDown={(e) => {
             if (e.target === e.currentTarget) setOpen(false)
           }}
         >
-          <div className="w-full max-w-lg overflow-hidden rounded-2xl border border-hairline bg-canvas shadow-airbnb">
+          <div ref={dialogRef} role="dialog" aria-modal="true" aria-label="搜尋資料庫" className="w-full max-w-lg overflow-hidden bg-canvas shadow-airbnb" onKeyDown={(e) => {
+            if (e.key !== 'Tab') return
+            const nodes = dialogRef.current?.querySelectorAll<HTMLElement>('input, button')
+            if (!nodes?.length) return
+            const first = nodes[0], last = nodes[nodes.length - 1]
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus() }
+            if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus() }
+          }}>
             <div className="flex items-center gap-3 border-b border-hairline-soft px-4">
               <svg aria-hidden viewBox="0 0 16 16" className="h-4 w-4 shrink-0 text-muted">
                 <circle cx="7" cy="7" r="5" stroke="currentColor" strokeWidth="1.5" fill="none" />
@@ -123,15 +149,14 @@ export function SearchCommand({ entries }: { entries: SearchEntry[] }) {
               </svg>
               <input
                 ref={inputRef}
+                aria-label="搜尋武技、任務、秘笈、副本與規則"
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
                 onKeyDown={onInputKey}
                 placeholder="搜尋武技、任務、秘笈、副本、頁面…"
                 className="w-full bg-transparent py-3.5 text-sm text-ink placeholder:text-muted focus:outline-none"
               />
-              <kbd className="shrink-0 rounded border border-hairline-soft bg-surface-soft px-1.5 py-0.5 text-[10px] text-muted">
-                Esc
-              </kbd>
+              <button type="button" className="shrink-0 p-3 text-sm" onClick={() => setOpen(false)} aria-label="關閉搜尋">關閉</button>
             </div>
             <div ref={listRef} className="max-h-[50vh] overflow-y-auto p-2">
               {q.trim() === '' ? (

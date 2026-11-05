@@ -1,18 +1,23 @@
 import './globals.css'
+import './wuxia-home.css'
 import type { Metadata } from 'next'
-import { Inter, Noto_Sans_TC } from 'next/font/google'
+import localFont from 'next/font/local'
 import { LayoutShell } from './components/LayoutShell'
 import { buildSearchIndex } from '@/lib/searchIndex'
 
-const inter = Inter({
-  subsets: ['latin'],
+const inter = localFont({
+  src: '../public/fonts/Inter-variable.ttf',
+  weight: '100 900',
+  style: 'normal',
   variable: '--font-sans',
   display: 'swap',
 })
 
-const notoSansTC = Noto_Sans_TC({
-  weight: ['400', '500', '700'],
-  subsets: ['latin'],
+const notoSansTC = localFont({
+  src: [
+    { path: '../public/fonts/jhdb-sans-tc.woff', weight: '400' },
+    { path: '../public/fonts/jhdb-sans-tc-medium.woff', weight: '500' },
+  ],
   variable: '--font-tc',
   display: 'swap',
 })

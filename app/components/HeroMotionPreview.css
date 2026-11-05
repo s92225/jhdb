@@ -1,0 +1,51 @@
+/* Localised artwork motion only. No layout or text animations are added. */
+.wuxia-hero-art > img {
+  animation: none !important;
+  transform: none !important;
+}
+.hero-motion-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+.hero-motion-canvas[data-ready="true"] { opacity: 1; }
+.hero-motion-controls {
+  position: absolute;
+  right: 24px;
+  bottom: 20px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-left: 14px;
+  color: var(--wuxia-ink);
+  background: var(--wuxia-paper);
+  border: 1px solid #b8c7c1;
+  font-family: var(--font-tc), sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.hero-motion-controls button {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 14px;
+  border-left: 1px solid #b8c7c1;
+  font: inherit;
+  color: inherit;
+  background: var(--wuxia-surface);
+  cursor: pointer;
+}
+.hero-motion-controls [role="status"] { padding: 12px 14px 12px 0; }
+@media (hover: hover) and (pointer: fine) {
+  .hero-motion-controls button:hover { background: var(--wuxia-paper); }
+}
+@media (max-width: 599px) {
+  .hero-motion-controls { right: 16px; bottom: 12px; gap: 10px; font-size: 12px; }
+}
